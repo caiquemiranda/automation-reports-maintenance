@@ -15,7 +15,7 @@ Uma aplicação web completa com frontend React e backend Python/Flask:
 
 ### Aplicação Desktop
 
-Uma aplicação desktop simples desenvolvida com Python e Tkinter que permite a criação de relatórios offline.
+Uma aplicação desktop simples desenvolvida com Python e Flet que permite a criação de relatórios offline.
 
 ## Funcionalidades Principais
 
@@ -33,22 +33,30 @@ Uma aplicação desktop simples desenvolvida com Python e Tkinter que permite a 
 - **Frontend**: React, Formik, Axios
 
 ### Aplicação Desktop
-- Python, Tkinter
+- Python, Flet
 
 ## Como Executar
 
 ### Aplicação Web
 
-#### Backend
+#### Usando Docker (Recomendado)
+```bash
+cd webapp
+chmod +x run.sh
+./run.sh
+```
+
+#### Manualmente
+**Backend**
 ```bash
 cd webapp/backend
 python -m venv venv
 source venv/bin/activate  # No Windows: venv\Scripts\activate
 pip install -r requirements.txt
-python app.py
+python run.py
 ```
 
-#### Frontend
+**Frontend**
 ```bash
 cd webapp/frontend
 npm install
@@ -56,12 +64,38 @@ npm start
 ```
 
 ### Aplicação Desktop
+
+#### Usando Docker
+```bash
+cd desktop
+chmod +x run.sh
+./run.sh
+```
+
+#### Manualmente
 ```bash
 cd desktop
 python -m venv venv
 source venv/bin/activate  # No Windows: venv\Scripts\activate
 pip install -r requirements.txt
 python app.py
+```
+
+## Estrutura do Projeto (Backend)
+
+```
+webapp/backend/
+├── app/
+│   ├── __init__.py      # Configuração e inicialização do aplicativo
+│   ├── api/             # Endpoints da API
+│   │   ├── __init__.py
+│   │   └── routes.py    # Definição das rotas
+│   ├── models/          # Modelos de dados
+│   │   ├── __init__.py
+│   │   └── maintenance_report.py
+│   └── config.py        # Configurações do aplicativo
+├── run.py               # Ponto de entrada para execução
+└── requirements.txt     # Dependências
 ```
 
 ## Licença

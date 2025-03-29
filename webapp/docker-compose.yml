@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: maintenance-reports-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=dev
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: maintenance-reports-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend 

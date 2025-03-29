@@ -1,6 +1,5 @@
 #flet-code
-import tkinter as tk
-from tkinter import ttk, messagebox, filedialog
+import flet as ft
 import json
 import os
 import requests
@@ -9,204 +8,230 @@ import tempfile
 import subprocess
 
 class MaintenanceReportApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Sistema de Relatórios de Manutenção - Desktop")
-        self.root.geometry("800x600")
-        
-        # Configurar tema
-        self.style = ttk.Style()
-        self.style.theme_use("clam")
-        self.style.configure("TLabel", font=("Arial", 10))
-        self.style.configure("TButton", font=("Arial", 10))
-        self.style.configure("TEntry", font=("Arial", 10))
+    def __init__(self, page: ft.Page):
+        self.page = page
+        self.page.title = "Sistema de Relatórios de Manutenção - Desktop"
+        self.page.theme_mode = ft.ThemeMode.LIGHT
+        self.page.padding = 20
+        self.page.window_width = 900
+        self.page.window_height = 700
         
         # Variáveis de formulário
-        self.equipment_var = tk.StringVar()
-        self.date_var = tk.StringVar(value=datetime.now().strftime("%Y-%m-%d"))
-        self.technician_var = tk.StringVar()
+        self.equipment = ft.TextField(label="Equipamento", width=400)
+        self.date = ft.TextField(label="Data", value=datetime.now().strftime("%Y-%m-%d"), width=200)
+        self.technician = ft.TextField(label="Técnico", width=400)
+        self.service_description = ft.TextField(label="Descrição do Serviço", multiline=True, min_lines=4, max_lines=8, width=800)
+        self.observations = ft.TextField(label="Observações Adicionais", multiline=True, min_lines=3, max_lines=5, width=800)
         
         # Lista de peças utilizadas
         self.parts = []
+        self.parts_data_table = ft.DataTable(
+            columns=[
+                ft.DataColumn(ft.Text("Nome")),
+                ft.DataColumn(ft.Text("Quantidade")),
+                ft.DataColumn(ft.Text("Observações")),
+                ft.DataColumn(ft.Text("Ações"))
+            ],
+            width=800
+        )
         
         # Criar interface
-        self.create_widgets()
+        self.create_ui()
     
-    def create_widgets(self):
-        # Frame principal
-        main_frame = ttk.Frame(self.root, padding="20")
-        main_frame.pack(fill=tk.BOTH, expand=True)
-        
+    def create_ui(self):
         # Título
-        title_label = ttk.Label(main_frame, text="Relatório de Manutenção", font=("Arial", 16, "bold"))
-        title_label.grid(row=0, column=0, columnspan=2, sticky="w", pady=(0, 20))
+        title = ft.Text("Relatório de Manutenção", size=24, weight=ft.FontWeight.BOLD)
         
-        # Formulário - Informações gerais
-        info_frame = ttk.LabelFrame(main_frame, text="Informações Gerais", padding=10)
-        info_frame.grid(row=1, column=0, columnspan=2, sticky="ew", pady=(0, 10))
+        # Informações gerais (seção)
+        general_info_section = ft.Container(
+            content=ft.Column([
+                ft.Text("Informações Gerais", size=18, weight=ft.FontWeight.BOLD),
+                ft.Row([self.equipment], alignment=ft.MainAxisAlignment.START),
+                ft.Row([self.date], alignment=ft.MainAxisAlignment.START),
+                ft.Row([self.technician], alignment=ft.MainAxisAlignment.START)
+            ]),
+            padding=10,
+            border=ft.border.all(1, ft.colors.BLACK12),
+            border_radius=5,
+            width=800
+        )
         
-        ttk.Label(info_frame, text="Equipamento:").grid(row=0, column=0, sticky="w", pady=5)
-        ttk.Entry(info_frame, textvariable=self.equipment_var, width=40).grid(row=0, column=1, sticky="w", padx=5, pady=5)
+        # Descrição do serviço (seção)
+        service_description_section = ft.Container(
+            content=ft.Column([
+                ft.Text("Descrição do Serviço", size=18, weight=ft.FontWeight.BOLD),
+                self.service_description
+            ]),
+            padding=10,
+            border=ft.border.all(1, ft.colors.BLACK12),
+            border_radius=5,
+            width=800
+        )
         
-        ttk.Label(info_frame, text="Data:").grid(row=1, column=0, sticky="w", pady=5)
-        ttk.Entry(info_frame, textvariable=self.date_var, width=20).grid(row=1, column=1, sticky="w", padx=5, pady=5)
+        # Campos para adicionar peça
+        self.part_name = ft.TextField(label="Nome da Peça", width=300)
+        self.part_quantity = ft.TextField(label="Quantidade", width=100, value="1")
+        self.part_notes = ft.TextField(label="Observações", width=300)
         
-        ttk.Label(info_frame, text="Técnico:").grid(row=2, column=0, sticky="w", pady=5)
-        ttk.Entry(info_frame, textvariable=self.technician_var, width=40).grid(row=2, column=1, sticky="w", padx=5, pady=5)
+        # Seção de peças utilizadas
+        parts_section = ft.Container(
+            content=ft.Column([
+                ft.Text("Peças Utilizadas", size=18, weight=ft.FontWeight.BOLD),
+                ft.Row([
+                    self.part_name,
+                    self.part_quantity,
+                    self.part_notes,
+                    ft.IconButton(
+                        icon=ft.icons.ADD_CIRCLE,
+                        icon_color=ft.colors.BLUE,
+                        tooltip="Adicionar Peça",
+                        on_click=self.add_part
+                    )
+                ]),
+                ft.Container(content=self.parts_data_table, margin=ft.margin.only(top=10))
+            ]),
+            padding=10,
+            border=ft.border.all(1, ft.colors.BLACK12),
+            border_radius=5,
+            width=800
+        )
         
-        # Descrição do serviço
-        service_frame = ttk.LabelFrame(main_frame, text="Descrição do Serviço", padding=10)
-        service_frame.grid(row=2, column=0, columnspan=2, sticky="ew", pady=(0, 10))
-        
-        self.service_text = tk.Text(service_frame, height=5, width=60)
-        self.service_text.pack(fill=tk.BOTH, expand=True)
-        
-        # Peças utilizadas
-        parts_frame = ttk.LabelFrame(main_frame, text="Peças Utilizadas", padding=10)
-        parts_frame.grid(row=3, column=0, columnspan=2, sticky="ew", pady=(0, 10))
-        
-        # Lista de peças
-        self.parts_tree = ttk.Treeview(parts_frame, columns=("name", "quantity", "notes"), show="headings", height=5)
-        self.parts_tree.heading("name", text="Nome")
-        self.parts_tree.heading("quantity", text="Quantidade")
-        self.parts_tree.heading("notes", text="Observações")
-        
-        self.parts_tree.column("name", width=250)
-        self.parts_tree.column("quantity", width=100)
-        self.parts_tree.column("notes", width=250)
-        
-        self.parts_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        
-        # Scrollbar para a lista
-        scrollbar = ttk.Scrollbar(parts_frame, orient=tk.VERTICAL, command=self.parts_tree.yview)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.parts_tree.configure(yscrollcommand=scrollbar.set)
-        
-        # Botões para adicionar/remover peças
-        parts_btn_frame = ttk.Frame(main_frame)
-        parts_btn_frame.grid(row=4, column=0, sticky="w", pady=(0, 10))
-        
-        ttk.Button(parts_btn_frame, text="Adicionar Peça", command=self.add_part_dialog).grid(row=0, column=0, padx=(0, 10))
-        ttk.Button(parts_btn_frame, text="Remover Peça", command=self.remove_part).grid(row=0, column=1)
-        
-        # Observações
-        obs_frame = ttk.LabelFrame(main_frame, text="Observações Adicionais", padding=10)
-        obs_frame.grid(row=5, column=0, columnspan=2, sticky="ew", pady=(0, 10))
-        
-        self.obs_text = tk.Text(obs_frame, height=3, width=60)
-        self.obs_text.pack(fill=tk.BOTH, expand=True)
+        # Observações adicionais (seção)
+        observations_section = ft.Container(
+            content=ft.Column([
+                ft.Text("Observações Adicionais", size=18, weight=ft.FontWeight.BOLD),
+                self.observations
+            ]),
+            padding=10,
+            border=ft.border.all(1, ft.colors.BLACK12),
+            border_radius=5,
+            width=800
+        )
         
         # Botões de ação
-        btn_frame = ttk.Frame(main_frame)
-        btn_frame.grid(row=6, column=0, columnspan=2, sticky="e", pady=(10, 0))
+        buttons_row = ft.Row([
+            ft.ElevatedButton("Limpar", on_click=self.clear_form),
+            ft.ElevatedButton("Gerar Relatório", on_click=self.generate_report)
+        ], alignment=ft.MainAxisAlignment.END)
         
-        ttk.Button(btn_frame, text="Limpar", command=self.clear_form).grid(row=0, column=0, padx=(0, 10))
-        ttk.Button(btn_frame, text="Gerar Relatório", command=self.generate_report).grid(row=0, column=1)
+        # Montar a interface completa
+        self.page.add(
+            title,
+            ft.Divider(),
+            general_info_section,
+            ft.Container(height=10),
+            service_description_section,
+            ft.Container(height=10),
+            parts_section,
+            ft.Container(height=10),
+            observations_section,
+            ft.Container(height=10),
+            buttons_row
+        )
     
-    def add_part_dialog(self):
-        # Janela de diálogo para adicionar peça
-        dialog = tk.Toplevel(self.root)
-        dialog.title("Adicionar Peça")
-        dialog.geometry("400x200")
-        dialog.transient(self.root)
-        dialog.grab_set()
-        
-        # Variáveis
-        name_var = tk.StringVar()
-        quantity_var = tk.StringVar(value="1")
-        notes_var = tk.StringVar()
-        
-        # Formulário
-        ttk.Label(dialog, text="Nome da Peça:").grid(row=0, column=0, sticky="w", padx=10, pady=5)
-        ttk.Entry(dialog, textvariable=name_var, width=30).grid(row=0, column=1, sticky="ew", padx=10, pady=5)
-        
-        ttk.Label(dialog, text="Quantidade:").grid(row=1, column=0, sticky="w", padx=10, pady=5)
-        ttk.Entry(dialog, textvariable=quantity_var, width=10).grid(row=1, column=1, sticky="w", padx=10, pady=5)
-        
-        ttk.Label(dialog, text="Observações:").grid(row=2, column=0, sticky="w", padx=10, pady=5)
-        ttk.Entry(dialog, textvariable=notes_var, width=30).grid(row=2, column=1, sticky="ew", padx=10, pady=5)
-        
-        # Botões
-        btn_frame = ttk.Frame(dialog)
-        btn_frame.grid(row=3, column=0, columnspan=2, pady=10)
-        
-        ttk.Button(btn_frame, text="Cancelar", command=dialog.destroy).grid(row=0, column=0, padx=5)
-        
-        def add_part():
+    def add_part(self, e):
+        try:
+            name = self.part_name.value.strip()
+            quantity_str = self.part_quantity.value.strip()
+            notes = self.part_notes.value.strip()
+            
+            if not name:
+                self.show_error_dialog("Erro", "Digite o nome da peça")
+                return
+            
             try:
-                name = name_var.get().strip()
-                quantity = int(quantity_var.get())
-                notes = notes_var.get().strip()
-                
-                if not name:
-                    messagebox.showerror("Erro", "Digite o nome da peça")
-                    return
-                
+                quantity = int(quantity_str)
                 if quantity <= 0:
-                    messagebox.showerror("Erro", "Quantidade deve ser maior que zero")
+                    self.show_error_dialog("Erro", "Quantidade deve ser maior que zero")
                     return
-                
-                # Adicionar à lista
-                part = {"name": name, "quantity": quantity, "notes": notes}
-                self.parts.append(part)
-                
-                # Atualizar treeview
-                self.parts_tree.insert("", "end", values=(name, quantity, notes))
-                
-                dialog.destroy()
-                
             except ValueError:
-                messagebox.showerror("Erro", "Quantidade deve ser um número inteiro")
-        
-        ttk.Button(btn_frame, text="Adicionar", command=add_part).grid(row=0, column=1, padx=5)
+                self.show_error_dialog("Erro", "Quantidade deve ser um número inteiro")
+                return
+            
+            # Adicionar à lista
+            part = {"name": name, "quantity": quantity, "notes": notes}
+            self.parts.append(part)
+            
+            # Adicionar à tabela
+            self.parts_data_table.rows.append(
+                ft.DataRow(
+                    cells=[
+                        ft.DataCell(ft.Text(name)),
+                        ft.DataCell(ft.Text(str(quantity))),
+                        ft.DataCell(ft.Text(notes)),
+                        ft.DataCell(
+                            ft.IconButton(
+                                icon=ft.icons.DELETE,
+                                icon_color=ft.colors.RED_500,
+                                tooltip="Remover",
+                                data=len(self.parts) - 1,
+                                on_click=self.remove_part
+                            )
+                        )
+                    ]
+                )
+            )
+            
+            # Limpar campos
+            self.part_name.value = ""
+            self.part_quantity.value = "1"
+            self.part_notes.value = ""
+            self.page.update()
+            
+        except Exception as e:
+            self.show_error_dialog("Erro", f"Ocorreu um erro: {str(e)}")
     
-    def remove_part(self):
-        selected_item = self.parts_tree.selection()
-        if selected_item:
-            idx = self.parts_tree.index(selected_item[0])
-            self.parts_tree.delete(selected_item)
+    def remove_part(self, e):
+        idx = e.control.data
+        if 0 <= idx < len(self.parts):
             self.parts.pop(idx)
-        else:
-            messagebox.showinfo("Informação", "Selecione uma peça para remover")
+            self.parts_data_table.rows.pop(idx)
+            
+            # Atualizar índices dos botões de remoção
+            for i, row in enumerate(self.parts_data_table.rows):
+                row.cells[-1].content.data = i
+            
+            self.page.update()
     
-    def clear_form(self):
-        self.equipment_var.set("")
-        self.date_var.set(datetime.now().strftime("%Y-%m-%d"))
-        self.technician_var.set("")
-        self.service_text.delete("1.0", tk.END)
-        self.obs_text.delete("1.0", tk.END)
+    def clear_form(self, e=None):
+        self.equipment.value = ""
+        self.date.value = datetime.now().strftime("%Y-%m-%d")
+        self.technician.value = ""
+        self.service_description.value = ""
+        self.observations.value = ""
         
         # Limpar lista de peças
         self.parts = []
-        for item in self.parts_tree.get_children():
-            self.parts_tree.delete(item)
+        self.parts_data_table.rows.clear()
+        
+        self.page.update()
     
-    def generate_report(self):
+    def generate_report(self, e):
         # Validar dados
-        equipment = self.equipment_var.get().strip()
-        date = self.date_var.get().strip()
-        technician = self.technician_var.get().strip()
-        service_description = self.service_text.get("1.0", tk.END).strip()
-        observations = self.obs_text.get("1.0", tk.END).strip()
+        equipment = self.equipment.value.strip()
+        date = self.date.value.strip()
+        technician = self.technician.value.strip()
+        service_description = self.service_description.value.strip()
+        observations = self.observations.value.strip()
         
         if not equipment:
-            messagebox.showerror("Erro", "Digite o nome do equipamento")
+            self.show_error_dialog("Erro", "Digite o nome do equipamento")
             return
         
         if not date:
-            messagebox.showerror("Erro", "Digite a data")
+            self.show_error_dialog("Erro", "Digite a data")
             return
         
         if not technician:
-            messagebox.showerror("Erro", "Digite o nome do técnico")
+            self.show_error_dialog("Erro", "Digite o nome do técnico")
             return
         
         if not service_description:
-            messagebox.showerror("Erro", "Digite a descrição do serviço")
+            self.show_error_dialog("Erro", "Digite a descrição do serviço")
             return
         
         if not self.parts:
-            messagebox.showerror("Erro", "Adicione pelo menos uma peça")
+            self.show_error_dialog("Erro", "Adicione pelo menos uma peça")
             return
         
         # Montar dados para a API
@@ -220,33 +245,98 @@ class MaintenanceReportApp:
         }
         
         try:
-            # Enviar para a API (desabilitado - apenas simulação)
-            # response = requests.post("http://localhost:5000/api/generate-report", json=report_data)
+            # Perguntar onde salvar o arquivo
+            def pick_files_result(e: ft.FilePickerResultEvent):
+                if e.path:
+                    file_path = e.path
+                    try:
+                        # Salvar como JSON
+                        with open(file_path, "w", encoding="utf-8") as f:
+                            json.dump(report_data, f, ensure_ascii=False, indent=4)
+                        
+                        self.show_success_dialog("Sucesso", f"Relatório salvo em {file_path}")
+                        
+                        # Perguntar se deseja abrir o arquivo
+                        def open_file_dialog(e):
+                            if e.control.data == "sim":
+                                try:
+                                    if os.name == "nt":  # Windows
+                                        os.startfile(file_path)
+                                    else:  # Unix/Linux/Mac
+                                        subprocess.call(["xdg-open", file_path])
+                                except Exception as ex:
+                                    self.show_error_dialog("Erro", f"Não foi possível abrir o arquivo: {str(ex)}")
+                            dlg.open = False
+                            self.page.update()
+                        
+                        dlg = ft.AlertDialog(
+                            title=ft.Text("Abrir Arquivo"),
+                            content=ft.Text("Deseja abrir o arquivo salvo?"),
+                            actions=[
+                                ft.TextButton("Não", on_click=open_file_dialog, data="nao"),
+                                ft.TextButton("Sim", on_click=open_file_dialog, data="sim"),
+                            ],
+                            actions_alignment=ft.MainAxisAlignment.END,
+                        )
+                        
+                        self.page.dialog = dlg
+                        dlg.open = True
+                        self.page.update()
+                        
+                    except Exception as ex:
+                        self.show_error_dialog("Erro", f"Ocorreu um erro ao salvar o arquivo: {str(ex)}")
             
-            # Simulação: criar arquivo JSON com os dados
-            file_path = filedialog.asksaveasfilename(
-                defaultextension=".json",
-                filetypes=[("JSON Files", "*.json"), ("All Files", "*.*")],
-                title="Salvar Relatório"
+            save_file_dialog = ft.FilePicker(on_result=pick_files_result)
+            self.page.overlay.append(save_file_dialog)
+            self.page.update()
+            save_file_dialog.save_file(
+                allowed_extensions=["json"],
+                file_name=f"relatorio_{equipment}_{date}.json"
             )
             
-            if file_path:
-                with open(file_path, "w", encoding="utf-8") as f:
-                    json.dump(report_data, f, ensure_ascii=False, indent=4)
-                
-                messagebox.showinfo("Sucesso", f"Relatório salvo em {file_path}")
-                
-                # Opção para abrir o arquivo
-                if messagebox.askyesno("Abrir Arquivo", "Deseja abrir o arquivo salvo?"):
-                    if os.name == "nt":  # Windows
-                        os.startfile(file_path)
-                    else:  # Unix/Linux/Mac
-                        subprocess.call(["xdg-open", file_path])
-        
         except Exception as e:
-            messagebox.showerror("Erro", f"Ocorreu um erro: {str(e)}")
+            self.show_error_dialog("Erro", f"Ocorreu um erro: {str(e)}")
+    
+    def show_error_dialog(self, title, message):
+        """Mostra um diálogo de erro"""
+        def close_dlg(e):
+            dlg.open = False
+            self.page.update()
+        
+        dlg = ft.AlertDialog(
+            title=ft.Text(title),
+            content=ft.Text(message),
+            actions=[
+                ft.TextButton("OK", on_click=close_dlg),
+            ],
+            actions_alignment=ft.MainAxisAlignment.END,
+        )
+        
+        self.page.dialog = dlg
+        dlg.open = True
+        self.page.update()
+    
+    def show_success_dialog(self, title, message):
+        """Mostra um diálogo de sucesso"""
+        def close_dlg(e):
+            dlg.open = False
+            self.page.update()
+        
+        dlg = ft.AlertDialog(
+            title=ft.Text(title),
+            content=ft.Text(message),
+            actions=[
+                ft.TextButton("OK", on_click=close_dlg),
+            ],
+            actions_alignment=ft.MainAxisAlignment.END,
+        )
+        
+        self.page.dialog = dlg
+        dlg.open = True
+        self.page.update()
+
+def main(page: ft.Page):
+    app = MaintenanceReportApp(page)
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = MaintenanceReportApp(root)
-    root.mainloop()
+    ft.app(target=main)
