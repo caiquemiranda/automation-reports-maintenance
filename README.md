@@ -86,16 +86,44 @@ python app.py
 ```
 webapp/backend/
 ├── app/
-│   ├── __init__.py      # Configuração e inicialização do aplicativo
-│   ├── api/             # Endpoints da API
+│   ├── __init__.py           # Configuração e inicialização do aplicativo
+│   ├── api/                  # Endpoints da API
 │   │   ├── __init__.py
-│   │   └── routes.py    # Definição das rotas
-│   ├── models/          # Modelos de dados
+│   │   └── routes.py         # Definição das rotas
+│   ├── models/               # Modelos de dados
 │   │   ├── __init__.py
 │   │   └── maintenance_report.py
-│   └── config.py        # Configurações do aplicativo
-├── run.py               # Ponto de entrada para execução
-└── requirements.txt     # Dependências
+│   ├── services/             # Serviços da aplicação
+│   │   ├── __init__.py
+│   │   └── document_service.py # Serviço para geração de documentos
+│   ├── utils/                # Utilitários
+│   │   └── __init__.py
+│   └── config.py             # Configurações do aplicativo
+├── run.py                    # Ponto de entrada para execução
+└── requirements.txt          # Dependências
+```
+
+## Estrutura do Projeto (Desktop)
+
+```
+desktop/
+├── app.py                    # Ponto de entrada simples
+├── src/
+│   ├── ui/                   # Componentes da interface
+│   │   ├── __init__.py
+│   │   ├── app_ui.py         # Interface principal
+│   │   ├── dialogs.py        # Diálogos da aplicação
+│   │   └── sections.py       # Seções do formulário
+│   ├── models/               # Modelos de dados
+│   │   ├── __init__.py
+│   │   └── report.py         # Modelo de relatório
+│   ├── services/             # Serviços
+│   │   ├── __init__.py
+│   │   └── report_service.py # Serviço para geração de relatórios
+│   └── utils/                # Utilitários
+│       ├── __init__.py
+│       └── helpers.py        # Funções auxiliares
+└── requirements.txt          # Dependências
 ```
 
 ## Licença

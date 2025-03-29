@@ -1,55 +1,32 @@
 from flask import request, jsonify, send_file
 import os
-import tempfile
-from docx import Document
 from . import api_bp
 from ..models import MaintenanceReport
+from ..services import DocumentService
 
 @api_bp.route('/health', methods=['GET'])
 def health_check():
+    """
+    Endpoint para verificar se a API está funcionando.
+    """
     return jsonify({"status": "online", "service": "maintenance-reports-api"})
 
 @api_bp.route('/generate-report', methods=['POST'])
 def generate_report():
+    """
+    Endpoint para gerar um relatório de manutenção em formato Word.
+    
+    Espera um JSON com os dados do relatório no corpo da requisição.
+    Retorna um arquivo Word gerado a partir dos dados do relatório.
+    """
+    temp_filename = None
     try:
+        # Extrair dados da requisição
         data = request.json
         report = MaintenanceReport(**data)
         
-        # Criar documento Word
-        doc = Document()
-        doc.add_heading('Relatório de Manutenção', 0)
-        
-        # Adicionar informações do relatório
-        doc.add_heading('Informações Gerais', level=1)
-        doc.add_paragraph(f'Equipamento: {report.equipment}')
-        doc.add_paragraph(f'Data: {report.date}')
-        doc.add_paragraph(f'Técnico: {report.technician}')
-        
-        doc.add_heading('Descrição do Serviço', level=1)
-        doc.add_paragraph(report.service_description)
-        
-        doc.add_heading('Peças Utilizadas', level=1)
-        table = doc.add_table(rows=1, cols=3)
-        table.style = 'Table Grid'
-        
-        # Cabeçalho da tabela
-        header_cells = table.rows[0].cells
-        header_cells[0].text = 'Nome'
-        header_cells[1].text = 'Quantidade'
-        header_cells[2].text = 'Observações'
-        
-        # Adicionar peças na tabela
-        for part in report.parts_used:
-            row_cells = table.add_row().cells
-            row_cells[0].text = part.name
-            row_cells[1].text = str(part.quantity)
-            row_cells[2].text = part.notes
-        
-        # Salvar o documento em um arquivo temporário
-        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.docx')
-        temp_filename = temp_file.name
-        doc.save(temp_filename)
-        temp_file.close()
+        # Gerar documento usando o serviço
+        temp_filename = DocumentService.generate_report_document(report)
         
         # Enviar o arquivo para o cliente
         return send_file(
@@ -64,8 +41,5 @@ def generate_report():
     
     finally:
         # Limpar o arquivo temporário
-        if 'temp_filename' in locals():
-            try:
-                os.unlink(temp_filename)
-            except:
-                pass 
+        if temp_filename:
+            DocumentService.cleanup_temp_file(temp_filename) 
