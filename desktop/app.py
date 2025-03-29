@@ -7,6 +7,7 @@ from datetime import datetime
 import tempfile
 import subprocess
 from src.ui import MaintenanceReportApp
+from src.database import engine, Base
 
 def main(page: ft.Page):
     """
@@ -15,6 +16,10 @@ def main(page: ft.Page):
     Args:
         page: Página do Flet
     """
+    # Inicializar banco de dados
+    Base.metadata.create_all(bind=engine)
+    
+    # Inicializar aplicação
     app = MaintenanceReportApp(page)
 
 if __name__ == "__main__":

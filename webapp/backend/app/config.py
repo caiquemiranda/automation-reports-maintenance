@@ -1,29 +1,32 @@
 import os
-from dotenv import load_dotenv
+from pydantic import BaseSettings
+from typing import Optional
+from pathlib import Path
 
-# Carregar variáveis de ambiente do arquivo .env
-load_dotenv()
+class Settings(BaseSettings):
+    """Configurações da aplicação."""
+    
+    # Base
+    APP_NAME: str = "Maintenance Reports API"
+    API_PREFIX: str = "/api"
+    DEBUG: bool = True
+    
+    # Database
+    DATABASE_DIR: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
+    DATABASE_URL: str = f"sqlite:///{DATABASE_DIR}/maintenance_reports.db"
+    
+    # Security
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "development_secret_key")
+    
+    # CORS
+    CORS_ORIGINS: list = ["*"]
+    
+    class Config:
+        env_file = ".env"
+        case_sensitive = True
 
-class Config:
-    SECRET_KEY = os.getenv('SECRET_KEY', 'chave_secreta_padrao')
-    DEBUG = False
+# Carregar configurações
+settings = Settings()
 
-
-class DevelopmentConfig(Config):
-    DEBUG = True
-
-
-class TestingConfig(Config):
-    DEBUG = True
-    TESTING = True
-
-
-class ProductionConfig(Config):
-    DEBUG = False
-
-
-config_by_name = {
-    'dev': DevelopmentConfig,
-    'test': TestingConfig,
-    'prod': ProductionConfig
-} 
+# Garantir que o diretório de dados existe
+os.makedirs(settings.DATABASE_DIR, exist_ok=True) 

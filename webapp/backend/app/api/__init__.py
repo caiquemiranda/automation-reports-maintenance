@@ -1,5 +1,8 @@
-from flask import Blueprint
+from fastapi import APIRouter
+from .routes import router as reports_router
 
-api_bp = Blueprint('api', __name__)
+# Criar o router principal da API
+api_router = APIRouter()
 
-from . import routes 
+# Incluir os routers das APIs
+api_router.include_router(reports_router, tags=["reports"]) 

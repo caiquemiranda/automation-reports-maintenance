@@ -76,6 +76,24 @@ class DialogHelper:
         DialogHelper.show_message_dialog(page, title, message, on_close)
     
     @staticmethod
+    def show_info_dialog(
+        page: ft.Page, 
+        message: str, 
+        title: str = "Informação", 
+        on_close: Optional[Callable] = None
+    ) -> None:
+        """
+        Exibe um diálogo de informação.
+        
+        Args:
+            page: Página Flet
+            message: Mensagem informativa
+            title: Título do diálogo
+            on_close: Callback a ser chamado quando o diálogo for fechado
+        """
+        DialogHelper.show_message_dialog(page, title, message, on_close)
+    
+    @staticmethod
     def show_confirmation_dialog(
         page: ft.Page, 
         title: str, 
@@ -117,6 +135,47 @@ class DialogHelper:
             ],
             actions_alignment=ft.MainAxisAlignment.END,
         )
+        
+        page.dialog = dlg
+        dlg.open = True
+        page.update()
+    
+    @staticmethod
+    def show_custom_dialog(
+        page: ft.Page, 
+        title: str, 
+        content: ft.Control,
+        on_close: Optional[Callable] = None,
+        width: Optional[int] = None
+    ) -> None:
+        """
+        Exibe um diálogo personalizado.
+        
+        Args:
+            page: Página Flet
+            title: Título do diálogo
+            content: Conteúdo do diálogo (controle Flet)
+            on_close: Callback a ser chamado quando o diálogo for fechado
+            width: Largura opcional do diálogo
+        """
+        def close_dlg(e):
+            dlg.open = False
+            page.update()
+            if on_close:
+                on_close(e)
+        
+        dlg = ft.AlertDialog(
+            title=ft.Text(title),
+            content=content,
+            actions=[
+                ft.TextButton("Fechar", on_click=close_dlg),
+            ],
+            actions_alignment=ft.MainAxisAlignment.END,
+        )
+        
+        if width:
+            dlg.content_padding = ft.padding.all(20)
+            dlg.width = width
         
         page.dialog = dlg
         dlg.open = True
