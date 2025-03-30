@@ -1,0 +1,33 @@
+{
+    "titulo": "RELATÓRIO DE MANUTENÇÃO PREVENTIVA",
+    "data": "30/03/2023",
+    "equipamento": {
+        "nome": "Impressora HP LaserJet Pro M402n",
+        "numero_serie": "VNB3R12345",
+        "localizacao": "Departamento Financeiro - Sala 302"
+    },
+    "descricao_servico": "Realizada manutenção preventiva na impressora, incluindo limpeza dos componentes internos, verificação do sistema de alimentação de papel e atualização do firmware. Foram substituídos o rolo de tração e o toner que estavam próximos do fim da vida útil.",
+    "pecas": [
+        {
+            "nome": "Toner HP 26A Original (CF226A)",
+            "quantidade": 1,
+            "observacoes": "Substituição preventiva - 85% utilizado"
+        },
+        {
+            "nome": "Rolo de Tração",
+            "quantidade": 1,
+            "observacoes": "Apresentava desgaste nas extremidades"
+        },
+        {
+            "nome": "Kit de Limpeza",
+            "quantidade": 1,
+            "observacoes": "Utilizado para limpeza interna"
+        }
+    ],
+    "observacoes": "A impressora apresentava lentidão na inicialização e ocasionais atolamentos de papel que foram resolvidos com a substituição do rolo de tração. Recomenda-se agendar uma revisão completa em 6 meses para verificar os demais componentes de desgaste natural.",
+    "tecnico": {
+        "nome": "Amanda Oliveira",
+        "cargo": "Técnica de Suporte em Impressoras"
+    },
+    "nome_arquivo": "relatorio_impressora_hp.docx"
+}
