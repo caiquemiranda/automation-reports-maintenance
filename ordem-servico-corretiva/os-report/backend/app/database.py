@@ -208,4 +208,10 @@ def get_db():
     try:
         yield db
     finally:
-        db.close() 
+        db.close()
+
+# Função para obter uma conexão direta (não é um generator)
+def get_db_connection():
+    """Retorna uma conexão direta ao banco de dados (não é um generator)."""
+    db = SessionLocal()
+    return db 

@@ -14,13 +14,15 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
         <div className="info-section">
             <div className="info-row">
                 <div className="info-item">
-                    <div className="info-label">Código de Manutenção:</div>
+                    <div className="info-label">Código do Equipamento:</div>
                     <div className="info-value">
                         <input
                             type="text"
                             className="form-control"
                             value={formData.codigoManutencao}
                             onChange={(e) => handleInputChange('codigoManutencao', e.target.value)}
+                            placeholder="N1-L01-DF-01"
+                            required
                         />
                     </div>
                 </div>
@@ -32,6 +34,7 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
                             className="date-picker"
                             value={formData.dataSolicitacao}
                             onChange={(e) => handleInputChange('dataSolicitacao', e.target.value)}
+                            required
                         />
                     </div>
                 </div>
@@ -40,12 +43,17 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
                 <div className="info-item">
                     <div className="info-label">Nome do Equipamento:</div>
                     <div className="info-value">
-                        <input
-                            type="text"
-                            className="form-control"
+                        <select
+                            className="select-control"
                             value={formData.nomeEquipamento}
                             onChange={(e) => handleInputChange('nomeEquipamento', e.target.value)}
-                        />
+                            required
+                        >
+                            <option value="">Selecione o equipamento</option>
+                            <option value="Detector de Fumaça">Detector de Fumaça</option>
+                            <option value="Acionador Manual">Acionador Manual</option>
+                            <option value="Modulo de Zona">Modulo de Zona</option>
+                        </select>
                     </div>
                 </div>
                 <div className="info-item">
@@ -56,6 +64,7 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
                             className="date-picker"
                             value={formData.dataExecucao}
                             onChange={(e) => handleInputChange('dataExecucao', e.target.value)}
+                            required
                         />
                     </div>
                 </div>
@@ -69,6 +78,8 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
                             className="form-control"
                             value={formData.localizacao}
                             onChange={(e) => handleInputChange('localizacao', e.target.value)}
+                            placeholder="Dispensário No.XXX.XXX Fábrica de Farinha"
+                            required
                         />
                     </div>
                 </div>
@@ -79,7 +90,9 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
                             className="select-control"
                             value={formData.prioridade}
                             onChange={(e) => handleInputChange('prioridade', e.target.value)}
+                            required
                         >
+                            <option value="">Selecione a prioridade</option>
                             <option value="Urgência">Urgência</option>
                             <option value="Alta">Alta</option>
                             <option value="Rotina Pamoate">Rotina Pamoate</option>
@@ -100,6 +113,8 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
                                 className="form-control"
                                 value={osNumber}
                                 onChange={(e) => setOsNumber(e.target.value)}
+                                placeholder="000000"
+                                required
                             />
                         </div>
                     </div>
@@ -111,6 +126,7 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
                             className="select-control"
                             value={formData.requisitante || ''}
                             onChange={(e) => handleInputChange('requisitante', e.target.value)}
+                            required
                         >
                             <option value="">Selecione um requisitante</option>
                             {requisitantes.map((req) => (
@@ -129,8 +145,9 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
                         <input
                             type="text"
                             className="form-control"
-                            value={formData.centroCusto}
-                            onChange={(e) => handleInputChange('centroCusto', e.target.value)}
+                            value="C007"
+                            onChange={(e) => handleInputChange('centroCusto', "C007")}
+                            disabled
                         />
                     </div>
                 </div>

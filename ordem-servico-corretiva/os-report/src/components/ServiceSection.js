@@ -15,6 +15,8 @@ const ServiceSection = ({ formData, handleInputChange }) => {
                     className="form-control"
                     value={formData.servico}
                     onChange={(e) => handleInputChange('servico', e.target.value)}
+                    placeholder="Descreva o serviço realizado (ex: Troca da lente do detector de Fumaça)"
+                    required
                     rows={2}
                 />
             </div>

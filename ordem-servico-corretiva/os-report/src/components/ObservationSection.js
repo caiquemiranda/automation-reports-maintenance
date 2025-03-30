@@ -15,6 +15,8 @@ const ObservationSection = ({ formData, handleInputChange }) => {
                     className="form-control"
                     value={formData.observacao}
                     onChange={(e) => handleInputChange('observacao', e.target.value)}
+                    placeholder="Descreva a condição do equipamento antes do serviço"
+                    required
                     rows={3}
                 />
             </div>

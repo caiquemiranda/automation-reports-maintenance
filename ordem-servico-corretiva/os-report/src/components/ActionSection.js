@@ -43,6 +43,8 @@ const ActionSection = ({ formData, handleInputChange, actionItems, setActionItem
                     className="form-control"
                     value={formData.acaoCorretiva}
                     onChange={(e) => handleInputChange('acaoCorretiva', e.target.value)}
+                    placeholder="Descreva detalhadamente as ações realizadas para corrigir o problema"
+                    required
                     rows={4}
                 />
 

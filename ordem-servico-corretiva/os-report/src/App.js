@@ -30,12 +30,12 @@ const REQUISITANTES = [
 const initialFormData = {
   codigoManutencao: '',
   dataSolicitacao: '',
-  nomeEquipamento: 'Sistema de Alarme de Incêndio',
+  nomeEquipamento: 'Detector de Fumaça',
   dataExecucao: '',
   localizacao: 'Dispensário No.140.215 Fábrica de Farinha',
   prioridade: 'Rotina Pamoate',
   requisitante: '',
-  centroCusto: 'C097',
+  centroCusto: 'C007',
   servico: 'Troca da lente, após o detector de Fumaça (N)-140.215.F30',
   observacao: 'O dispositivo encontrava-se danificado como citou "no cheiro" no final de inspeção, pessoal fumando escondido.',
   acaoCorretiva: 'Foi realizada a troca do dispositivo por um novo do mesmo modelo (sensor de fumaça convencional), onde foi realizado a limpeza interna das conexões e ajuste no dispositivo, o que normalizou o seu funcionamento conforme especificações. Programação e instalação do detector de fumaça após a troca do equipamento que apresentava problema.',
@@ -277,9 +277,9 @@ function App() {
 
       // Verificar se o backend está disponível
       try {
-        await fetch(`${process.env.REACT_APP_API_URL}/health`, { 
+        await fetch(`${process.env.REACT_APP_API_URL}/health`, {
           method: 'GET',
-          timeout: 5000 
+          timeout: 5000
         });
       } catch (healthError) {
         console.error('Backend não está acessível:', healthError);
@@ -323,10 +323,10 @@ function App() {
         statusText: err.response?.statusText,
         data: err.response?.data
       });
-      
+
       // Mensagem de erro mais específica para o usuário
       let mensagemErro = 'Não foi possível salvar o documento.';
-      
+
       if (err.response) {
         if (err.response.status === 404) {
           mensagemErro += ' Endpoint da API não encontrado. Verifique se o backend está em execução.';
@@ -335,7 +335,7 @@ function App() {
         } else {
           mensagemErro += ` Erro ${err.response.status}: ${err.response.statusText || ''}`;
         }
-        
+
         if (err.response.data && err.response.data.detail) {
           mensagemErro += ` Detalhe: ${err.response.data.detail}`;
         }
@@ -344,7 +344,7 @@ function App() {
       } else {
         mensagemErro += ` ${err.message}`;
       }
-      
+
       setError(mensagemErro);
     } finally {
       setIsLoading(false);

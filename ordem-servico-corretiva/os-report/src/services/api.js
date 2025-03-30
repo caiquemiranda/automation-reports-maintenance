@@ -30,7 +30,26 @@ api.interceptors.response.use(
     },
     (error) => {
         if (error.response) {
-            console.error('Erro na resposta API:', error.response.status, error.response.data);
+            console.error('Erro na resposta API:', {
+                status: error.response.status,
+                statusText: error.response.statusText,
+                url: error.config.url,
+                method: error.config.method,
+                data: error.response.data
+            });
+
+            // Tratamento especial para erros do servidor (500)
+            if (error.response.status === 500) {
+                const errorDetail = error.response.data?.detail || 'Erro interno no servidor';
+                console.error('Erro interno do servidor:', errorDetail);
+
+                // Registrar mais informações para depuração
+                console.error('Detalhes da requisição:', {
+                    headers: error.config.headers,
+                    baseURL: error.config.baseURL,
+                    data: error.config.data
+                });
+            }
         } else if (error.request) {
             console.error('Sem resposta da API:', error.request);
         } else {

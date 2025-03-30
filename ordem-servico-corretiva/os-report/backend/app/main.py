@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 from .routers import documentos
 from . import models, crud
-from .database import engine, get_db, create_db_and_tables
+from .database import engine, get_db, create_db_and_tables, get_db_connection
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
@@ -112,15 +112,26 @@ async def health_check():
     """
     # Verificar se o banco de dados está acessível
     try:
-        with get_db() as db:
-            # Apenas faz uma consulta simples para verificar a conexão
-            next(db)
+        # Usar a função get_db_connection diretamente (não é um generator)
+        db = get_db_connection()
         
-        return {
-            "status": "healthy",
-            "database": "connected",
-            "message": "API está funcionando normalmente"
-        }
+        # Executar uma consulta simples para verificar a conexão
+        result = db.execute("SELECT 1").fetchone()
+        
+        # Fechar a conexão
+        db.close()
+        
+        if result and result[0] == 1:
+            return {
+                "status": "healthy",
+                "database": "connected",
+                "message": "API está funcionando normalmente"
+            }
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail="Banco de dados conectado, mas consulta de teste falhou"
+            )
     except Exception as e:
         logger.error(f"Erro ao verificar saúde do banco de dados: {e}")
         raise HTTPException(

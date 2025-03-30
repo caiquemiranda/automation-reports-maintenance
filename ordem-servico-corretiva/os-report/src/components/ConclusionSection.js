@@ -7,16 +7,20 @@ import React from 'react';
  * @param {Function} props.handleConclusaoChange - Função para atualizar o estado
  */
 const ConclusionSection = ({ conclusao, handleConclusaoChange }) => {
+  // Verificar se pelo menos uma opção está selecionada
+  const algumaSelecionada = conclusao.normal || conclusao.parcial || conclusao.inoperante;
+
   return (
     <div className="conclusion-section">
       <div className="section-label">CONCLUSÃO:</div>
-      <div className="conclusion-options">
+      <div className={`conclusion-options ${!algumaSelecionada ? 'required-field' : ''}`}>
         <div className="conclusion-option">
           <input
             type="checkbox"
             id="temporario-normal"
             checked={conclusao.normal}
             onChange={(e) => handleConclusaoChange('normal', e.target.checked)}
+            required={!algumaSelecionada}
           />
           <label htmlFor="temporario-normal">Equipamento normal</label>
         </div>
@@ -38,6 +42,11 @@ const ConclusionSection = ({ conclusao, handleConclusaoChange }) => {
           />
           <label htmlFor="equipamento-inop">Equipamento inoperante</label>
         </div>
+        {!algumaSelecionada && (
+          <div className="required-message">
+            * Selecione pelo menos uma opção para conclusão
+          </div>
+        )}
       </div>
     </div>
   );
