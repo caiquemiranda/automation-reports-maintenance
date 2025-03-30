@@ -6,7 +6,7 @@ services:
     container_name: os-report-backend
     volumes:
       - ./backend:/app:delegated
-      - db-volume:/app/data
+      - ./backend/data:/app/data
     ports:
       - "8000:8000"
     environment:

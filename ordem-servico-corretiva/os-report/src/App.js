@@ -147,9 +147,67 @@ function App() {
         actionItems
       };
 
+      // Salvar localmente
       saveFormData(data);
+
+      // Salvar no banco de dados automaticamente se houver dados suficientes
+      const hasMinimumData = formData.nomeEquipamento && osNumber;
+      if (hasMinimumData) {
+        autoSaveToDatabase(data);
+      }
     }
   }, [formData, osNumber, manutencaoCorretiva, naoProgramados, conclusao, attachments, actionItems, viewMode]);
+
+  // Função para salvar automaticamente no banco de dados
+  const autoSaveToDatabase = async (data) => {
+    try {
+      // Prepara o documento para ser salvo
+      const documentoData = {
+        osNumber,
+        manutencaoCorretiva,
+        naoProgramados,
+        dados: {
+          formData,
+          attachments,
+          actionItems,
+          conclusao
+        },
+        // Extrair campos principais para facilitar busca
+        codigoManutencao: formData.codigoManutencao,
+        dataSolicitacao: formData.dataSolicitacao,
+        dataExecucao: formData.dataExecucao,
+        nomeEquipamento: formData.nomeEquipamento,
+        localizacao: formData.localizacao,
+        requisitante: formData.requisitante
+      };
+
+      // Verificar se já existe um documento com este número de OS
+      try {
+        const docExistente = await documentosService.listarDocumentos(0, 100);
+        const documentoExistente = docExistente.find(doc => doc.osNumber === osNumber);
+
+        if (documentoExistente) {
+          // Atualiza o documento existente
+          await documentosService.atualizarDocumento(documentoExistente.id, documentoData);
+          console.log('Documento atualizado automaticamente no banco de dados');
+        } else {
+          // Cria um novo documento
+          await documentosService.criarDocumento(documentoData);
+          console.log('Documento salvo automaticamente no banco de dados');
+        }
+      } catch (err) {
+        // Se der erro ao buscar, tenta criar
+        try {
+          await documentosService.criarDocumento(documentoData);
+          console.log('Documento salvo automaticamente no banco de dados (após erro de busca)');
+        } catch (createErr) {
+          console.error('Erro ao salvar automaticamente:', createErr);
+        }
+      }
+    } catch (err) {
+      console.error('Erro no salvamento automático:', err);
+    }
+  };
 
   const obterDocumentoPorId = async (id) => {
     setIsLoading(true);
