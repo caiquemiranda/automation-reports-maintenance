@@ -8,6 +8,7 @@ import sqlite3
 import shutil
 import json
 from dotenv import load_dotenv
+from sqlmodel import SQLModel, Session
 
 # Configurar logging
 log_level = os.getenv("LOG_LEVEL", "INFO").upper()
@@ -18,7 +19,7 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 # Definir diretórios importantes
-ROOT_DIR = os.path.abspath(".")
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(ROOT_DIR, "data")
 UPLOADS_DIR = os.path.join(ROOT_DIR, "uploads")
 DB_PATH = os.path.join(DATA_DIR, "app.db")
@@ -102,27 +103,52 @@ else:
     except Exception as e:
         logger.error(f"ERRO ao criar banco de dados vazio: {e}")
 
-# URL de conexão com o banco de dados - Usar URI para poder definir opções avançadas
-# Modo rwc (read-write-create): abre para leitura e escrita, cria se não existir
-db_uri = f"sqlite:///{DB_PATH}?mode=rwc&cache=shared&uri=true"
-logger.info(f"URL de conexão com o banco de dados: {db_uri}")
+# String de conexão corrigida (sem usar parâmetros URI na string)
+db_uri = f"sqlite:///{DB_PATH}"
+logger.info(f"URI do banco de dados: {db_uri}")
+logger.info(f"Caminho do banco de dados: {DB_PATH}")
 
-# Verificar se o diretório tem permissões de escrita
+# Verifica permissões do diretório de dados
 try:
-    test_file = os.path.join(DATA_DIR, "test_write.txt")
-    with open(test_file, "w") as f:
-        f.write("Teste de escrita")
-    os.remove(test_file)
-    logger.info(f"Teste de escrita bem-sucedido: {DATA_DIR}")
+    os.chmod(DATA_DIR, 0o777)
+    logger.info(f"Permissões do diretório de dados atualizadas: {DATA_DIR}")
 except Exception as e:
-    logger.error(f"ERRO: O diretório não tem permissão de escrita: {e}")
-    sys.exit(1)
+    logger.warning(f"Não foi possível atualizar as permissões do diretório de dados: {e}")
 
-# Criar engine do SQLAlchemy
-engine = create_engine(
-    db_uri, 
-    connect_args={"check_same_thread": False}
-)
+# Verificar se o arquivo existe e suas permissões
+if os.path.exists(DB_PATH):
+    try:
+        os.chmod(DB_PATH, 0o666)
+        logger.info(f"Permissões do banco de dados atualizadas: {DB_PATH}")
+    except Exception as e:
+        logger.warning(f"Não foi possível atualizar as permissões do banco de dados: {e}")
+else:
+    logger.info(f"Arquivo de banco de dados não existe, será criado: {DB_PATH}")
+
+# Instanciar o motor de banco de dados com opções seguras
+try:
+    # Usando connect_args apenas para SQLite
+    connect_args = {"check_same_thread": False}
+    engine = create_engine(db_uri, echo=True, connect_args=connect_args)
+    logger.info("Motor do banco de dados criado com sucesso")
+except Exception as e:
+    logger.error(f"Erro ao criar motor do banco de dados: {e}")
+    raise
+
+def create_db_and_tables():
+    """Cria o banco de dados e as tabelas definidas nos modelos"""
+    try:
+        logger.info("Criando banco de dados e tabelas")
+        SQLModel.metadata.create_all(engine)
+        logger.info("Banco de dados e tabelas criados com sucesso")
+    except Exception as e:
+        logger.error(f"Erro ao criar banco de dados e tabelas: {e}")
+        raise
+
+def get_session():
+    """Retorna uma nova sessão de banco de dados"""
+    with Session(engine) as session:
+        yield session
 
 # Configuração adicional para assegurar que as transações serão salvas
 @event.listens_for(engine, "connect")
