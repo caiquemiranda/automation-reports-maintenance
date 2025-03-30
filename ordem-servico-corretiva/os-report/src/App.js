@@ -293,10 +293,16 @@ function App() {
       setSavedDocument(documentoSalvo);
       setViewMode('view');
 
-      // Atualiza a URL para refletir o documento visualizado
+      // Atualiza a URL para refletir o documento visualizado - usar um formato claro com o número da OS
       const url = new URL(window.location);
-      url.searchParams.set('document', documentoSalvo.id);
+      url.searchParams.delete('document'); // Remover parâmetro antigo se existir
+      url.pathname = `/documento/${documentoSalvo.osNumber}/${documentoSalvo.id}`; // Formato mais claro
       window.history.pushState({}, '', url);
+
+      // Exibir mensagem de sucesso para o usuário
+      console.log(`Documento salvo com sucesso: OS-${osNumber}`);
+      // Forçar a atualização do banco de dados para refletir as mudanças
+      await documentosService.listarDocumentos(0, 1, true); // true = forçar atualização do cache
     } catch (err) {
       console.error('Erro ao salvar documento:', err);
       setError('Não foi possível salvar o documento. Por favor, tente novamente.');

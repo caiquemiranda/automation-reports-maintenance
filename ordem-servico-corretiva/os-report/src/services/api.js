@@ -10,6 +10,36 @@ const api = axios.create({
     },
 });
 
+// Interceptor para registrar todas as requisições
+api.interceptors.request.use(
+    (config) => {
+        console.log(`Requisição API: ${config.method.toUpperCase()} ${config.url}`, config.data || config.params);
+        return config;
+    },
+    (error) => {
+        console.error('Erro na requisição API:', error);
+        return Promise.reject(error);
+    }
+);
+
+// Interceptor para registrar todas as respostas
+api.interceptors.response.use(
+    (response) => {
+        console.log(`Resposta API: ${response.config.method.toUpperCase()} ${response.config.url}`, response.data);
+        return response;
+    },
+    (error) => {
+        if (error.response) {
+            console.error('Erro na resposta API:', error.response.status, error.response.data);
+        } else if (error.request) {
+            console.error('Sem resposta da API:', error.request);
+        } else {
+            console.error('Erro de configuração da API:', error.message);
+        }
+        return Promise.reject(error);
+    }
+);
+
 // Função auxiliar para tratamento de erros
 const handleApiError = (error, operacao) => {
     // Se o erro tiver uma resposta do servidor, exibir detalhes
