@@ -14,7 +14,7 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
         <div className="info-section">
             <div className="info-row">
                 <div className="info-item">
-                    <div className="info-label">Código do Equipamento:</div>
+                    <div className="info-label">TAG do Equipamento:</div>
                     <div className="info-value">
                         <input
                             type="text"
@@ -41,7 +41,7 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
             </div>
             <div className="info-row">
                 <div className="info-item">
-                    <div className="info-label">Nome do Equipamento:</div>
+                    <div className="info-label">Tipo do Equipamento:</div>
                     <div className="info-value">
                         <select
                             className="select-control"
@@ -95,7 +95,6 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
                             <option value="">Selecione a prioridade</option>
                             <option value="Urgência">Urgência</option>
                             <option value="Alta">Alta</option>
-                            <option value="Rotina Pamoate">Rotina Pamoate</option>
                             <option value="Média">Média</option>
                             <option value="Baixa">Baixa</option>
                         </select>
@@ -107,7 +106,7 @@ const InfoSection = ({ formData, handleInputChange, setOsNumber, osNumber, requi
                     <div className="info-label">Número da O.S.:</div>
                     <div className="info-value">
                         <div className="input-group">
-                            <span className="input-prefix">OS-</span>
+                            <span className="input-prefix"></span>
                             <input
                                 type="text"
                                 className="form-control"

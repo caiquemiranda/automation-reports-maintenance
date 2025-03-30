@@ -7,7 +7,7 @@ import React, { useState } from 'react';
  * @param {Function} props.handleInputChange - Função para atualizar os dados do formulário
  */
 const TecnicoMaterialSection = ({ formData, handleInputChange }) => {
-    const [novoMaterial, setNovoMaterial] = useState('');
+    const [materialSelecionado, setMaterialSelecionado] = useState('');
 
     // Lista de técnicos disponíveis
     const tecnicos = [
@@ -18,20 +18,32 @@ const TecnicoMaterialSection = ({ formData, handleInputChange }) => {
         { id: 5, nome: 'Mariana Costa' }
     ];
 
-    // Handler para adicionar novo material
+    // Lista de materiais pré-definidos
+    const materiaisDisponiveis = [
+        { id: 1, nome: 'Base simplex modelo 29283003' },
+        { id: 2, nome: 'Detector simplex modelo 29283423' },
+        { id: 3, nome: 'Acionador simplex modelo 29283234' }
+    ];
+
+    // Handler para adicionar material selecionado
     const adicionarMaterial = () => {
-        if (novoMaterial.trim()) {
+        if (materialSelecionado) {
             // Certifique-se de que materiaisUtilizados é um array
             const materiaisAtuais = Array.isArray(formData.materiaisUtilizados)
                 ? [...formData.materiaisUtilizados]
                 : [];
 
-            // Adicionar novo material
-            const novosMateriais = [...materiaisAtuais, novoMaterial.trim()];
+            // Verificar se o material já foi adicionado para evitar duplicações
+            if (!materiaisAtuais.includes(materialSelecionado)) {
+                // Adicionar novo material
+                const novosMateriais = [...materiaisAtuais, materialSelecionado];
 
-            // Atualizar estado
-            handleInputChange('materiaisUtilizados', novosMateriais);
-            setNovoMaterial('');
+                // Atualizar estado
+                handleInputChange('materiaisUtilizados', novosMateriais);
+            }
+
+            // Limpar a seleção
+            setMaterialSelecionado('');
         }
     };
 
@@ -89,14 +101,24 @@ const TecnicoMaterialSection = ({ formData, handleInputChange }) => {
                         </div>
 
                         <div className="add-material-form">
-                            <input
-                                type="text"
-                                className="form-control"
-                                value={novoMaterial}
-                                onChange={(e) => setNovoMaterial(e.target.value)}
-                                placeholder="Ex: Base endereçável XYZ"
-                            />
-                            <button type="button" className="btn-action" onClick={adicionarMaterial}>
+                            <select
+                                className="select-control"
+                                value={materialSelecionado}
+                                onChange={(e) => setMaterialSelecionado(e.target.value)}
+                            >
+                                <option value="">Selecione um material</option>
+                                {materiaisDisponiveis.map((material) => (
+                                    <option key={material.id} value={material.nome}>
+                                        {material.nome}
+                                    </option>
+                                ))}
+                            </select>
+                            <button
+                                type="button"
+                                className="btn-action"
+                                onClick={adicionarMaterial}
+                                disabled={!materialSelecionado}
+                            >
                                 Adicionar Material
                             </button>
                         </div>

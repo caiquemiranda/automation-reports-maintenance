@@ -341,11 +341,17 @@ body {
 
 .select-control {
   width: 100%;
-  border: 1px solid #ddd;
+  padding: 8px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 12px;
-  padding: 3px 6px;
-  background-color: white;
+  font-size: 14px;
+  background-color: #fff;
+}
+
+.select-control:focus {
+  outline: none;
+  border-color: #2980b9;
+  box-shadow: 0 0 0 2px rgba(41, 128, 185, 0.2);
 }
 
 .date-picker {
@@ -926,6 +932,15 @@ input:disabled {
 
 .add-material-form .btn-action:hover {
   background-color: #3498db;
+}
+
+.add-material-form .select-control {
+  flex: 1;
+}
+
+.add-material-form button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 
 .remove-btn {
