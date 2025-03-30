@@ -1,14 +1,26 @@
 # Replicação e Modificação Avançada de Documentos DOC
 
-Este script (`teste2.py`) permite replicar arquivos de documentos DOC de forma segura e modificar seu conteúdo usando métodos avançados que evitam a corrupção do arquivo.
+Este script (`teste2.py`) permite replicar arquivos de documentos DOC de forma segura e modificar seu conteúdo substituindo marcadores específicos, mantendo a formatação original do documento.
 
 ## Características Principais
 
 - **Cópia Exata**: Replica o documento com precisão binária
-- **Modificação Segura**: Utiliza APIs robustas para modificar o conteúdo
+- **Substituição de Marcadores**: Identifica e substitui marcadores predefinidos no documento
+- **Preservação de Formatação**: Mantém a formatação original do documento
 - **Múltiplos Métodos**: Oferece diferentes abordagens para garantir compatibilidade
 - **Verificação de Integridade**: Verifica se as operações foram realizadas corretamente
 - **Backups Automáticos**: Cria cópias de segurança para evitar perda de dados
+
+## Marcadores Suportados
+
+O script pode identificar e substituir os seguintes marcadores no documento:
+
+- `[Data da Solicitação]`
+- `[Data de Execução]`
+- `[Localização]`
+- `[O.S]`
+- `[SERVIÇO A REALIZAR]`
+- `[OBSERVAÇÃO]`
 
 ## Métodos de Modificação
 
@@ -34,15 +46,20 @@ O script oferece dois métodos principais para modificar documentos .doc:
 
 ## Como Usar
 
-1. Execute o script:
+1. Prepare o documento modelo:
+   - Crie um documento Word (.doc) com o conteúdo desejado
+   - Insira os marcadores (ex: `[Data da Solicitação]`, `[Localização]`, etc.) onde deseja que os valores sejam substituídos
+   - Salve o documento como `report.doc` na mesma pasta do script
+
+2. Execute o script:
    ```
    python teste2.py
    ```
 
-2. Siga as instruções no terminal:
+3. Siga as instruções no terminal:
    - O script primeiro cria uma cópia exata do documento
-   - Depois pergunta qual texto substituir e o novo texto
-   - Em seguida, pergunta qual método usar para a modificação
+   - Em seguida, solicita os valores para cada marcador
+   - Depois, pergunta qual método usar para a modificação
    - Após a modificação, verifica se ela foi bem-sucedida
    - Finalmente, pergunta se deseja substituir o arquivo original
 
@@ -60,7 +77,8 @@ O script oferece dois métodos principais para modificar documentos .doc:
          │
          ▼
 ┌─────────────────┐
-│ Seleção de Texto│
+│ Valores para    │
+│   Marcadores    │
 └────────┬────────┘
          │
          ▼
@@ -78,14 +96,14 @@ O script oferece dois métodos principais para modificar documentos .doc:
 
 ## Exemplos de Uso
 
-### Exemplo 1: Substituição de texto de serviço
-- Texto original: "SERVIÇO: Troca da base, mais o detector de fumaça (N1-L01-215 DF)"
-- Novo texto: "SERVIÇO: Susbtituição do modulo danificado (N1-L01-MZ-112)"
-
-### Exemplo 2: Personalizando a substituição
-- Escolha a opção para inserir texto personalizado
-- Digite o texto exato que deseja substituir
-- Digite o novo texto que aparecerá no documento
+### Exemplo: Preenchimento de relatório
+- Documento original com marcadores como `[Data da Solicitação]`, `[Localização]`, etc.
+- Ao executar o script:
+  - Informar "15/05/2023" para `[Data da Solicitação]`
+  - Informar "N1-L01-MZ-112" para `[Localização]`
+  - Informar "OS-12345" para `[O.S]`
+  - Informar "Substituição do módulo danificado" para `[SERVIÇO A REALIZAR]`
+  - Informar "Equipamento em funcionamento após manutenção" para `[OBSERVAÇÃO]`
 
 ## Notas Importantes
 
@@ -93,12 +111,13 @@ O script oferece dois métodos principais para modificar documentos .doc:
 - **Faça um backup antes de modificar**: Ative a opção de backup quando solicitado
 - **Formatos específicos**: Este script foi otimizado para arquivos .doc
 - **Documentos complexos**: Alguns documentos com formatação complexa podem requerer o método Word
+- **Marcadores sensíveis a maiúsculas/minúsculas**: Os marcadores devem estar exatamente como definidos
 
 ## Solução de Problemas
 
 Se encontrar problemas:
 
-1. **Documento corrompido**: Use apenas o método de cópia exata (como no `teste.py`)
-2. **Texto não encontrado**: Verifique se o texto existe exatamente como digitado
+1. **Documento corrompido**: Use apenas o método de cópia exata
+2. **Marcadores não encontrados**: Verifique se os marcadores no documento estão exatamente como `[Data da Solicitação]`, etc.
 3. **Erros com Word**: Certifique-se de que o Microsoft Word está instalado e funcionando
 4. **Erros com LibreOffice**: Verifique se o LibreOffice está instalado corretamente 
