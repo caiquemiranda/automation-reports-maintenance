@@ -656,12 +656,15 @@ textarea.form-control {
 
 /* Estilos para mensagens de erro */
 .error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 10px;
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 15px;
   border-radius: 4px;
-  margin-bottom: 15px;
-  border: 1px solid #f5c6cb;
+  margin-bottom: 20px;
+  border: 2px solid #ef5350;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilos para estado de carregamento */

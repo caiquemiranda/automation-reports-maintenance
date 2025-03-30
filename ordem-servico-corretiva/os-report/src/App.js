@@ -332,29 +332,38 @@ function App() {
 
       // Verificar se o backend está disponível
       try {
-        await fetch(`${process.env.REACT_APP_API_URL}/health`, {
+        // Usar timeout mais curto para detectar problemas de conexão mais rapidamente
+        const healthResponse = await fetch(`${process.env.REACT_APP_API_URL}/health`, {
           method: 'GET',
-          timeout: 5000
+          timeout: 3000
         });
+
+        if (!healthResponse.ok) {
+          throw new Error(`Erro de resposta do servidor: ${healthResponse.status}`);
+        }
       } catch (healthError) {
         console.error('Backend não está acessível:', healthError);
-        setError('O servidor de backend não está disponível. Verifique se o serviço está em execução.');
+        setError('⚠️ ERRO DE CONEXÃO: O servidor de backend não está disponível. Verifique se o serviço Docker está em execução e reinicie os containers.');
         setIsLoading(false);
         return;
       }
 
       // Primeiro, tenta recuperar todos os documentos para verificar se já existe um com o mesmo número de OS
       const documentosExistentes = await documentosService.listarDocumentos(0, 100);
-      const documentoExistente = documentosExistentes.find(doc => doc.osNumber === osNumber);
+
+      // Verificar se já existe documento com o mesmo número de OS
+      const documentoExistente = documentosExistentes.find(doc =>
+        doc.osNumber === osNumber && (!savedDocument || doc.id !== savedDocument.id)
+      );
 
       // Adicionar uma confirmação antes de atualizar um documento existente
-      if (documentoExistente && !savedDocument) {
+      if (documentoExistente) {
         const confirmaAtualizacao = window.confirm(
-          `Já existe um documento com o número de OS ${osNumber}. Deseja substituí-lo com os dados atuais?`
+          `⚠️ ATENÇÃO: Já existe um documento com o número de OS ${osNumber}. Substituir com os dados atuais?`
         );
 
         if (!confirmaAtualizacao) {
-          setError('Operação cancelada pelo usuário. Escolha outro número de OS.');
+          setError('Operação cancelada. Para continuar, escolha outro número de OS ou modifique o existente.');
           setIsLoading(false);
           return;
         }
