@@ -260,19 +260,39 @@ body {
 
 /* Estilos melhorados para os radio buttons */
 .conclusion-option input[type="radio"] {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
+  margin-right: 8px;
+  accent-color: #2980b9;
 }
 
 .conclusion-option label {
   cursor: pointer;
   font-weight: normal;
+  user-select: none;
+  font-size: 14px;
+}
+
+.conclusion-option {
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.conclusion-option:hover {
+  background-color: #f0f7fb;
 }
 
 .conclusion-option input[type="radio"]:checked+label {
   font-weight: bold;
   color: #2980b9;
+}
+
+.conclusion-option.selected {
+  background-color: #e1f0fa;
+  border: 1px solid #2980b9;
 }
 
 .signatures-section table {
@@ -404,6 +424,12 @@ body {
   }
 
   input[type="checkbox"] {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .conclusion-option.selected {
+    background-color: #e1f0fa !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }

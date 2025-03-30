@@ -241,12 +241,31 @@ function App() {
 
   const handleConclusaoChange = (field, value) => {
     console.log(`Atualizando campo de conclusão: ${field} = ${value}`);
-    const newConclusao = {
-      ...conclusao,
-      [field]: value
-    };
-    setConclusao(newConclusao);
-    console.log('Novo estado de conclusão:', newConclusao);
+
+    // Resetar todas as opções e definir apenas a selecionada
+    if (value === true) {
+      const novoEstado = {
+        normal: field === 'normal',
+        parcial: field === 'parcial',
+        inoperante: field === 'inoperante'
+      };
+      console.log('Definindo novo estado de conclusão:', novoEstado);
+      setConclusao(novoEstado);
+
+      // Adicionar um timeout para verificar se o estado foi atualizado
+      setTimeout(() => {
+        console.log('Estado atual após atualização:', conclusao);
+      }, 100);
+    } else {
+      setConclusao(prev => {
+        const novoEstado = {
+          ...prev,
+          [field]: value
+        };
+        console.log('Atualizando estado de conclusão:', novoEstado);
+        return novoEstado;
+      });
+    }
   };
 
   const handlePrint = () => {
@@ -413,6 +432,11 @@ function App() {
   const handleSelectDocument = (documentId) => {
     obterDocumentoPorId(documentId);
   };
+
+  // Monitor de mudanças no estado de conclusão
+  useEffect(() => {
+    console.log('Estado de conclusão atualizado:', conclusao);
+  }, [conclusao]);
 
   // Renderiza o documento em modo de visualização
   if (viewMode === 'view' && savedDocument) {

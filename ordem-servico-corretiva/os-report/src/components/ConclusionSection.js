@@ -10,59 +10,54 @@ const ConclusionSection = ({ conclusao, handleConclusaoChange }) => {
   // Verificar se alguma opção está selecionada
   const algumaSelecionada = conclusao.normal || conclusao.parcial || conclusao.inoperante;
 
-  // Função para lidar com a mudança de opção (seleção única)
-  const handleRadioChange = (option) => {
-    // Criar objeto com todas as opções definidas como false
-    const newState = {
-      normal: false,
-      parcial: false,
-      inoperante: false
-    };
+  console.log('Renderizando ConclusionSection com estado:', conclusao);
 
-    // Definir a opção selecionada como true
-    newState[option] = true;
-
-    // Atualizar cada opção individualmente para garantir atualizações consistentes
-    Object.keys(newState).forEach(key => {
-      handleConclusaoChange(key, newState[key]);
-    });
+  // Função para lidar com cliques na div inteira
+  const handleOptionClick = (option) => {
+    handleConclusaoChange(option, true);
   };
-
-  // Log para depuração
-  console.log('Estado atual da conclusão:', conclusao);
 
   return (
     <div className="conclusion-section">
       <div className="section-label">CONCLUSÃO:</div>
       <div className={`conclusion-options ${!algumaSelecionada ? 'required-field' : ''}`}>
-        <div className="conclusion-option">
+        <div 
+          className={`conclusion-option ${conclusao.normal ? 'selected' : ''}`} 
+          onClick={() => handleOptionClick('normal')}
+        >
           <input
             type="radio"
             id="equipamento-normal"
             name="conclusao-estado"
             checked={conclusao.normal}
-            onChange={() => handleRadioChange('normal')}
+            onChange={() => handleConclusaoChange('normal', true)}
             required={!algumaSelecionada}
           />
           <label htmlFor="equipamento-normal">Equipamento normal</label>
         </div>
-        <div className="conclusion-option">
+        <div 
+          className={`conclusion-option ${conclusao.parcial ? 'selected' : ''}`}
+          onClick={() => handleOptionClick('parcial')}
+        >
           <input
             type="radio"
             id="equipamento-parcial"
             name="conclusao-estado"
             checked={conclusao.parcial}
-            onChange={() => handleRadioChange('parcial')}
+            onChange={() => handleConclusaoChange('parcial', true)}
           />
           <label htmlFor="equipamento-parcial">Equipamento parcial</label>
         </div>
-        <div className="conclusion-option">
+        <div 
+          className={`conclusion-option ${conclusao.inoperante ? 'selected' : ''}`}
+          onClick={() => handleOptionClick('inoperante')}
+        >
           <input
             type="radio"
             id="equipamento-inop"
             name="conclusao-estado"
             checked={conclusao.inoperante}
-            onChange={() => handleRadioChange('inoperante')}
+            onChange={() => handleConclusaoChange('inoperante', true)}
           />
           <label htmlFor="equipamento-inop">Equipamento inoperante</label>
         </div>
