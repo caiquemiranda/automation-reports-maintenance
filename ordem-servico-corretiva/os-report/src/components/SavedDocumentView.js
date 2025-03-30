@@ -31,6 +31,12 @@ const SavedDocumentView = ({ document, onBack }) => {
         }
     };
 
+    // Extrair dados do documento
+    const formData = document.dados?.formData || {};
+    const attachments = document.dados?.attachments || [];
+    const actionItems = document.dados?.actionItems || [];
+    const conclusao = document.dados?.conclusao || { normal: false, parcial: false, inoperante: false };
+
     return (
         <div className="main-container">
             <div className="document-control-panel">
@@ -42,8 +48,8 @@ const SavedDocumentView = ({ document, onBack }) => {
             <div className="container document-readonly" id="document">
                 {/* Cabeçalho */}
                 <div className="document-status">
-                    <span>Status: Finalizado</span>
-                    <span>Data de gravação: {formatDate(document.dataSalvamento)}</span>
+                    <span>Status: {document.status || 'Finalizado'}</span>
+                    <span>Data de gravação: {formatDate(document.data_criacao)}</span>
                 </div>
 
                 <div className="header">
@@ -84,31 +90,31 @@ const SavedDocumentView = ({ document, onBack }) => {
                     <div className="info-row">
                         <div className="info-item">
                             <div className="info-label">Código de Manutenção:</div>
-                            <div className="info-value readonly">{document.formData.codigoManutencao || '—'}</div>
+                            <div className="info-value readonly">{formData.codigoManutencao || document.codigoManutencao || '—'}</div>
                         </div>
                         <div className="info-item">
                             <div className="info-label">Data de Solicitação:</div>
-                            <div className="info-value readonly">{formatDate(document.formData.dataSolicitacao)}</div>
+                            <div className="info-value readonly">{formatDate(formData.dataSolicitacao || document.dataSolicitacao)}</div>
                         </div>
                     </div>
                     <div className="info-row">
                         <div className="info-item">
                             <div className="info-label">Nome do Equipamento:</div>
-                            <div className="info-value readonly">{document.formData.nomeEquipamento}</div>
+                            <div className="info-value readonly">{formData.nomeEquipamento || document.nomeEquipamento}</div>
                         </div>
                         <div className="info-item">
                             <div className="info-label">Data de Execução:</div>
-                            <div className="info-value readonly">{formatDate(document.formData.dataExecucao)}</div>
+                            <div className="info-value readonly">{formatDate(formData.dataExecucao || document.dataExecucao)}</div>
                         </div>
                     </div>
                     <div className="info-row">
                         <div className="info-item">
                             <div className="info-label">Localização:</div>
-                            <div className="info-value readonly">{document.formData.localizacao}</div>
+                            <div className="info-value readonly">{formData.localizacao || document.localizacao}</div>
                         </div>
                         <div className="info-item">
                             <div className="info-label">Prioridade:</div>
-                            <div className="info-value readonly">{document.formData.prioridade}</div>
+                            <div className="info-value readonly">{formData.prioridade}</div>
                         </div>
                     </div>
                     <div className="info-row">
@@ -118,13 +124,13 @@ const SavedDocumentView = ({ document, onBack }) => {
                         </div>
                         <div className="info-item">
                             <div className="info-label">Requisitante:</div>
-                            <div className="info-value readonly">{document.formData.requisitante || '—'}</div>
+                            <div className="info-value readonly">{formData.requisitante || document.requisitante || '—'}</div>
                         </div>
                     </div>
                     <div className="info-row">
                         <div className="info-item">
                             <div className="info-label">Centro de custo:</div>
-                            <div className="info-value readonly">{document.formData.centroCusto}</div>
+                            <div className="info-value readonly">{formData.centroCusto}</div>
                         </div>
                         <div className="info-item">
                             {/* Campo adicional se necessário */}
@@ -137,24 +143,24 @@ const SavedDocumentView = ({ document, onBack }) => {
                 {/* Seção de Serviço */}
                 <div className="service-section">
                     <div className="section-label">SERVIÇO:</div>
-                    <div className="section-content readonly">{document.formData.servico}</div>
+                    <div className="section-content readonly">{formData.servico}</div>
                 </div>
 
                 {/* Seção de Observação */}
                 <div className="observation-section">
                     <div className="section-label">OBSERVAÇÃO:</div>
-                    <div className="section-content readonly">{document.formData.observacao}</div>
+                    <div className="section-content readonly">{formData.observacao}</div>
                 </div>
 
                 {/* Seção de Ação Corretiva */}
                 <div className="action-section">
                     <div className="section-label">Ação Corretiva:</div>
                     <div className="section-content readonly">
-                        <p>{document.formData.acaoCorretiva}</p>
-                        {document.actionItems && document.actionItems.length > 0 && (
+                        <p>{formData.acaoCorretiva}</p>
+                        {actionItems && actionItems.length > 0 && (
                             <div className="action-items-readonly">
                                 <ul>
-                                    {document.actionItems.map((item, index) => (
+                                    {actionItems.map((item, index) => (
                                         <li key={index}>{item}</li>
                                     ))}
                                 </ul>
@@ -164,11 +170,11 @@ const SavedDocumentView = ({ document, onBack }) => {
                 </div>
 
                 {/* Seção de Anexos */}
-                {document.attachments && document.attachments.length > 0 && (
+                {attachments && attachments.length > 0 && (
                     <div className="attachment-section">
                         <div className="section-label">ANEXOS:</div>
                         <div className="attachment-container-readonly">
-                            {document.attachments.map((attachment) => (
+                            {attachments.map((attachment) => (
                                 <div key={attachment.id} className="attachment-item-readonly">
                                     <img
                                         src={attachment.src}
@@ -191,7 +197,7 @@ const SavedDocumentView = ({ document, onBack }) => {
                         <div className="conclusion-option">
                             <input
                                 type="checkbox"
-                                checked={document.conclusao.normal}
+                                checked={conclusao.normal}
                                 readOnly
                                 disabled
                             />
@@ -200,7 +206,7 @@ const SavedDocumentView = ({ document, onBack }) => {
                         <div className="conclusion-option">
                             <input
                                 type="checkbox"
-                                checked={document.conclusao.parcial}
+                                checked={conclusao.parcial}
                                 readOnly
                                 disabled
                             />
@@ -209,7 +215,7 @@ const SavedDocumentView = ({ document, onBack }) => {
                         <div className="conclusion-option">
                             <input
                                 type="checkbox"
-                                checked={document.conclusao.inoperante}
+                                checked={conclusao.inoperante}
                                 readOnly
                                 disabled
                             />
@@ -238,16 +244,16 @@ const SavedDocumentView = ({ document, onBack }) => {
                             </tr>
                             <tr>
                                 <td>
-                                    <div className="date-line">DATA: {formatDate(document.formData.datas[0])}</div>
+                                    <div className="date-line">DATA: {formatDate(formData?.datas?.[0])}</div>
                                 </td>
                                 <td>
-                                    <div className="date-line">DATA: {formatDate(document.formData.datas[1])}</div>
+                                    <div className="date-line">DATA: {formatDate(formData?.datas?.[1])}</div>
                                 </td>
                                 <td>
-                                    <div className="date-line">DATA: {formatDate(document.formData.datas[2])}</div>
+                                    <div className="date-line">DATA: {formatDate(formData?.datas?.[2])}</div>
                                 </td>
                                 <td>
-                                    <div className="date-line">DATA: {formatDate(document.formData.datas[3])}</div>
+                                    <div className="date-line">DATA: {formatDate(formData?.datas?.[3])}</div>
                                 </td>
                             </tr>
                         </tbody>

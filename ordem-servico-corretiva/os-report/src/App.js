@@ -12,8 +12,9 @@ import ConclusionSection from './components/ConclusionSection';
 import SignaturesSection from './components/SignaturesSection';
 import SavedDocumentView from './components/SavedDocumentView';
 
-// Database
-import { initDB, saveFormData, getFormData, saveDocument, getDocumentById } from './utils/database';
+// Serviços
+import { documentosService } from './services/api';
+import { initDB, saveFormData, getFormData } from './utils/database';
 
 // Dados iniciais para lista de requisitantes
 const REQUISITANTES = [
@@ -54,6 +55,8 @@ function App() {
   const [actionItems, setActionItems] = useState([]);
   const [viewMode, setViewMode] = useState('edit'); // 'edit' ou 'view'
   const [savedDocument, setSavedDocument] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // Formatação das datas para o formato do componente date
   useEffect(() => {
@@ -92,11 +95,7 @@ function App() {
     const urlParams = new URLSearchParams(window.location.search);
     const documentId = urlParams.get('document');
     if (documentId) {
-      const document = getDocumentById(documentId);
-      if (document) {
-        setSavedDocument(document);
-        setViewMode('view');
-      }
+      obterDocumentoPorId(documentId);
     }
   }, []);
 
@@ -117,6 +116,21 @@ function App() {
       saveFormData(data);
     }
   }, [formData, osNumber, manutencaoCorretiva, naoProgramados, conclusao, attachments, actionItems, viewMode]);
+
+  const obterDocumentoPorId = async (id) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const documento = await documentosService.obterDocumento(id);
+      setSavedDocument(documento);
+      setViewMode('view');
+    } catch (err) {
+      console.error('Erro ao obter documento:', err);
+      setError('Não foi possível carregar o documento. Por favor, tente novamente.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleInputChange = (field, value) => {
     setFormData({
@@ -145,33 +159,47 @@ function App() {
     window.print();
   };
 
-  const handleSaveDocument = () => {
+  const handleSaveDocument = async () => {
+    setIsLoading(true);
+    setError(null);
+
     // Prepara o documento para ser salvo
-    const documentToSave = {
-      formData,
+    const documentoData = {
       osNumber,
       manutencaoCorretiva,
       naoProgramados,
-      conclusao,
-      attachments,
-      actionItems
+      dados: {
+        formData,
+        attachments,
+        actionItems,
+        conclusao
+      },
+      // Extrair campos principais para facilitar busca
+      codigoManutencao: formData.codigoManutencao,
+      dataSolicitacao: formData.dataSolicitacao,
+      dataExecucao: formData.dataExecucao,
+      nomeEquipamento: formData.nomeEquipamento,
+      localizacao: formData.localizacao,
+      requisitante: formData.requisitante
     };
 
-    // Salva o documento e recebe o ID
-    const result = saveDocument(documentToSave);
+    try {
+      // Salva o documento na API
+      const documentoSalvo = await documentosService.criarDocumento(documentoData);
 
-    if (result.success) {
-      // Recupera o documento completo salvo
-      const savedDoc = getDocumentById(result.documentId);
-      setSavedDocument(savedDoc);
+      // Atualiza o estado com o documento salvo
+      setSavedDocument(documentoSalvo);
       setViewMode('view');
 
       // Atualiza a URL para refletir o documento visualizado
       const url = new URL(window.location);
-      url.searchParams.set('document', result.documentId);
+      url.searchParams.set('document', documentoSalvo.id);
       window.history.pushState({}, '', url);
-    } else {
-      alert('Erro ao salvar documento. Por favor, tente novamente.');
+    } catch (err) {
+      console.error('Erro ao salvar documento:', err);
+      setError('Não foi possível salvar o documento. Por favor, tente novamente.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -193,6 +221,8 @@ function App() {
   // Renderiza o formulário em modo de edição
   return (
     <div className="main-container">
+      {error && <div className="error-message">{error}</div>}
+
       <div className="edit-buttons">
         <button className="btn-action" onClick={handlePrint}>Imprimir Documento</button>
       </div>
@@ -256,8 +286,9 @@ function App() {
           <button
             className="btn-save-document"
             onClick={handleSaveDocument}
+            disabled={isLoading}
           >
-            Salvar Documento Final
+            {isLoading ? 'Salvando...' : 'Salvar Documento Final'}
           </button>
         </div>
       </div>

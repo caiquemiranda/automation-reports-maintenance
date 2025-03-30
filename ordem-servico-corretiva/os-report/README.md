@@ -1,3 +1,117 @@
+# Ordem de Serviço Corretiva
+
+Este projeto consiste em uma aplicação para gerenciamento de Ordens de Serviço Corretivas, com frontend em React e backend em FastAPI.
+
+## Estrutura do Projeto
+
+- `src/` - Código fonte do frontend React
+- `backend/` - Código fonte do backend FastAPI
+- `public/` - Arquivos públicos do frontend
+
+## Requisitos
+
+### Execução Local
+- Node.js >= 14
+- npm >= 6
+- Python >= 3.8
+- pip
+
+### Execução com Docker
+- Docker
+- Docker Compose
+
+## Execução com Docker
+
+### Construir e iniciar os containers
+```bash
+docker-compose up -d --build
+```
+
+### Parar os containers
+```bash
+docker-compose down
+```
+
+### Ver logs dos containers
+```bash
+# Todos os containers
+docker-compose logs -f
+
+# Container específico
+docker-compose logs -f backend
+docker-compose logs -f frontend
+```
+
+### Acessar a aplicação
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8000/api
+- Documentação da API: http://localhost:8000/docs
+
+## Execução Local
+
+### Instalação Frontend
+
+```bash
+# Instala as dependências do frontend
+npm install
+```
+
+### Instalação Backend
+
+```bash
+# Instala as dependências do backend
+npm run install-backend
+```
+
+### Desenvolvimento (Frontend + Backend)
+
+```bash
+# Inicia tanto o frontend quanto o backend
+npm run dev
+```
+
+### Frontend apenas
+
+```bash
+# Inicia apenas o frontend
+npm start
+```
+
+### Backend apenas
+
+```bash
+# Inicia apenas o backend
+npm run start-backend
+```
+
+## Build para Produção
+
+```bash
+# Gera a build de produção do frontend
+npm run build
+```
+
+## Funcionalidades
+
+- Criação e edição de ordens de serviço
+- Upload de anexos com imagens
+- Salvamento de documentos no banco de dados
+- Visualização de documentos em modo somente leitura
+- Impressão de documentos
+
+## API Backend
+
+A API está disponível em `http://localhost:8000/api` e a documentação interativa em `http://localhost:8000/docs`.
+
+### Principais endpoints:
+
+- `GET /api/documentos` - Lista todos os documentos
+- `GET /api/documentos/{id}` - Obtém um documento específico
+- `POST /api/documentos` - Cria um novo documento
+- `PUT /api/documentos/{id}` - Atualiza um documento existente
+- `DELETE /api/documentos/{id}` - Exclui um documento
+- `POST /api/documentos/{id}/anexos` - Adiciona um anexo a um documento
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
