@@ -434,105 +434,30 @@ def buscar_extrair_texto(caminho_arquivo):
     
     return None
 
-def replicar_documento(caminho_origem, caminho_destino, modificacoes=None):
+def replicar_documento(caminho_origem, caminho_destino):
     """
-    Replica o documento de origem para o de destino, com opção de modificações
+    Replica o documento de origem para o de destino usando apenas cópia binária
     
     Args:
         caminho_origem: Caminho do arquivo de origem
         caminho_destino: Caminho do arquivo de destino
-        modificacoes: Dicionário com pares de valores a serem substituídos
-            As chaves podem ser strings ou padrões regex
-            
+        
     Returns:
         Boolean indicando se a operação foi bem-sucedida
     """
-    # Para arquivos .doc (formato binário antigo), usamos abordagem diferente
-    if caminho_origem.lower().endswith('.doc') and not caminho_origem.lower().endswith('.docx'):
-        # Se não há modificações, fazer cópia direta
-        if not modificacoes:
-            print("Realizando cópia binária do arquivo .doc (formato binário)")
-            shutil.copy2(caminho_origem, caminho_destino)
-            return True
-        
-        # Para arquivos .doc, tentar substituição binária direta
-        print("Tentando substituição binária para arquivo .doc...")
-        resultado = substituir_texto_binario(caminho_origem, caminho_destino, modificacoes)
-        
-        # Se a substituição binária falhar, tentar abordagem alternativa com python-docx
-        if not resultado:
-            print("Substituição binária falhou. Tentando método alternativo...")
-            try:
-                # Criar arquivo temporário para conversão
-                temp_docx = caminho_origem + ".temp.docx"
-                temp_output = caminho_destino + ".temp.docx"
-                
-                # Tentando carregar como DOCX mesmo sendo DOC
-                try:
-                    doc = Document(caminho_origem)
-                    
-                    # Aplicar modificações usando funções do python-docx
-                    for texto_antigo, texto_novo in modificacoes.items():
-                        if isinstance(texto_antigo, str) or isinstance(texto_antigo, re.Pattern):
-                            modificar_servico(doc, texto_antigo, texto_novo)
-                    
-                    # Salvar o documento modificado
-                    doc.save(caminho_destino)
-                    print(f"Documento modificado e salvo com python-docx em: {caminho_destino}")
-                    return True
-                    
-                except Exception as e:
-                    print(f"Erro ao processar arquivo .doc com python-docx: {e}")
-                
-                print("Métodos automáticos falharam. Usando cópia direta como fallback.")
-                shutil.copy2(caminho_origem, caminho_destino)
-                return False
-                
-            except Exception as e:
-                print(f"Erro ao tentar método alternativo: {e}")
-                print("Realizando cópia binária como último recurso")
-                shutil.copy2(caminho_origem, caminho_destino)
-                return False
-        
-        return resultado
-    
-    # Para arquivos .docx (formato XML)
     try:
-        doc_origem = Document(caminho_origem)
-        
-        # Se não há modificações, proceder com cópia normal
-        if not modificacoes:
-            print("Replicando documento sem modificações...")
-            doc_origem.save(caminho_destino)
-            return True
-        
-        # Aplicar modificações
-        modificacoes_aplicadas = False
-        for texto_antigo, texto_novo in modificacoes.items():
-            if isinstance(texto_antigo, str) or isinstance(texto_antigo, re.Pattern):
-                sucesso = modificar_servico(doc_origem, texto_antigo, texto_novo)
-                if sucesso:
-                    modificacoes_aplicadas = True
-        
-        # Salvar o documento modificado
-        doc_origem.save(caminho_destino)
-        
-        if modificacoes_aplicadas:
-            print(f"Documento modificado e salvo em: {caminho_destino}")
-            return True
-        else:
-            print("Aviso: Nenhuma modificação foi aplicada.")
-            return False
-        
-    except Exception as e:
-        print(f"Erro ao replicar/modificar o documento: {e}")
-        print("Tentando cópia binária como fallback")
+        # Realizar cópia direta (binária) para evitar problemas de corrupção
+        print(f"Realizando cópia binária do arquivo {caminho_origem}...")
         shutil.copy2(caminho_origem, caminho_destino)
+        print(f"Arquivo copiado com sucesso para: {caminho_destino}")
+        return True
+    except Exception as e:
+        print(f"Erro ao replicar o documento: {e}")
         return False
 
 def verificar_conteudo(caminho_origem, caminho_destino):
     """
-    Verifica se o conteúdo dos arquivos é idêntico (apenas para verificação)
+    Verifica se o conteúdo dos arquivos é idêntico
     
     Args:
         caminho_origem: Caminho do arquivo de origem
@@ -561,15 +486,6 @@ def verificar_conteudo(caminho_origem, caminho_destino):
                 else:
                     print(f"Diferença de tamanho: {abs(tamanho1 - tamanho2)} bytes")
                 
-                # Tentar extrair texto e verificar se o serviço foi substituído
-                texto_origem = buscar_extrair_texto(caminho_origem)
-                texto_destino = buscar_extrair_texto(caminho_destino)
-                
-                if texto_origem and texto_destino:
-                    # Verificar se há diferenças (apenas para informação)
-                    if "SERVIÇO: Troca da base" in texto_origem and "SERVIÇO: Susbtituição do modulo" in texto_destino:
-                        print("Verificação de texto: A substituição do serviço parece ter sido realizada!")
-                    
                 return False
     except Exception as e:
         print(f"Erro ao verificar conteúdo: {e}")
@@ -614,7 +530,7 @@ def ler_servico_atual(caminho_arquivo):
 if __name__ == "__main__":
     # Configuração dos caminhos
     caminho_origem = "report.doc"
-    caminho_destino = "report_modificado.doc"
+    caminho_destino = "report_replicado.doc"
     
     # Verificar se o arquivo de origem existe
     if not os.path.exists(caminho_origem):
@@ -623,38 +539,14 @@ if __name__ == "__main__":
         print(f"Processando o arquivo {caminho_origem}...")
         print(f"Tamanho do arquivo original: {os.path.getsize(caminho_origem)} bytes")
         
-        # Ler serviço atual (apenas para informação)
-        servico_atual = ler_servico_atual(caminho_origem)
-        if servico_atual:
-            print(f"Serviço atual encontrado: {servico_atual}")
-        
-        # Definir modificações desejadas
-        modificacoes = {
-            # Texto exato a substituir
-            "SERVIÇO: Troca da base, mais o detector de fumaça (N1-L01-215 DF)": 
-            "SERVIÇO: Susbtituição do modulo danificado (N1-L01-MZ-112)",
-            
-            # Ou usando regex para maior flexibilidade
-            re.compile(r'SERVIÇO:.*?[\(N1-L01-215 DF\)]'): 
-            "SERVIÇO: Susbtituição do modulo danificado (N1-L01-MZ-112)"
-        }
-        
-        # Replicar o documento com as modificações
-        sucesso = replicar_documento(caminho_origem, caminho_destino, modificacoes)
+        # Replicar o documento
+        sucesso = replicar_documento(caminho_origem, caminho_destino)
         
         # Verificar se o arquivo foi criado
         if os.path.exists(caminho_destino):
-            print(f"Tamanho do arquivo modificado: {os.path.getsize(caminho_destino)} bytes")
+            print(f"Tamanho do arquivo replicado: {os.path.getsize(caminho_destino)} bytes")
             
-            # Ler serviço no documento modificado
-            servico_novo = ler_servico_atual(caminho_destino)
-            if servico_novo:
-                print(f"Serviço no documento modificado: {servico_novo}")
-            
-            # Verificar se a modificação foi realizada
-            if not verificar_conteudo(caminho_origem, caminho_destino):
-                print("Os arquivos são diferentes, o que indica que a modificação pode ter sido realizada.")
-            else:
-                print("Aviso: Os arquivos são idênticos, o que sugere que a modificação não foi realizada.")
+            # Verificar se o conteúdo é idêntico
+            verificar_conteudo(caminho_origem, caminho_destino)
         else:
             print(f"Erro: O arquivo {caminho_destino} não foi criado corretamente.")
