@@ -93,12 +93,14 @@ body {
   height: 1px;
   background-color: black;
   margin: 10px 0 20px;
+  page-break-inside: avoid;
 }
 
 .strong-divider {
   height: 2px;
   background-color: #2980b9;
   margin: 25px 0;
+  page-break-inside: avoid;
 }
 
 .info-section {
@@ -247,6 +249,7 @@ body {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
   padding: 10px 0;
+  page-break-inside: avoid;
 }
 
 .conclusion-option {
@@ -290,6 +293,32 @@ body {
   min-width: 70px;
 }
 
+/* Estilo para componentes de formulário */
+.form-control {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 3px 6px;
+}
+
+.select-control {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 3px 6px;
+  background-color: white;
+}
+
+.date-picker {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 3px 6px;
+}
+
 /* Estilo para impressão */
 @media print {
   body {
@@ -327,4 +356,114 @@ body {
   .attachment-container {
     border: none;
   }
+
+  .divider {
+    border-bottom: 1px solid black;
+    height: 0;
+    background-color: transparent;
+    margin: 10px 0 20px;
+    display: block;
+  }
+
+  .strong-divider {
+    border-bottom: 2px solid #2980b9;
+    height: 0;
+    background-color: transparent;
+    margin: 25px 0;
+    display: block;
+  }
+
+  .conclusion-options {
+    border-top: 1px solid black !important;
+    border-bottom: 1px solid black !important;
+    display: flex !important;
+  }
+
+  .signature-line {
+    border-top: 1px solid black;
+    height: 0;
+    background-color: transparent;
+    display: block;
+  }
+
+  input[type="checkbox"] {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* Adicionar estilos para input-group */
+.input-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-prefix {
+  font-size: 12px;
+  padding-right: 4px;
+}
+
+/* Estilo para textarea nos componentes */
+textarea.form-control {
+  width: 100%;
+  min-height: 60px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 6px;
+  resize: vertical;
+  font-family: Arial, sans-serif;
+}
+
+/* Estilos para o componente ActionSection */
+.action-items {
+  margin-top: 15px;
+}
+
+.action-items h4 {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.action-items ul {
+  padding-left: 20px;
+}
+
+.action-items li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.remove-btn {
+  background-color: #ff5c5c;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.add-item-form {
+  display: flex;
+  margin-top: 10px;
+  align-items: center;
+  gap: 5px;
+}
+
+.add-item-form .form-control {
+  flex: 1;
+}
+
+.add-item-form .btn-action {
+  padding: 3px 8px;
+  font-size: 14px;
 }
