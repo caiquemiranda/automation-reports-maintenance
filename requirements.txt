@@ -1,3 +1,0 @@
-flask==2.3.3
-mammoth==1.6.0
-pdfkit==1.0.0 
