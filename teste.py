@@ -1,5 +1,8 @@
 import os
 import shutil
+import re
+import tempfile
+import subprocess
 from docx import Document
 from docx.shared import Pt, RGBColor, Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -163,112 +166,369 @@ def copiar_imagem(imagem_origem, documento_destino):
     except Exception as e:
         print(f"Erro ao copiar imagem: {e}")
 
-def replicar_documento(caminho_origem, caminho_destino):
+def modificar_servico(doc, servico_antigo, servico_novo):
     """
-    Replica o documento de origem para o de destino
+    Modifica o texto do serviço no documento
+    
+    Args:
+        doc: Documento a ser modificado
+        servico_antigo: Texto do serviço a ser substituído ou padrão regex
+        servico_novo: Novo texto do serviço
+        
+    Returns:
+        Boolean indicando se a substituição foi realizada
+    """
+    substituicao_realizada = False
+    
+    # Procurar em todos os parágrafos
+    for paragrafo in doc.paragraphs:
+        texto_paragrafo = paragrafo.text
+        
+        # Verificar se o texto do serviço está no parágrafo (exato ou por regex)
+        if isinstance(servico_antigo, str) and servico_antigo in texto_paragrafo:
+            # Substituição de texto exato
+            novo_texto = texto_paragrafo.replace(servico_antigo, servico_novo)
+            
+            # Limpar o parágrafo e adicionar o novo texto com a mesma formatação
+            runs_formatacao = [run for run in paragrafo.runs]
+            paragrafo.clear()
+            
+            # Se tivermos múltiplos runs, tentamos preservar a formatação correspondente
+            if runs_formatacao:
+                # Encontrar onde o texto original estava
+                inicio_servico = texto_paragrafo.find(servico_antigo)
+                fim_servico = inicio_servico + len(servico_antigo)
+                
+                # Reconstruir o parágrafo com o texto modificado
+                pos_atual = 0
+                for run in runs_formatacao:
+                    run_len = len(run.text)
+                    # Se este run está completamente antes do serviço
+                    if pos_atual + run_len <= inicio_servico:
+                        novo_run = paragrafo.add_run(run.text)
+                        copiar_formatacao_run(run, novo_run)
+                    # Se este run contém o início do serviço
+                    elif pos_atual <= inicio_servico < pos_atual + run_len:
+                        # Texto antes do serviço
+                        if inicio_servico > pos_atual:
+                            texto_antes = run.text[:inicio_servico-pos_atual]
+                            novo_run = paragrafo.add_run(texto_antes)
+                            copiar_formatacao_run(run, novo_run)
+                        
+                        # Adicionar o novo serviço com a formatação deste run
+                        novo_run = paragrafo.add_run(servico_novo)
+                        copiar_formatacao_run(run, novo_run)
+                        
+                        # Se o serviço termina neste run, adicionar o resto
+                        if fim_servico < pos_atual + run_len:
+                            texto_depois = run.text[fim_servico-pos_atual:]
+                            novo_run = paragrafo.add_run(texto_depois)
+                            copiar_formatacao_run(run, novo_run)
+                    # Se este run está completamente após o serviço
+                    elif pos_atual >= fim_servico:
+                        novo_run = paragrafo.add_run(run.text)
+                        copiar_formatacao_run(run, novo_run)
+                    # Caso contrário, este run está dentro ou atravessa o serviço, então pular
+                    
+                    pos_atual += run_len
+            else:
+                # Se não conseguirmos preservar a formatação, apenas substituir o texto
+                novo_run = paragrafo.add_run(novo_texto)
+            
+            substituicao_realizada = True
+            print(f"Substituição realizada no parágrafo: '{texto_paragrafo}' -> '{novo_texto}'")
+            
+        elif isinstance(servico_antigo, re.Pattern) and servico_antigo.search(texto_paragrafo):
+            # Substituição por regex
+            match = servico_antigo.search(texto_paragrafo)
+            if match:
+                novo_texto = servico_antigo.sub(servico_novo, texto_paragrafo)
+                
+                # Limpar o parágrafo e adicionar o novo texto
+                runs_formatacao = [run for run in paragrafo.runs]
+                paragrafo.clear()
+                
+                # Tenta preservar formatação (simplificado para regex)
+                if runs_formatacao:
+                    # Usar a formatação do primeiro run para todo o texto
+                    novo_run = paragrafo.add_run(novo_texto)
+                    copiar_formatacao_run(runs_formatacao[0], novo_run)
+                else:
+                    novo_run = paragrafo.add_run(novo_texto)
+                
+                substituicao_realizada = True
+                print(f"Substituição realizada por regex: '{texto_paragrafo}' -> '{novo_texto}'")
+    
+    # Procurar em todas as tabelas
+    for tabela in doc.tables:
+        for linha in tabela.rows:
+            for celula in linha.cells:
+                for paragrafo in celula.paragraphs:
+                    texto_paragrafo = paragrafo.text
+                    
+                    # Verificar se o texto do serviço está no parágrafo (exato ou por regex)
+                    if isinstance(servico_antigo, str) and servico_antigo in texto_paragrafo:
+                        # Substituição de texto exato em tabela
+                        novo_texto = texto_paragrafo.replace(servico_antigo, servico_novo)
+                        
+                        # Preservar formatação (simplificado para células de tabela)
+                        runs_formatacao = [run for run in paragrafo.runs]
+                        paragrafo.clear()
+                        
+                        if runs_formatacao:
+                            # Usar a formatação do primeiro run
+                            novo_run = paragrafo.add_run(novo_texto)
+                            copiar_formatacao_run(runs_formatacao[0], novo_run)
+                        else:
+                            novo_run = paragrafo.add_run(novo_texto)
+                        
+                        substituicao_realizada = True
+                        print(f"Substituição realizada na tabela: '{texto_paragrafo}' -> '{novo_texto}'")
+                        
+                    elif isinstance(servico_antigo, re.Pattern) and servico_antigo.search(texto_paragrafo):
+                        # Substituição por regex em tabela
+                        match = servico_antigo.search(texto_paragrafo)
+                        if match:
+                            novo_texto = servico_antigo.sub(servico_novo, texto_paragrafo)
+                            
+                            # Simplificado para células de tabela
+                            runs_formatacao = [run for run in paragrafo.runs]
+                            paragrafo.clear()
+                            
+                            if runs_formatacao:
+                                # Usar a formatação do primeiro run para todo o texto
+                                novo_run = paragrafo.add_run(novo_texto)
+                                copiar_formatacao_run(runs_formatacao[0], novo_run)
+                            else:
+                                novo_run = paragrafo.add_run(novo_texto)
+                            
+                            substituicao_realizada = True
+                            print(f"Substituição realizada por regex na tabela: '{texto_paragrafo}' -> '{novo_texto}'")
+    
+    return substituicao_realizada
+
+def substituir_texto_binario(caminho_origem, caminho_destino, substituicoes):
+    """
+    Substitui texto em arquivos binários (.doc) usando um método alternativo
     
     Args:
         caminho_origem: Caminho do arquivo de origem
         caminho_destino: Caminho do arquivo de destino
+        substituicoes: Dicionário com pares de strings a serem substituídas
+        
+    Returns:
+        Boolean indicando se a substituição foi realizada
     """
-    # Para arquivos .doc (formato binário antigo), usamos cópia direta
-    if caminho_origem.lower().endswith('.doc') and not caminho_origem.lower().endswith('.docx'):
-        print("Realizando cópia binária do arquivo .doc (formato binário)")
+    try:
+        # Primeiro, fazer uma cópia exata
         shutil.copy2(caminho_origem, caminho_destino)
-        return
+        
+        # Ler o arquivo como binário
+        with open(caminho_destino, 'rb') as f:
+            conteudo = f.read()
+        
+        # Realizar substituições binárias
+        modificacoes_realizadas = False
+        novo_conteudo = conteudo
+        
+        for texto_antigo, texto_novo in substituicoes.items():
+            # Ignorar padrões regex, eles não funcionam bem em binário
+            if isinstance(texto_antigo, str):
+                # Converter strings para bytes com diversas codificações comuns
+                encodings = ['utf-8', 'latin1', 'utf-16', 'utf-16le', 'utf-16be']
+                
+                for encoding in encodings:
+                    try:
+                        texto_antigo_bytes = texto_antigo.encode(encoding)
+                        texto_novo_bytes = texto_novo.encode(encoding)
+                        
+                        # Garantir que o texto novo tenha o mesmo tamanho ou seja menor
+                        if len(texto_novo_bytes) > len(texto_antigo_bytes):
+                            # Preencher com espaços para manter o mesmo tamanho
+                            texto_novo_bytes = texto_novo.ljust(len(texto_antigo)).encode(encoding)
+                        
+                        # Verificar se o texto antigo existe no conteúdo
+                        if texto_antigo_bytes in novo_conteudo:
+                            # Substituir todas as ocorrências
+                            novo_conteudo = novo_conteudo.replace(texto_antigo_bytes, texto_novo_bytes)
+                            modificacoes_realizadas = True
+                            print(f"Substituição binária realizada com encoding {encoding}: '{texto_antigo}' -> '{texto_novo}'")
+                    except Exception as e:
+                        print(f"Erro ao tentar substituição binária com encoding {encoding}: {e}")
+        
+        # Salvar se houve modificações
+        if modificacoes_realizadas:
+            with open(caminho_destino, 'wb') as f:
+                f.write(novo_conteudo)
+            print(f"Arquivo modificado e salvo em: {caminho_destino}")
+            return True
+        else:
+            print("Aviso: Nenhuma substituição binária foi realizada.")
+            return False
+            
+    except Exception as e:
+        print(f"Erro ao tentar substituição binária: {e}")
+        return False
+
+def buscar_extrair_texto(caminho_arquivo):
+    """
+    Tenta extrair texto de um arquivo DOC/DOCX usando métodos alternativos
+    
+    Args:
+        caminho_arquivo: Caminho do arquivo
+        
+    Returns:
+        String com o texto extraído ou None
+    """
+    texto_extraido = ""
+    
+    try:
+        # Tentar carregar como DOCX primeiro
+        try:
+            doc = Document(caminho_arquivo)
+            
+            # Extrair texto de parágrafos
+            for paragrafo in doc.paragraphs:
+                texto_extraido += paragrafo.text + "\n"
+            
+            # Extrair texto de tabelas
+            for tabela in doc.tables:
+                for linha in tabela.rows:
+                    for celula in linha.cells:
+                        for paragrafo in celula.paragraphs:
+                            texto_extraido += paragrafo.text + " "
+                    texto_extraido += "\n"
+            
+            if texto_extraido:
+                return texto_extraido
+            
+        except Exception as e:
+            print(f"Aviso: Não foi possível extrair texto com python-docx: {e}")
+        
+        # Se falhar, tentar abordagem alternativa para arquivos binários
+        if caminho_arquivo.lower().endswith('.doc'):
+            print("Tentando extrair texto do arquivo binário .doc usando método alternativo...")
+            
+            # Ler como binário e procurar por strings
+            with open(caminho_arquivo, 'rb') as f:
+                conteudo = f.read()
+            
+            # Tentar extrair strings legíveis com várias codificações
+            for encoding in ['utf-8', 'latin1', 'utf-16le']:
+                try:
+                    # Decodificar e manter apenas caracteres legíveis
+                    texto_decodificado = conteudo.decode(encoding, errors='ignore')
+                    texto_limpo = ''.join(c if c.isprintable() else ' ' for c in texto_decodificado)
+                    
+                    # Remover múltiplos espaços em branco
+                    texto_limpo = re.sub(r'\s+', ' ', texto_limpo).strip()
+                    
+                    # Se encontramos texto substancial, retornar
+                    if len(texto_limpo) > 100:  # Arbitrário, ajustar conforme necessário
+                        return texto_limpo
+                except Exception:
+                    continue
+    
+    except Exception as e:
+        print(f"Erro ao tentar extrair texto: {e}")
+    
+    return None
+
+def replicar_documento(caminho_origem, caminho_destino, modificacoes=None):
+    """
+    Replica o documento de origem para o de destino, com opção de modificações
+    
+    Args:
+        caminho_origem: Caminho do arquivo de origem
+        caminho_destino: Caminho do arquivo de destino
+        modificacoes: Dicionário com pares de valores a serem substituídos
+            As chaves podem ser strings ou padrões regex
+            
+    Returns:
+        Boolean indicando se a operação foi bem-sucedida
+    """
+    # Para arquivos .doc (formato binário antigo), usamos abordagem diferente
+    if caminho_origem.lower().endswith('.doc') and not caminho_origem.lower().endswith('.docx'):
+        # Se não há modificações, fazer cópia direta
+        if not modificacoes:
+            print("Realizando cópia binária do arquivo .doc (formato binário)")
+            shutil.copy2(caminho_origem, caminho_destino)
+            return True
+        
+        # Para arquivos .doc, tentar substituição binária direta
+        print("Tentando substituição binária para arquivo .doc...")
+        resultado = substituir_texto_binario(caminho_origem, caminho_destino, modificacoes)
+        
+        # Se a substituição binária falhar, tentar abordagem alternativa com python-docx
+        if not resultado:
+            print("Substituição binária falhou. Tentando método alternativo...")
+            try:
+                # Criar arquivo temporário para conversão
+                temp_docx = caminho_origem + ".temp.docx"
+                temp_output = caminho_destino + ".temp.docx"
+                
+                # Tentando carregar como DOCX mesmo sendo DOC
+                try:
+                    doc = Document(caminho_origem)
+                    
+                    # Aplicar modificações usando funções do python-docx
+                    for texto_antigo, texto_novo in modificacoes.items():
+                        if isinstance(texto_antigo, str) or isinstance(texto_antigo, re.Pattern):
+                            modificar_servico(doc, texto_antigo, texto_novo)
+                    
+                    # Salvar o documento modificado
+                    doc.save(caminho_destino)
+                    print(f"Documento modificado e salvo com python-docx em: {caminho_destino}")
+                    return True
+                    
+                except Exception as e:
+                    print(f"Erro ao processar arquivo .doc com python-docx: {e}")
+                
+                print("Métodos automáticos falharam. Usando cópia direta como fallback.")
+                shutil.copy2(caminho_origem, caminho_destino)
+                return False
+                
+            except Exception as e:
+                print(f"Erro ao tentar método alternativo: {e}")
+                print("Realizando cópia binária como último recurso")
+                shutil.copy2(caminho_origem, caminho_destino)
+                return False
+        
+        return resultado
     
     # Para arquivos .docx (formato XML)
     try:
-        print("Tentando replicar documento DOCX usando python-docx...")
         doc_origem = Document(caminho_origem)
-        doc_destino = Document()
         
-        # Copiar propriedades do documento
-        try:
-            doc_destino.core_properties.author = doc_origem.core_properties.author
-            doc_destino.core_properties.title = doc_origem.core_properties.title
-            doc_destino.core_properties.comments = doc_origem.core_properties.comments
-            doc_destino.core_properties.category = doc_origem.core_properties.category
-            doc_destino.core_properties.subject = doc_origem.core_properties.subject
-        except:
-            print("Aviso: Não foi possível copiar todas as propriedades do documento")
+        # Se não há modificações, proceder com cópia normal
+        if not modificacoes:
+            print("Replicando documento sem modificações...")
+            doc_origem.save(caminho_destino)
+            return True
         
-        # Copiar margens e configurações de página
-        seções_origem = doc_origem.sections
-        seções_destino = doc_destino.sections
+        # Aplicar modificações
+        modificacoes_aplicadas = False
+        for texto_antigo, texto_novo in modificacoes.items():
+            if isinstance(texto_antigo, str) or isinstance(texto_antigo, re.Pattern):
+                sucesso = modificar_servico(doc_origem, texto_antigo, texto_novo)
+                if sucesso:
+                    modificacoes_aplicadas = True
         
-        for i, secao_origem in enumerate(seções_origem):
-            # Garantir que existe a seção no documento de destino
-            if i >= len(seções_destino):
-                # Adicionar nova seção se necessário
-                doc_destino.add_section()
-            
-            secao_destino = seções_destino[i]
-            
-            # Copiar configurações de página
-            secao_destino.page_height = secao_origem.page_height
-            secao_destino.page_width = secao_origem.page_width
-            secao_destino.left_margin = secao_origem.left_margin
-            secao_destino.right_margin = secao_origem.right_margin
-            secao_destino.top_margin = secao_origem.top_margin
-            secao_destino.bottom_margin = secao_origem.bottom_margin
-            secao_destino.header_distance = secao_origem.header_distance
-            secao_destino.footer_distance = secao_origem.footer_distance
-            
-            # Copiar orientação da página
-            try:
-                secao_destino.orientation = secao_origem.orientation
-            except:
-                print("Aviso: Não foi possível copiar a orientação da página")
-            
-            # Copiar cabeçalhos e rodapés (simplificado)
-            try:
-                # Esta é uma implementação simplificada, seria necessário percorrer
-                # os conteúdos de cada cabeçalho/rodapé para uma cópia perfeita
-                pass
-            except:
-                print("Aviso: Não foi possível copiar cabeçalhos e rodapés")
+        # Salvar o documento modificado
+        doc_origem.save(caminho_destino)
         
-        # Percorrer todos os elementos do documento de forma estruturada
-        for elemento in doc_origem.element.body:
-            # Parágrafo
-            if elemento.tag.endswith('p'):  
-                for para_idx, para_origem in enumerate(doc_origem.paragraphs):
-                    if para_origem._element is elemento:
-                        para_destino = doc_destino.add_paragraph()
-                        
-                        # Copiar o texto e formatação
-                        for run_origem in para_origem.runs:
-                            run_destino = para_destino.add_run(run_origem.text)
-                            copiar_formatacao_run(run_origem, run_destino)
-                        
-                        copiar_formatacao_paragrafo(para_origem, para_destino)
-                        break
-            
-            # Tabela
-            elif elemento.tag.endswith('tbl'):  
-                for tabela_idx, tabela_origem in enumerate(doc_origem.tables):
-                    if tabela_origem._element is elemento:
-                        copiar_tabela(tabela_origem, doc_destino)
-                        break
-            
-            # Outros elementos como imagens, gráficos, etc.
-            else:
-                # Esta é uma implementação simplificada
-                # Para uma cópia perfeita, seria necessário identificar e tratar
-                # todos os tipos de elementos possíveis no documento
-                pass
+        if modificacoes_aplicadas:
+            print(f"Documento modificado e salvo em: {caminho_destino}")
+            return True
+        else:
+            print("Aviso: Nenhuma modificação foi aplicada.")
+            return False
         
-        # Salvar o documento replicado
-        doc_destino.save(caminho_destino)
-        print(f"Documento replicado com sucesso em: {caminho_destino}")
-    
     except Exception as e:
-        print(f"Erro ao replicar o documento: {e}")
-        print("Nota: Muitos documentos .doc antigos podem não ser totalmente suportados pela biblioteca python-docx")
+        print(f"Erro ao replicar/modificar o documento: {e}")
         print("Tentando cópia binária como fallback")
         shutil.copy2(caminho_origem, caminho_destino)
-        print(f"Cópia binária realizada com sucesso em: {caminho_destino}")
+        return False
 
 def verificar_conteudo(caminho_origem, caminho_destino):
     """
@@ -301,31 +561,100 @@ def verificar_conteudo(caminho_origem, caminho_destino):
                 else:
                     print(f"Diferença de tamanho: {abs(tamanho1 - tamanho2)} bytes")
                 
+                # Tentar extrair texto e verificar se o serviço foi substituído
+                texto_origem = buscar_extrair_texto(caminho_origem)
+                texto_destino = buscar_extrair_texto(caminho_destino)
+                
+                if texto_origem and texto_destino:
+                    # Verificar se há diferenças (apenas para informação)
+                    if "SERVIÇO: Troca da base" in texto_origem and "SERVIÇO: Susbtituição do modulo" in texto_destino:
+                        print("Verificação de texto: A substituição do serviço parece ter sido realizada!")
+                    
                 return False
     except Exception as e:
         print(f"Erro ao verificar conteúdo: {e}")
         return False
 
+def ler_servico_atual(caminho_arquivo):
+    """
+    Tenta ler o serviço atual do documento
+    
+    Args:
+        caminho_arquivo: Caminho do arquivo
+        
+    Returns:
+        String com o serviço encontrado ou None
+    """
+    try:
+        # Extrair todo o texto do documento
+        texto_extraido = buscar_extrair_texto(caminho_arquivo)
+        
+        if texto_extraido:
+            # Padrão para encontrar o serviço
+            padrao_servico = re.compile(r'SERVIÇO:.*?[\(\)]', re.IGNORECASE)
+            
+            # Procurar no texto extraído
+            match = padrao_servico.search(texto_extraido)
+            if match:
+                return match.group(0)
+            
+            # Tentar outro padrão mais flexível
+            padrao_alternativo = re.compile(r'SERVIÇO:.*?[0-9]', re.IGNORECASE)
+            match = padrao_alternativo.search(texto_extraido)
+            if match:
+                return match.group(0)
+        
+        print("Aviso: Não foi encontrado texto de serviço no documento")
+        return None
+        
+    except Exception as e:
+        print(f"Erro ao ler serviço atual: {e}")
+        return None
+
 if __name__ == "__main__":
     # Configuração dos caminhos
     caminho_origem = "report.doc"
-    caminho_destino = "report_replicado.doc"
+    caminho_destino = "report_modificado.doc"
     
     # Verificar se o arquivo de origem existe
     if not os.path.exists(caminho_origem):
         print(f"Erro: O arquivo {caminho_origem} não foi encontrado.")
     else:
-        print(f"Replicando o arquivo {caminho_origem}...")
+        print(f"Processando o arquivo {caminho_origem}...")
         print(f"Tamanho do arquivo original: {os.path.getsize(caminho_origem)} bytes")
         
-        # Replicar o documento
-        replicar_documento(caminho_origem, caminho_destino)
+        # Ler serviço atual (apenas para informação)
+        servico_atual = ler_servico_atual(caminho_origem)
+        if servico_atual:
+            print(f"Serviço atual encontrado: {servico_atual}")
+        
+        # Definir modificações desejadas
+        modificacoes = {
+            # Texto exato a substituir
+            "SERVIÇO: Troca da base, mais o detector de fumaça (N1-L01-215 DF)": 
+            "SERVIÇO: Susbtituição do modulo danificado (N1-L01-MZ-112)",
+            
+            # Ou usando regex para maior flexibilidade
+            re.compile(r'SERVIÇO:.*?[\(N1-L01-215 DF\)]'): 
+            "SERVIÇO: Susbtituição do modulo danificado (N1-L01-MZ-112)"
+        }
+        
+        # Replicar o documento com as modificações
+        sucesso = replicar_documento(caminho_origem, caminho_destino, modificacoes)
         
         # Verificar se o arquivo foi criado
         if os.path.exists(caminho_destino):
-            print(f"Tamanho do arquivo replicado: {os.path.getsize(caminho_destino)} bytes")
+            print(f"Tamanho do arquivo modificado: {os.path.getsize(caminho_destino)} bytes")
             
-            # Verificar se o conteúdo é idêntico (para fins de validação)
-            verificar_conteudo(caminho_origem, caminho_destino)
+            # Ler serviço no documento modificado
+            servico_novo = ler_servico_atual(caminho_destino)
+            if servico_novo:
+                print(f"Serviço no documento modificado: {servico_novo}")
+            
+            # Verificar se a modificação foi realizada
+            if not verificar_conteudo(caminho_origem, caminho_destino):
+                print("Os arquivos são diferentes, o que indica que a modificação pode ter sido realizada.")
+            else:
+                print("Aviso: Os arquivos são idênticos, o que sugere que a modificação não foi realizada.")
         else:
             print(f"Erro: O arquivo {caminho_destino} não foi criado corretamente.")
