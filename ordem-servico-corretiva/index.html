@@ -6,167 +6,260 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ordem de Serviço Corretiva</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="title">
-                <h1>ORDEM DE SERVIÇO CORRETIVA</h1>
-                <div class="checkboxes">
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="manutencao" name="manutencao" checked>
-                        <label for="manutencao">MANUTENÇÃO CORRETIVA</label>
+    <div class="main-container">
+        <div class="edit-buttons">
+            <button id="btn-save" class="btn-action">Salvar Documento</button>
+            <button id="btn-print" class="btn-action">Imprimir</button>
+        </div>
+
+        <div class="container" id="document">
+            <div class="header">
+                <div class="title">
+                    <h1 class="text-center">ORDEM DE SERVIÇO CORRETIVA - OS-<span id="numero-os"
+                            contenteditable="true">305470</span></h1>
+                    <div class="checkboxes">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manutencao" name="manutencao" checked>
+                            <label for="manutencao">MANUTENÇÃO CORRETIVA</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="naoprogramados" name="naoprogramados">
+                            <label for="naoprogramados">NÃO PROGRAMADOS</label>
+                        </div>
                     </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="naoprogramados" name="naoprogramados">
-                        <label for="naoprogramados">NÃO PROGRAMADOS</label>
+                </div>
+                <div class="logo">
+                    <img src="logo_IBS.png" alt="IBSystems Logo" class="logo-img">
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="info-section">
+                <div class="info-row">
+                    <div class="info-item">
+                        <div class="info-label">Código de Manutenção:</div>
+                        <div class="info-value" contenteditable="true">__________</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Data de Solicitação:</div>
+                        <div class="info-value" contenteditable="true">26/05/2023</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-item">
+                        <div class="info-label">Nome do Equipamento:</div>
+                        <div class="info-value" contenteditable="true">Sistema de Alarme de Incêndio</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Data de Execução:</div>
+                        <div class="info-value" contenteditable="true">27/05/2023</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-item">
+                        <div class="info-label">Localização:</div>
+                        <div class="info-value" contenteditable="true">Dispensário No.140.215 Fábrica de Farinha</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Prioridade:</div>
+                        <div class="info-value" contenteditable="true">Rotina Pamoate</div>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-item">
+                        <div class="info-label">Número da O.S.:</div>
+                        <div class="info-value os-number" contenteditable="true">OS-305470</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Centro de custo:</div>
+                        <div class="info-value" contenteditable="true">C097</div>
                     </div>
                 </div>
             </div>
-            <div class="logo">
-                <div class="logo-circle"></div>
-                <span class="logo-text">IBSystems</span>
-            </div>
-        </div>
 
-        <div class="divider"></div>
+            <div class="divider strong-divider"></div>
 
-        <div class="info-section">
-            <div class="info-row">
-                <div class="info-item">
-                    <div class="info-label">Código de Manutenção:</div>
-                    <div class="info-value">__________</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Data de Solicitação:</div>
-                    <div class="info-value">26/05/2023</div>
-                </div>
+            <div class="service-section">
+                <div class="section-label">SERVIÇO:</div>
+                <div class="section-content" contenteditable="true">Troca da lente, após o detector de Fumaça
+                    (N)-140.215.F30</div>
             </div>
-            <div class="info-row">
-                <div class="info-item">
-                    <div class="info-label">Nome do Equipamento:</div>
-                    <div class="info-value">Sistema de Alarme de Incêndio</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Data de Execução:</div>
-                    <div class="info-value">27/05/2023</div>
-                </div>
+
+            <div class="observation-section">
+                <div class="section-label">OBSERVAÇÃO:</div>
+                <div class="section-content" contenteditable="true">O dispositivo encontrava-se danificado como citou
+                    "no cheiro" no final de
+                    inspeção, pessoal fumando escondido.</div>
             </div>
-            <div class="info-row">
-                <div class="info-item">
-                    <div class="info-label">Localização:</div>
-                    <div class="info-value">Dispensário No.140.215 Fábrica de Farinha</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Prioridade:</div>
-                    <div class="info-value">Rotina Pamoate</div>
+
+            <div class="action-section">
+                <div class="section-label">Ação Corretiva:</div>
+                <div class="section-content" contenteditable="true">
+                    <p>Foi realizada a troca do dispositivo por um novo do mesmo modelo (sensor de fumaça convencional),
+                        onde foi realizado a limpeza interna das conexões e ajuste no dispositivo, o que normalizou o
+                        seu
+                        funcionamento conforme especificações. Programação e instalação do detector de fumaça após a
+                        troca
+                        do equipamento que apresentava problema.</p>
+                    <ul>
+                        <li>Teste de formato</li>
+                        <li>Teste de comunicação com painel</li>
+                        <li>Funcionamento do detector</li>
+                    </ul>
                 </div>
             </div>
-            <div class="info-row">
-                <div class="info-item">
-                    <div class="info-label">Número da O.S.:</div>
-                    <div class="info-value">OS-305470</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Centro de custo:</div>
-                    <div class="info-value">C097</div>
-                </div>
-            </div>
-        </div>
 
-        <div class="service-section">
-            <div class="section-label">SERVIÇO:</div>
-            <div class="section-content">Troca da lente, após o detector de Fumaça (N)-140.215.F30</div>
-        </div>
-
-        <div class="observation-section">
-            <div class="section-label">OBSERVAÇÃO:</div>
-            <div class="section-content">O dispositivo encontrava-se danificado como citou "no cheiro" no final de
-                inspeção, pessoal fumando escondido.</div>
-        </div>
-
-        <div class="action-section">
-            <div class="section-label">Ação Corretiva:</div>
-            <div class="section-content">
-                <p>Foi realizada a troca do dispositivo por um novo do mesmo modelo (sensor de fumaça convencional),
-                    onde foi realizado a limpeza interna das conexões e ajuste no dispositivo, o que normalizou o seu
-                    funcionamento conforme especificações. Programação e instalação do detector de fumaça após a troca
-                    do equipamento que apresentava problema.</p>
-                <ul>
-                    <li>Teste de formato</li>
-                    <li>Teste de comunicação com painel</li>
-                    <li>Funcionamento do detector</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="attachment-section">
-            <div class="section-label">ANEXOS:</div>
-            <div class="section-content"></div>
-        </div>
-
-        <div class="conclusion-section">
-            <div class="section-label">CONCLUSÃO:</div>
-            <div class="conclusion-options">
-                <div class="conclusion-option">
-                    <input type="checkbox" id="temporario-normal">
-                    <label for="temporario-normal">Equipamento normal</label>
-                </div>
-                <div class="conclusion-option">
-                    <input type="checkbox" id="equipamento-parcial">
-                    <label for="equipamento-parcial">Equipamento parcial</label>
-                </div>
-                <div class="conclusion-option">
-                    <input type="checkbox" id="equipamento-inop">
-                    <label for="equipamento-inop">Equipamento inoperante</label>
+            <div class="attachment-section">
+                <div class="section-label">ANEXOS:</div>
+                <div class="attachment-container">
+                    <div id="image-attachments">
+                        <!-- Aqui serão adicionadas as imagens anexadas -->
+                    </div>
+                    <div class="attachment-controls">
+                        <div class="attachment-button">
+                            <label for="attachment-upload" class="btn-attachment">Adicionar imagem</label>
+                            <input type="file" id="attachment-upload" accept="image/*" multiple style="display: none;">
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="signatures-section">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ASSISTENTE</th>
-                        <th>CLIENTE</th>
-                        <th>SUPERVISOR/PREVENTIVA</th>
-                        <th>FREQUÊNCIA DE</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="signature-line"></div>
-                        </td>
-                        <td>
-                            <div class="signature-line"></div>
-                        </td>
-                        <td>
-                            <div class="signature-line"></div>
-                        </td>
-                        <td>
-                            <div class="signature-line"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="date-line">DATA:</div>
-                        </td>
-                        <td>
-                            <div class="date-line">DATA:</div>
-                        </td>
-                        <td>
-                            <div class="date-line">DATA:</div>
-                        </td>
-                        <td>
-                            <div class="date-line">DATA:</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="conclusion-section">
+                <div class="section-label">CONCLUSÃO:</div>
+                <div class="conclusion-options">
+                    <div class="conclusion-option">
+                        <input type="checkbox" id="temporario-normal">
+                        <label for="temporario-normal">Equipamento normal</label>
+                    </div>
+                    <div class="conclusion-option">
+                        <input type="checkbox" id="equipamento-parcial">
+                        <label for="equipamento-parcial">Equipamento parcial</label>
+                    </div>
+                    <div class="conclusion-option">
+                        <input type="checkbox" id="equipamento-inop">
+                        <label for="equipamento-inop">Equipamento inoperante</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="signatures-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ASSISTENTE</th>
+                            <th>CLIENTE</th>
+                            <th>SUPERVISOR/PREVENTIVA</th>
+                            <th>FREQUÊNCIA DE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="signature-line"></div>
+                            </td>
+                            <td>
+                                <div class="signature-line"></div>
+                            </td>
+                            <td>
+                                <div class="signature-line"></div>
+                            </td>
+                            <td>
+                                <div class="signature-line"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="date-line">DATA: <span contenteditable="true">__/__/____</span></div>
+                            </td>
+                            <td>
+                                <div class="date-line">DATA: <span contenteditable="true">__/__/____</span></div>
+                            </td>
+                            <td>
+                                <div class="date-line">DATA: <span contenteditable="true">__/__/____</span></div>
+                            </td>
+                            <td>
+                                <div class="date-line">DATA: <span contenteditable="true">__/__/____</span></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sincronizar número da OS
+            const numeroOs = document.getElementById('numero-os');
+            const osNumberField = document.querySelector('.os-number');
+
+            numeroOs.addEventListener('input', function () {
+                osNumberField.textContent = 'OS-' + this.textContent;
+            });
+
+            osNumberField.addEventListener('input', function () {
+                const osNumber = this.textContent.replace('OS-', '');
+                numeroOs.textContent = osNumber;
+            });
+
+            // Gerenciar anexos de imagens
+            const attachmentUpload = document.getElementById('attachment-upload');
+            const imageAttachments = document.getElementById('image-attachments');
+
+            attachmentUpload.addEventListener('change', function (e) {
+                const files = e.target.files;
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+
+                    reader.onload = function (event) {
+                        const attachmentDiv = document.createElement('div');
+                        attachmentDiv.className = 'attachment-item';
+
+                        const img = document.createElement('img');
+                        img.src = event.target.result;
+                        img.className = 'attachment-image';
+
+                        const description = document.createElement('div');
+                        description.className = 'attachment-description';
+                        description.setAttribute('contenteditable', 'true');
+                        description.textContent = 'Descrição da imagem...';
+
+                        const removeButton = document.createElement('button');
+                        removeButton.className = 'remove-attachment';
+                        removeButton.textContent = 'X';
+                        removeButton.addEventListener('click', function () {
+                            attachmentDiv.remove();
+                        });
+
+                        attachmentDiv.appendChild(img);
+                        attachmentDiv.appendChild(description);
+                        attachmentDiv.appendChild(removeButton);
+
+                        imageAttachments.appendChild(attachmentDiv);
+                    }
+
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Botão de impressão
+            document.getElementById('btn-print').addEventListener('click', function () {
+                window.print();
+            });
+
+            // Botão de salvar (exemplo - poderia ser implementado para salvar como PDF)
+            document.getElementById('btn-save').addEventListener('click', function () {
+                alert('Funcionalidade de salvar seria implementada aqui (ex: exportar para PDF)');
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -10,6 +10,32 @@ body {
     padding: 20px;
 }
 
+.main-container {
+    max-width: 21cm;
+    margin: 0 auto;
+}
+
+.edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn-action {
+    padding: 8px 15px;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-action:hover {
+    background-color: #3498db;
+}
+
 .container {
     background-color: white;
     width: 21cm;
@@ -28,7 +54,17 @@ body {
 
 .title h1 {
     font-size: 18px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+#numero-os {
+    display: inline-block;
+    min-width: 60px;
+    border-bottom: 1px dashed #ccc;
 }
 
 .checkboxes {
@@ -48,37 +84,21 @@ body {
     align-items: center;
 }
 
-.logo-circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #3498db, #2980b9);
-    margin-bottom: 5px;
-    position: relative;
-}
-
-.logo-circle::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: white;
-}
-
-.logo-text {
-    font-size: 12px;
-    color: #2980b9;
-    font-weight: bold;
+.logo-img {
+    max-width: 120px;
+    max-height: 60px;
 }
 
 .divider {
     height: 1px;
     background-color: black;
     margin: 10px 0 20px;
+}
+
+.strong-divider {
+    height: 2px;
+    background-color: #2980b9;
+    margin: 25px 0;
 }
 
 .info-section {
@@ -107,12 +127,20 @@ body {
 .info-value {
     flex: 1;
     font-size: 12px;
+    border-bottom: 1px solid transparent;
+    padding: 2px;
+}
+
+.info-value:focus,
+[contenteditable="true"]:focus {
+    outline: none;
+    border-bottom: 1px solid #3498db;
+    background-color: #f8f9fa;
 }
 
 .service-section,
 .observation-section,
-.action-section,
-.attachment-section {
+.action-section {
     margin-bottom: 15px;
 }
 
@@ -125,6 +153,8 @@ body {
 .section-content {
     font-size: 12px;
     text-align: justify;
+    padding: 5px;
+    min-height: 30px;
 }
 
 .action-section .section-content p {
@@ -133,6 +163,78 @@ body {
 
 .action-section .section-content ul {
     padding-left: 20px;
+}
+
+/* Estilo para os anexos */
+.attachment-section {
+    margin-bottom: 25px;
+}
+
+.attachment-container {
+    border: 1px dashed #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    min-height: 100px;
+}
+
+.attachment-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.btn-attachment {
+    padding: 8px 15px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn-attachment:hover {
+    background-color: #e0e0e0;
+}
+
+#image-attachments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.attachment-item {
+    position: relative;
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.attachment-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+}
+
+.attachment-description {
+    padding: 5px;
+    font-size: 12px;
+    min-height: 40px;
+}
+
+.remove-attachment {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    cursor: pointer;
 }
 
 .conclusion-section {
@@ -181,4 +283,48 @@ body {
 .date-line {
     font-size: 10px;
     text-align: left;
+}
+
+.date-line span {
+    display: inline-block;
+    min-width: 70px;
+}
+
+/* Estilo para impressão */
+@media print {
+    body {
+        background-color: white;
+        padding: 0;
+    }
+
+    .main-container {
+        width: 100%;
+    }
+
+    .edit-buttons {
+        display: none;
+    }
+
+    .container {
+        box-shadow: none;
+        width: 100%;
+        padding: 0.5cm;
+    }
+
+    .remove-attachment {
+        display: none;
+    }
+
+    .btn-attachment {
+        display: none;
+    }
+
+    [contenteditable="true"] {
+        border: none !important;
+        outline: none !important;
+    }
+
+    .attachment-container {
+        border: none;
+    }
 }
