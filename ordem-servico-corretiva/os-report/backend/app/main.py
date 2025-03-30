@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 from .routers import documentos
 from . import models, crud
-from .database import engine, get_db
+from .database import engine, get_db, create_db_and_tables
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
@@ -68,10 +68,18 @@ else:
 
 # Criar tabelas no banco de dados
 try:
-    models.Base.metadata.create_all(bind=engine)
-    logger.info("Tabelas do banco de dados criadas com sucesso")
+    # Chamar a função específica para criar o banco de dados e tabelas
+    create_db_and_tables()
+    logger.info("Tabelas do banco de dados criadas com sucesso usando create_db_and_tables()")
 except Exception as e:
     logger.error(f"Erro ao criar tabelas no banco de dados: {e}")
+    
+    # Tentar abordagem alternativa
+    try:
+        models.Base.metadata.create_all(bind=engine)
+        logger.info("Tabelas do banco de dados criadas com sucesso usando Base.metadata.create_all")
+    except Exception as e2:
+        logger.error(f"Erro também na abordagem alternativa: {e2}")
 
 # Configurações da API
 api_prefix = os.getenv("API_PREFIX", "/api")
@@ -96,6 +104,30 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Endpoint de saúde
+@app.get(f"{api_prefix}/health")
+async def health_check():
+    """
+    Endpoint para verificar a saúde da API
+    """
+    # Verificar se o banco de dados está acessível
+    try:
+        with get_db() as db:
+            # Apenas faz uma consulta simples para verificar a conexão
+            next(db)
+        
+        return {
+            "status": "healthy",
+            "database": "connected",
+            "message": "API está funcionando normalmente"
+        }
+    except Exception as e:
+        logger.error(f"Erro ao verificar saúde do banco de dados: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Problemas com a conexão ao banco de dados: {str(e)}"
+        )
+
 # Incluir rotas
 app.include_router(documentos.router, prefix=api_prefix)
 
@@ -106,49 +138,4 @@ async def root():
         "mensagem": "API de Ordem de Serviço Corretiva",
         "documentacao": "/docs",
         "banco_de_dados": db_path
-    }
-
-@app.get(f"{api_prefix}/health")
-async def health_check(db: Session = Depends(get_db)):
-    """Endpoint de verificação de saúde da API e do banco de dados."""
-    try:
-        # Verificar se consegue executar uma consulta simples no banco de dados
-        test_record = crud.get_documentos(db, skip=0, limit=1)
-        logger.info("Health check: Conexão com banco de dados OK")
-        
-        # Verificar o arquivo do banco de dados
-        db_exists = os.path.exists(db_path)
-        db_size = os.path.getsize(db_path) if db_exists else 0
-        
-        # Verificar permissões
-        permissions = "N/A"
-        if db_exists:
-            try:
-                stats = os.stat(db_path)
-                permissions = oct(stats.st_mode)
-            except:
-                permissions = "Error"
-        
-        # Verificar se há documentos
-        doc_count = len(test_record)
-        
-        return {
-            "status": "ok",
-            "message": "API está funcionando corretamente",
-            "database": {
-                "connected": True,
-                "records_found": doc_count,
-                "file_exists": db_exists,
-                "file_size": db_size,
-                "file_path": db_path,
-                "file_permissions": permissions,
-                "dir_path": db_dir,
-                "url": os.getenv("DATABASE_URL", "default")
-            }
-        }
-    except Exception as e:
-        logger.error(f"Health check: Erro ao conectar ao banco de dados: {e}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Erro de conexão com o banco de dados: {str(e)}"
-        ) 
+    } 

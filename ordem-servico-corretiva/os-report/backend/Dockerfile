@@ -12,8 +12,10 @@ RUN apt-get update && apt-get install -y \
 # Copiar os arquivos de requisitos
 COPY requirements.txt .
 
-# Instalar dependências Python
-RUN pip install --no-cache-dir -r requirements.txt
+# Instalar dependências Python com verbose para ver possíveis erros
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir sqlmodel && \
+    pip list | grep sqlmodel
 
 # Criar diretório para uploads e banco de dados com permissões adequadas
 RUN mkdir -p /app/uploads && chmod -R 777 /app/uploads

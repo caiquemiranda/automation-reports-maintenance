@@ -2,6 +2,7 @@ import uvicorn
 import os
 import sys
 from dotenv import load_dotenv
+from app.database import create_db_and_tables  # Importar função de criação do banco
 
 def check_data_directory():
     """Verifica se o diretório de dados existe e tem permissões de escrita."""
@@ -35,6 +36,15 @@ if __name__ == "__main__":
     
     # Verificar diretório de dados
     check_data_directory()
+    
+    # Inicializar banco de dados - ADICIONADO
+    try:
+        print("Inicializando banco de dados e criando tabelas...")
+        create_db_and_tables()
+        print("Banco de dados inicializado com sucesso!")
+    except Exception as e:
+        print(f"ERRO ao inicializar banco de dados: {e}")
+        sys.exit(1)
     
     # Recuperar configurações
     host = os.getenv("HOST", "0.0.0.0")

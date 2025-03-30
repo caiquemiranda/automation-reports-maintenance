@@ -8,12 +8,21 @@ import sqlite3
 import shutil
 import json
 from dotenv import load_dotenv
-from sqlmodel import SQLModel, Session
 
 # Configurar logging
 log_level = os.getenv("LOG_LEVEL", "INFO").upper()
 logging.basicConfig(level=getattr(logging, log_level))
 logger = logging.getLogger(__name__)
+
+# Tentar importar SQLModel, mas ter um fallback se não estiver disponível
+try:
+    from sqlmodel import SQLModel, Session
+    SQLMODEL_AVAILABLE = True
+    logger.info("SQLModel está disponível e será usado")
+except ImportError:
+    SQLMODEL_AVAILABLE = False
+    logger.warning("SQLModel não está disponível, usando SQLAlchemy diretamente")
+    from sqlalchemy.orm import Session
 
 # Carregar variáveis de ambiente
 load_dotenv()
@@ -139,8 +148,36 @@ def create_db_and_tables():
     """Cria o banco de dados e as tabelas definidas nos modelos"""
     try:
         logger.info("Criando banco de dados e tabelas")
-        SQLModel.metadata.create_all(engine)
+        
+        # Importar os modelos aqui para evitar referência circular
+        from . import models
+        logger.info(f"Modelos carregados: {dir(models)}")
+        
+        # Usar SQLModel se disponível, caso contrário usar SQLAlchemy
+        if SQLMODEL_AVAILABLE:
+            logger.info("Usando SQLModel para criar as tabelas")
+            SQLModel.metadata.create_all(engine)
+        else:
+            logger.info("Usando SQLAlchemy para criar as tabelas")
+            models.Base.metadata.create_all(bind=engine)
+        
+        # Verificação adicional
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute("PRAGMA integrity_check")
+        integrity = cursor.fetchone()[0]
+        logger.info(f"Verificação de integridade após criação: {integrity}")
+        
+        # Listar tabelas criadas
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+        tables = [row[0] for row in cursor.fetchall()]
+        logger.info(f"Tabelas criadas: {', '.join(tables) if tables else 'Nenhuma tabela encontrada'}")
+        
+        # Fechar conexão
+        conn.close()
+        
         logger.info("Banco de dados e tabelas criados com sucesso")
+        return True
     except Exception as e:
         logger.error(f"Erro ao criar banco de dados e tabelas: {e}")
         raise
