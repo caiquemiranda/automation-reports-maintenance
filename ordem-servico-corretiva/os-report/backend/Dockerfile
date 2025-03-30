@@ -17,11 +17,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar o código da aplicação
 COPY . .
 
-# Criar diretório para uploads e banco de dados
+# Criar diretório para uploads e banco de dados com permissões adequadas
 RUN mkdir -p /app/uploads
 RUN mkdir -p /app/data
-RUN chmod 777 /app/data
-RUN chmod 777 /app/uploads
+RUN chmod -R 777 /app/data
+RUN chmod -R 777 /app/uploads
+
+# Garantir que todos arquivos SQLite futuros terão permissão de escrita
+RUN touch /app/data/app.db && chmod 666 /app/data/app.db
 
 # Expor a porta que o servidor vai utilizar
 EXPOSE 8000

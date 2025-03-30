@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 import os
 import sys
 import logging
+import sqlite3
 from dotenv import load_dotenv
 
 # Configurar logging
@@ -26,11 +27,32 @@ if not os.path.exists(data_dir):
 else:
     logger.info(f"Diretório de dados encontrado: {data_dir}")
 
-# URL de conexão com o banco de dados
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./data/app.db")
+# Caminho para o banco de dados
 db_path = os.path.join(data_dir, "app.db")
 logger.info(f"Caminho completo do banco de dados: {db_path}")
-logger.info(f"URL de conexão com o banco de dados: {DATABASE_URL}")
+
+# Verificar se o arquivo do banco de dados existe e garantir permissões
+if os.path.exists(db_path):
+    try:
+        # Garantir permissões de escrita
+        os.chmod(db_path, 0o666)
+        logger.info(f"Permissões de banco de dados atualizadas: {db_path}")
+    except Exception as e:
+        logger.error(f"ERRO ao configurar permissões do banco de dados: {e}")
+else:
+    logger.info(f"O banco de dados será criado em: {db_path}")
+    # Criar um banco de dados vazio com permissões corretas
+    try:
+        conn = sqlite3.connect(db_path)
+        conn.close()
+        os.chmod(db_path, 0o666)
+        logger.info(f"Banco de dados vazio criado: {db_path}")
+    except Exception as e:
+        logger.error(f"ERRO ao criar banco de dados vazio: {e}")
+
+# URL de conexão com o banco de dados - Usar URI para poder definir opções avançadas
+db_uri = f"sqlite:///{db_path}?mode=rwc"
+logger.info(f"URL de conexão com o banco de dados: {db_uri}")
 
 # Verificar se o diretório tem permissões de escrita
 try:
@@ -43,9 +65,10 @@ except Exception as e:
     logger.error(f"ERRO: O diretório de dados não tem permissão de escrita: {e}")
     sys.exit(1)
 
-# Criar engine do SQLAlchemy
+# Usar a opção URI=True para SQLite
 engine = create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
+    db_uri, 
+    connect_args={"check_same_thread": False, "uri": True}
 )
 
 # Criar sessão local
