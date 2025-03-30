@@ -42,8 +42,8 @@ const SavedDocumentView = ({ document, onBack }) => {
             <div className="container document-readonly" id="document">
                 {/* Cabeçalho */}
                 <div className="document-status">
-                    <span>Status: {document.status}</span>
-                    <span>Data de gravação: {formatDate(document.dataGravacao)}</span>
+                    <span>Status: Finalizado</span>
+                    <span>Data de gravação: {formatDate(document.dataSalvamento)}</span>
                 </div>
 
                 <div className="header">

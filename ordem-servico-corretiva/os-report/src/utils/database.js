@@ -18,7 +18,7 @@ export const initDB = () => {
 
         // Inicializa a lista de documentos salvos, se não existir
         if (!localStorage.getItem(SAVED_DOCUMENTS_KEY)) {
-            localStorage.setItem(SAVED_DOCUMENTS_KEY, JSON.stringify([]));
+            localStorage.setItem(SAVED_DOCUMENTS_KEY, JSON.stringify({}));
         }
 
         return true;
@@ -64,26 +64,22 @@ export const getFormData = () => {
  */
 export const saveDocument = (document) => {
     try {
-        // Recupera lista de documentos salvos
-        const savedDocuments = JSON.parse(localStorage.getItem(SAVED_DOCUMENTS_KEY) || '[]');
+        const documentId = generateDocumentId();
+        const savedDocuments = JSON.parse(localStorage.getItem(SAVED_DOCUMENTS_KEY)) || {};
 
-        // Adiciona um ID único e data de criação ao documento
+        // Adiciona data e hora de salvamento
         const documentToSave = {
             ...document,
-            id: `OS-${document.osNumber}-${Date.now()}`,
-            dataGravacao: new Date().toISOString(),
-            status: 'Finalizado'
+            dataSalvamento: new Date().toISOString(),
+            id: documentId
         };
 
-        // Adiciona o documento à lista
-        savedDocuments.push(documentToSave);
-
-        // Salva a lista atualizada
+        savedDocuments[documentId] = documentToSave;
         localStorage.setItem(SAVED_DOCUMENTS_KEY, JSON.stringify(savedDocuments));
 
         return {
             success: true,
-            documentId: documentToSave.id
+            documentId: documentId
         };
     } catch (error) {
         console.error('Erro ao salvar documento:', error);
@@ -100,8 +96,8 @@ export const saveDocument = (document) => {
  */
 export const getAllDocuments = () => {
     try {
-        const savedDocuments = JSON.parse(localStorage.getItem(SAVED_DOCUMENTS_KEY) || '[]');
-        return savedDocuments;
+        const savedDocuments = JSON.parse(localStorage.getItem(SAVED_DOCUMENTS_KEY)) || {};
+        return Object.values(savedDocuments);
     } catch (error) {
         console.error('Erro ao obter documentos salvos:', error);
         return [];
@@ -115,8 +111,8 @@ export const getAllDocuments = () => {
  */
 export const getDocumentById = (id) => {
     try {
-        const savedDocuments = JSON.parse(localStorage.getItem(SAVED_DOCUMENTS_KEY) || '[]');
-        return savedDocuments.find(doc => doc.id === id) || null;
+        const savedDocuments = JSON.parse(localStorage.getItem(SAVED_DOCUMENTS_KEY)) || {};
+        return savedDocuments[id] || null;
     } catch (error) {
         console.error('Erro ao obter documento:', error);
         return null;
@@ -135,4 +131,9 @@ export const clearDatabase = () => {
         console.error('Erro ao limpar banco de dados:', error);
         return false;
     }
+};
+
+// Gera um ID único para o documento
+const generateDocumentId = () => {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }; 

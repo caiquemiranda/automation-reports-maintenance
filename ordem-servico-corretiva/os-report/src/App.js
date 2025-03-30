@@ -10,9 +10,10 @@ import ActionSection from './components/ActionSection';
 import AttachmentSection from './components/AttachmentSection';
 import ConclusionSection from './components/ConclusionSection';
 import SignaturesSection from './components/SignaturesSection';
+import SavedDocumentView from './components/SavedDocumentView';
 
 // Database
-import { initDB, saveFormData, getFormData } from './utils/database';
+import { initDB, saveFormData, getFormData, saveDocument, getDocumentById } from './utils/database';
 
 // Dados iniciais para lista de requisitantes
 const REQUISITANTES = [
@@ -50,6 +51,9 @@ function App() {
     inoperante: false
   });
   const [attachments, setAttachments] = useState([]);
+  const [actionItems, setActionItems] = useState([]);
+  const [viewMode, setViewMode] = useState('edit'); // 'edit' ou 'view'
+  const [savedDocument, setSavedDocument] = useState(null);
 
   // Formatação das datas para o formato do componente date
   useEffect(() => {
@@ -81,22 +85,38 @@ function App() {
       if (savedData.naoProgramados !== undefined) setNaoProgramados(savedData.naoProgramados);
       if (savedData.conclusao) setConclusao(savedData.conclusao);
       if (savedData.attachments) setAttachments(savedData.attachments);
+      if (savedData.actionItems) setActionItems(savedData.actionItems);
+    }
+
+    // Verifica se há um documento para visualizar na URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const documentId = urlParams.get('document');
+    if (documentId) {
+      const document = getDocumentById(documentId);
+      if (document) {
+        setSavedDocument(document);
+        setViewMode('view');
+      }
     }
   }, []);
 
   // Salvar dados quando houver mudanças
   useEffect(() => {
-    const data = {
-      formData,
-      osNumber,
-      manutencaoCorretiva,
-      naoProgramados,
-      conclusao,
-      attachments
-    };
+    // Só salva se estiver no modo de edição
+    if (viewMode === 'edit') {
+      const data = {
+        formData,
+        osNumber,
+        manutencaoCorretiva,
+        naoProgramados,
+        conclusao,
+        attachments,
+        actionItems
+      };
 
-    saveFormData(data);
-  }, [formData, osNumber, manutencaoCorretiva, naoProgramados, conclusao, attachments]);
+      saveFormData(data);
+    }
+  }, [formData, osNumber, manutencaoCorretiva, naoProgramados, conclusao, attachments, actionItems, viewMode]);
 
   const handleInputChange = (field, value) => {
     setFormData({
@@ -125,6 +145,52 @@ function App() {
     window.print();
   };
 
+  const handleSaveDocument = () => {
+    // Prepara o documento para ser salvo
+    const documentToSave = {
+      formData,
+      osNumber,
+      manutencaoCorretiva,
+      naoProgramados,
+      conclusao,
+      attachments,
+      actionItems
+    };
+
+    // Salva o documento e recebe o ID
+    const result = saveDocument(documentToSave);
+
+    if (result.success) {
+      // Recupera o documento completo salvo
+      const savedDoc = getDocumentById(result.documentId);
+      setSavedDocument(savedDoc);
+      setViewMode('view');
+
+      // Atualiza a URL para refletir o documento visualizado
+      const url = new URL(window.location);
+      url.searchParams.set('document', result.documentId);
+      window.history.pushState({}, '', url);
+    } else {
+      alert('Erro ao salvar documento. Por favor, tente novamente.');
+    }
+  };
+
+  const handleBackToEdit = () => {
+    setViewMode('edit');
+    setSavedDocument(null);
+
+    // Remove o parâmetro de documento da URL
+    const url = new URL(window.location);
+    url.searchParams.delete('document');
+    window.history.pushState({}, '', url);
+  };
+
+  // Renderiza o documento em modo de visualização
+  if (viewMode === 'view' && savedDocument) {
+    return <SavedDocumentView document={savedDocument} onBack={handleBackToEdit} />;
+  }
+
+  // Renderiza o formulário em modo de edição
   return (
     <div className="main-container">
       <div className="edit-buttons">
@@ -166,6 +232,8 @@ function App() {
         <ActionSection
           formData={formData}
           handleInputChange={handleInputChange}
+          actionItems={actionItems}
+          setActionItems={setActionItems}
         />
 
         <AttachmentSection
@@ -182,6 +250,16 @@ function App() {
           formData={formData}
           handleDateChange={handleDateChange}
         />
+
+        {/* Botão para salvar o documento */}
+        <div className="save-document-container">
+          <button
+            className="btn-save-document"
+            onClick={handleSaveDocument}
+          >
+            Salvar Documento Final
+          </button>
+        </div>
       </div>
     </div>
   );

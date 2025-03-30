@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 /**
  * Componente para a seção de ação corretiva
  * @param {Object} props - Propriedades do componente
  * @param {Object} props.formData - Dados do formulário
  * @param {Function} props.handleInputChange - Função para atualizar os dados
+ * @param {Array} props.actionItems - Lista de ações
+ * @param {Function} props.setActionItems - Função para atualizar a lista de ações
  */
-const ActionSection = ({ formData, handleInputChange }) => {
-    const [actionItems, setActionItems] = useState([
-        'Teste de formato',
-        'Teste de comunicação com painel',
-        'Funcionamento do detector'
-    ]);
+const ActionSection = ({ formData, handleInputChange, actionItems, setActionItems }) => {
     const [newItem, setNewItem] = useState('');
+
+    // Inicializa com os itens padrão se não houver itens definidos
+    useEffect(() => {
+        if (!actionItems || actionItems.length === 0) {
+            setActionItems([
+                'Teste de formato',
+                'Teste de comunicação com painel',
+                'Funcionamento do detector'
+            ]);
+        }
+    }, [actionItems, setActionItems]);
 
     const addItem = () => {
         if (newItem.trim()) {

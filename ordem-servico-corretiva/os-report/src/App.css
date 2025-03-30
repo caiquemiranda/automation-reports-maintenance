@@ -467,3 +467,146 @@ textarea.form-control {
   padding: 3px 8px;
   font-size: 14px;
 }
+
+/* Estilos para a visualização do documento salvo (somente leitura) */
+.document-control-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+  background-color: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.document-control-panel h2 {
+  font-size: 18px;
+  color: #2980b9;
+  margin: 0;
+}
+
+.document-readonly {
+  position: relative;
+}
+
+.document-status {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.document-status span {
+  display: block;
+}
+
+.info-value.readonly,
+.section-content.readonly {
+  padding: 5px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  min-height: 24px;
+  word-break: break-word;
+}
+
+.action-items-readonly ul {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+.attachment-container-readonly {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.attachment-item-readonly {
+  width: 200px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.attachment-description-readonly {
+  padding: 5px;
+  font-size: 12px;
+  min-height: 40px;
+  background-color: #f8f9fa;
+  word-break: break-word;
+}
+
+.document-not-found {
+  text-align: center;
+  padding: 50px;
+}
+
+.document-not-found h2 {
+  margin-bottom: 20px;
+  color: #dc3545;
+}
+
+/* Botão no final do documento para salvar */
+.save-document-container {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
+  text-align: center;
+}
+
+.btn-save-document {
+  padding: 10px 25px;
+  font-size: 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-save-document:hover {
+  background-color: #218838;
+}
+
+/* Ajustes para impressão do documento somente leitura */
+@media print {
+
+  .document-control-panel,
+  .btn-save-document,
+  .save-document-container {
+    display: none !important;
+  }
+
+  .document-status {
+    position: static;
+    margin-bottom: 10px;
+    border: none;
+    background: none;
+    padding: 0;
+  }
+
+  .document-readonly {
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .info-value.readonly,
+  .section-content.readonly {
+    background-color: transparent !important;
+    padding: 0 !important;
+  }
+
+  .attachment-description-readonly {
+    background-color: transparent !important;
+  }
+}
