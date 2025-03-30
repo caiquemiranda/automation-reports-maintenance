@@ -20,6 +20,8 @@ COPY . .
 # Criar diretório para uploads e banco de dados
 RUN mkdir -p /app/uploads
 RUN mkdir -p /app/data
+RUN chmod 777 /app/data
+RUN chmod 777 /app/uploads
 
 # Expor a porta que o servidor vai utilizar
 EXPOSE 8000

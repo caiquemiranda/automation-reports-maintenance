@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile
     container_name: os-report-backend
     volumes:
-      - ./backend:/app
-      - ./data:/app/data
+      - ./backend:/app:delegated
+      - db-data:/app/data
     ports:
       - "8000:8000"
     environment:
@@ -22,6 +22,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+    user: "1000:1000"
 
   frontend:
     build:
@@ -29,8 +30,8 @@ services:
       dockerfile: Dockerfile.frontend
     container_name: os-report-frontend
     volumes:
-      - ./src:/app/src
-      - ./public:/app/public
+      - ./src:/app/src:delegated
+      - ./public:/app/public:delegated
       - /app/node_modules
     ports:
       - "3000:3000"
@@ -41,5 +42,5 @@ services:
     restart: always
 
 volumes:
-  data:
+  db-data:
     driver: local 

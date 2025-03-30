@@ -7,8 +7,17 @@ from dotenv import load_dotenv
 # Carregar variáveis de ambiente
 load_dotenv()
 
+# Garantir que o diretório de dados existe
+data_dir = os.path.abspath("./data")
+if not os.path.exists(data_dir):
+    os.makedirs(data_dir, exist_ok=True)
+    print(f"Diretório de dados criado: {data_dir}")
+else:
+    print(f"Diretório de dados encontrado: {data_dir}")
+
 # URL de conexão com o banco de dados
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./data/app.db")
+print(f"Usando banco de dados: {DATABASE_URL}")
 
 # Criar engine do SQLAlchemy
 engine = create_engine(
