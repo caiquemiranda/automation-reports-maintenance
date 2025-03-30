@@ -38,7 +38,19 @@ CAMPOS_NEGRITO = [
     "Prioridade:",
     "Localização:",
     "Requisitante:",
-    "Número da O.S.:"
+    "Número da O.S.:",
+    "Centro de custo:",
+    "SERVIÇO:",
+    "OBSERVAÇÃO:"
+]
+
+# Campos que devem ser alinhados à direita (coluna direita)
+CAMPOS_DIREITA = [
+    "Data da Solicitação:",
+    "Data de Execução:",
+    "Prioridade:",
+    "Requisitante:",
+    "Centro de custo:"
 ]
 
 def replicar_documento(caminho_origem, caminho_destino):
@@ -123,7 +135,7 @@ def aplicar_formatacao_word(caminho_arquivo):
         # Abrir o documento
         doc = word.Documents.Open(caminho_completo)
         
-        # Percorrer o documento procurando os campos para aplicar negrito
+        # Percorrer o documento procurando os campos para aplicar negrito e alinhar
         for campo in CAMPOS_NEGRITO:
             # Configurar a busca
             word.Selection.HomeKey(Unit=constants.wdStory)  # Ir para o início do documento
@@ -137,14 +149,22 @@ def aplicar_formatacao_word(caminho_arquivo):
             while word.Selection.Find.Execute():
                 word.Selection.Font.Bold = True
                 
-                # Verificar se o campo deveria estar alinhado à direita ou esquerda
-                # Alinhamento é tratado de forma especial
-                if campo in ["Data da Solicitação:", "Data de Execução:", "Prioridade:", "Requisitante:"]:
-                    # Tentar alinhar o parágrafo inteiro à direita
+                # Aplicar alinhamento de acordo com o campo
+                if campo in CAMPOS_DIREITA:
+                    # Para campos da coluna direita, alinhar o parágrafo à direita
                     try:
+                        # Selecionar o parágrafo inteiro que contém o campo
+                        word.Selection.EndKey(Unit=constants.wdLine)
+                        word.Selection.HomeKey(Unit=constants.wdLine, Extend=True)
                         word.Selection.ParagraphFormat.Alignment = constants.wdAlignParagraphRight
                     except:
                         print(f"Não foi possível alinhar à direita: {campo}")
+                else:
+                    # Para campos da coluna esquerda, alinhar o parágrafo à esquerda
+                    try:
+                        word.Selection.ParagraphFormat.Alignment = constants.wdAlignParagraphLeft
+                    except:
+                        print(f"Não foi possível alinhar à esquerda: {campo}")
         
         # Salvar o documento
         doc.Save()
@@ -229,28 +249,9 @@ def modificar_doc_com_word(caminho_arquivo, substituicoes):
                 total_substituicoes += count
                 print(f"Marcador '{marcador}' substituído por '{novo_valor}': {count} ocorrência(s)")
         
-        # Aplicar formatação em negrito aos campos especificados
-        for campo in CAMPOS_NEGRITO:
-            # Configurar a busca
-            word.Selection.HomeKey(Unit=constants.wdStory)  # Ir para o início do documento
-            word.Selection.Find.ClearFormatting()
-            word.Selection.Find.Text = campo
-            word.Selection.Find.Forward = True
-            word.Selection.Find.MatchCase = True
-            word.Selection.Find.MatchWholeWord = False
-            
-            # Procurar todas as ocorrências e aplicar negrito
-            while word.Selection.Find.Execute():
-                word.Selection.Font.Bold = True
-                
-                # Verificar se o campo deveria estar alinhado à direita ou esquerda
-                # Alinhamento é tratado de forma especial
-                if campo in ["Data da Solicitação:", "Data de Execução:", "Prioridade:", "Requisitante:"]:
-                    # Tentar alinhar o parágrafo inteiro à direita
-                    try:
-                        word.Selection.ParagraphFormat.Alignment = constants.wdAlignParagraphRight
-                    except:
-                        print(f"Não foi possível alinhar à direita: {campo}")
+        # Aplicar formatação (negrito e alinhamento)
+        # Em vez de fazer dentro do loop de substituição, chamar a função separada
+        aplicar_formatacao_word(caminho_arquivo)
         
         # Salvar o documento
         doc.Save()
@@ -263,7 +264,7 @@ def modificar_doc_com_word(caminho_arquivo, substituicoes):
         
         if total_substituicoes > 0:
             print(f"Total de substituições realizadas: {total_substituicoes}")
-            print("Formatação em negrito aplicada aos campos padrão.")
+            print("Formatação em negrito e alinhamento aplicados aos campos.")
             return True
         else:
             print("Aviso: Nenhum dos marcadores foi encontrado no documento.")
@@ -369,13 +370,15 @@ def modificar_doc_alternativo(caminho_arquivo, substituicoes):
                                 if campo in run.text:
                                     # Aplicar negrito ao run que contém o campo
                                     run.bold = True
-                                    
-                                    # Se necessário, ajustar o alinhamento do parágrafo
-                                    if campo in ["Data da Solicitação:", "Data de Execução:", "Prioridade:", "Requisitante:"]:
-                                        try:
-                                            para.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-                                        except:
-                                            print(f"Não foi possível alinhar à direita: {campo}")
+                    
+                    # Verificar se este parágrafo deve estar alinhado à direita
+                    for campo in CAMPOS_DIREITA:
+                        if campo in para.text:
+                            para.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+                            break
+                    else:
+                        # Se não encontrou campo para alinhar à direita, deixar à esquerda
+                        para.alignment = WD_ALIGN_PARAGRAPH.LEFT
                     
                     # Agora fazer a substituição de marcadores
                     para_modificado = False
@@ -459,13 +462,15 @@ def modificar_doc_alternativo(caminho_arquivo, substituicoes):
                                             if campo in run.text:
                                                 # Aplicar negrito ao run que contém o campo
                                                 run.bold = True
-                                                
-                                                # Se necessário, ajustar o alinhamento do parágrafo
-                                                if campo in ["Data da Solicitação:", "Data de Execução:", "Prioridade:", "Requisitante:"]:
-                                                    try:
-                                                        para.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-                                                    except:
-                                                        print(f"Não foi possível alinhar à direita: {campo}")
+                                
+                                # Verificar se este parágrafo deve estar alinhado à direita
+                                for campo in CAMPOS_DIREITA:
+                                    if campo in para.text:
+                                        para.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+                                        break
+                                else:
+                                    # Se não encontrou campo para alinhar à direita, deixar à esquerda
+                                    para.alignment = WD_ALIGN_PARAGRAPH.LEFT
                                 
                                 # Agora fazer a substituição de marcadores
                                 para_modificado = False
