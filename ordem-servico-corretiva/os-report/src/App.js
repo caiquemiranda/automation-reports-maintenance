@@ -240,10 +240,13 @@ function App() {
   };
 
   const handleConclusaoChange = (field, value) => {
-    setConclusao({
+    console.log(`Atualizando campo de conclusão: ${field} = ${value}`);
+    const newConclusao = {
       ...conclusao,
       [field]: value
-    });
+    };
+    setConclusao(newConclusao);
+    console.log('Novo estado de conclusão:', newConclusao);
   };
 
   const handlePrint = () => {
@@ -253,6 +256,37 @@ function App() {
   const handleSaveDocument = async () => {
     setIsLoading(true);
     setError(null);
+
+    // Validação de campos obrigatórios
+    const requiredFields = [
+      { field: 'nomeEquipamento', label: 'Nome do Equipamento' },
+      { field: 'localizacao', label: 'Localização' },
+      { field: 'servico', label: 'Serviço' },
+      { field: 'acaoCorretiva', label: 'Ação Corretiva' },
+      { field: 'tecnicoResponsavel', label: 'Técnico Responsável' },
+    ];
+
+    // Verifica campos vazios
+    const emptyFields = requiredFields.filter(rf => !formData[rf.field]);
+    if (emptyFields.length > 0) {
+      setError(`Por favor, preencha os campos obrigatórios: ${emptyFields.map(f => f.label).join(', ')}`);
+      setIsLoading(false);
+      return;
+    }
+
+    // Verifica se alguma opção de conclusão foi selecionada
+    if (!conclusao.normal && !conclusao.parcial && !conclusao.inoperante) {
+      setError('Por favor, selecione uma opção de conclusão.');
+      setIsLoading(false);
+      return;
+    }
+
+    // Verifica se o número da OS foi preenchido
+    if (!osNumber) {
+      setError('Por favor, informe o número da OS.');
+      setIsLoading(false);
+      return;
+    }
 
     // Prepara o documento para ser salvo
     const documentoData = {
@@ -293,6 +327,19 @@ function App() {
       // Primeiro, tenta recuperar todos os documentos para verificar se já existe um com o mesmo número de OS
       const documentosExistentes = await documentosService.listarDocumentos(0, 100);
       const documentoExistente = documentosExistentes.find(doc => doc.osNumber === osNumber);
+
+      // Adicionar uma confirmação antes de atualizar um documento existente
+      if (documentoExistente && !savedDocument) {
+        const confirmaAtualizacao = window.confirm(
+          `Já existe um documento com o número de OS ${osNumber}. Deseja substituí-lo com os dados atuais?`
+        );
+
+        if (!confirmaAtualizacao) {
+          setError('Operação cancelada pelo usuário. Escolha outro número de OS.');
+          setIsLoading(false);
+          return;
+        }
+      }
 
       if (documentoExistente) {
         // Se já existe um documento com o mesmo número de OS, atualiza-o

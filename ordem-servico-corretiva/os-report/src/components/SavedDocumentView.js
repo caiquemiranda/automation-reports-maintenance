@@ -196,7 +196,7 @@ const SavedDocumentView = ({ document, onBack }) => {
                     <div className="conclusion-options">
                         <div className="conclusion-option">
                             <input
-                                type="checkbox"
+                                type="radio"
                                 checked={conclusao.normal}
                                 readOnly
                                 disabled
@@ -205,7 +205,7 @@ const SavedDocumentView = ({ document, onBack }) => {
                         </div>
                         <div className="conclusion-option">
                             <input
-                                type="checkbox"
+                                type="radio"
                                 checked={conclusao.parcial}
                                 readOnly
                                 disabled
@@ -214,7 +214,7 @@ const SavedDocumentView = ({ document, onBack }) => {
                         </div>
                         <div className="conclusion-option">
                             <input
-                                type="checkbox"
+                                type="radio"
                                 checked={conclusao.inoperante}
                                 readOnly
                                 disabled
@@ -224,40 +224,33 @@ const SavedDocumentView = ({ document, onBack }) => {
                     </div>
                 </div>
 
-                {/* Seção de Assinaturas */}
-                <div className="signatures-section">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ASSISTENTE</th>
-                                <th>CLIENTE</th>
-                                <th>SUPERVISOR/PREVENTIVA</th>
-                                <th>FREQUÊNCIA DE</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><div className="signature-line"></div></td>
-                                <td><div className="signature-line"></div></td>
-                                <td><div className="signature-line"></div></td>
-                                <td><div className="signature-line"></div></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div className="date-line">DATA: {formatDate(formData?.datas?.[0])}</div>
-                                </td>
-                                <td>
-                                    <div className="date-line">DATA: {formatDate(formData?.datas?.[1])}</div>
-                                </td>
-                                <td>
-                                    <div className="date-line">DATA: {formatDate(formData?.datas?.[2])}</div>
-                                </td>
-                                <td>
-                                    <div className="date-line">DATA: {formatDate(formData?.datas?.[3])}</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                {/* Seção de Técnico e Materiais */}
+                <div className="tecnico-material-section">
+                    <div className="section-container">
+                        <div className="tecnico-section">
+                            <div className="section-label">TÉCNICO RESPONSÁVEL:</div>
+                            <div className="section-content readonly">
+                                {formData.tecnicoResponsavel || '—'}
+                            </div>
+                        </div>
+
+                        <div className="material-section">
+                            <div className="section-label">MATERIAL UTILIZADO:</div>
+                            <div className="section-content readonly">
+                                {Array.isArray(formData.materiaisUtilizados) && formData.materiaisUtilizados.length > 0 ? (
+                                    <ul className="material-list-readonly">
+                                        {formData.materiaisUtilizados.map((material, index) => (
+                                            <li key={index}>
+                                                {material}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p className="no-materials">Nenhum material adicionado</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

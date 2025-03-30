@@ -3,7 +3,7 @@ import React from 'react';
 /**
  * Componente para a seção de conclusão com opções de seleção única
  * @param {Object} props - Propriedades do componente
- * @param {Object} props.conclusao - Estado dos checkboxes de conclusão
+ * @param {Object} props.conclusao - Estado dos radio buttons de conclusão
  * @param {Function} props.handleConclusaoChange - Função para atualizar o estado
  */
 const ConclusionSection = ({ conclusao, handleConclusaoChange }) => {
@@ -12,21 +12,24 @@ const ConclusionSection = ({ conclusao, handleConclusaoChange }) => {
 
   // Função para lidar com a mudança de opção (seleção única)
   const handleRadioChange = (option) => {
-    // Reset todas as opções
+    // Criar objeto com todas as opções definidas como false
     const newState = {
       normal: false,
       parcial: false,
       inoperante: false
     };
 
-    // Ativar apenas a opção selecionada
+    // Definir a opção selecionada como true
     newState[option] = true;
 
-    // Atualizar cada opção individualmente
+    // Atualizar cada opção individualmente para garantir atualizações consistentes
     Object.keys(newState).forEach(key => {
       handleConclusaoChange(key, newState[key]);
     });
   };
+
+  // Log para depuração
+  console.log('Estado atual da conclusão:', conclusao);
 
   return (
     <div className="conclusion-section">

@@ -258,6 +258,23 @@ body {
   gap: 5px;
 }
 
+/* Estilos melhorados para os radio buttons */
+.conclusion-option input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.conclusion-option label {
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.conclusion-option input[type="radio"]:checked+label {
+  font-weight: bold;
+  color: #2980b9;
+}
+
 .signatures-section table {
   width: 100%;
   border-collapse: collapse;
@@ -899,4 +916,18 @@ input:disabled {
 
 .remove-btn:hover {
   background-color: #c0392b;
+}
+
+/* Estilos para a visualização do documento salvo (somente leitura) */
+.material-list-readonly {
+  list-style: none;
+  padding-left: 0;
+}
+
+.material-list-readonly li {
+  background-color: #f0f7fb;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  border-left: 3px solid #2980b9;
 }
