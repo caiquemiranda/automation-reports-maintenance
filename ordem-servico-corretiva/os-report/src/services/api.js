@@ -10,6 +10,26 @@ const api = axios.create({
     },
 });
 
+// Função auxiliar para tratamento de erros
+const handleApiError = (error, operacao) => {
+    // Se o erro tiver uma resposta do servidor, exibir detalhes
+    if (error.response) {
+        console.error(`Erro ao ${operacao}:`, {
+            status: error.response.status,
+            statusText: error.response.statusText,
+            data: error.response.data,
+            message: error.message
+        });
+    } else if (error.request) {
+        // Se a requisição foi feita mas não houve resposta
+        console.error(`Erro ao ${operacao} - sem resposta do servidor:`, error.request);
+    } else {
+        // Se algo aconteceu ao configurar a requisição
+        console.error(`Erro ao ${operacao}:`, error.message);
+    }
+    throw error;
+};
+
 // Serviços para documentos
 export const documentosService = {
     /**
@@ -23,8 +43,7 @@ export const documentosService = {
             const response = await api.get(`/documentos?skip=${skip}&limit=${limit}`);
             return response.data;
         } catch (error) {
-            console.error('Erro ao listar documentos:', error);
-            throw error;
+            return handleApiError(error, 'listar documentos');
         }
     },
 
@@ -38,8 +57,7 @@ export const documentosService = {
             const response = await api.get(`/documentos/${id}`);
             return response.data;
         } catch (error) {
-            console.error('Erro ao obter documento:', error);
-            throw error;
+            return handleApiError(error, 'obter documento');
         }
     },
 
@@ -53,8 +71,7 @@ export const documentosService = {
             const response = await api.post('/documentos', documento);
             return response.data;
         } catch (error) {
-            console.error('Erro ao criar documento:', error);
-            throw error;
+            return handleApiError(error, 'criar documento');
         }
     },
 
@@ -69,8 +86,7 @@ export const documentosService = {
             const response = await api.put(`/documentos/${id}`, documento);
             return response.data;
         } catch (error) {
-            console.error('Erro ao atualizar documento:', error);
-            throw error;
+            return handleApiError(error, 'atualizar documento');
         }
     },
 
@@ -84,8 +100,7 @@ export const documentosService = {
             const response = await api.delete(`/documentos/${id}`);
             return response.data;
         } catch (error) {
-            console.error('Erro ao excluir documento:', error);
-            throw error;
+            return handleApiError(error, 'excluir documento');
         }
     },
 
@@ -101,8 +116,7 @@ export const documentosService = {
             const response = await api.post(`/documentos/filtrar?skip=${skip}&limit=${limit}`, filtros);
             return response.data;
         } catch (error) {
-            console.error('Erro ao filtrar documentos:', error);
-            throw error;
+            return handleApiError(error, 'filtrar documentos');
         }
     }
 };
@@ -131,8 +145,7 @@ export const anexosService = {
             });
             return response.data;
         } catch (error) {
-            console.error('Erro ao adicionar anexo:', error);
-            throw error;
+            return handleApiError(error, 'adicionar anexo');
         }
     },
 
@@ -147,8 +160,7 @@ export const anexosService = {
             const response = await api.delete(`/documentos/${documentoId}/anexos/${anexoId}`);
             return response.data;
         } catch (error) {
-            console.error('Erro ao excluir anexo:', error);
-            throw error;
+            return handleApiError(error, 'excluir anexo');
         }
     }
 };

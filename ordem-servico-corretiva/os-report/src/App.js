@@ -147,18 +147,20 @@ function App() {
         actionItems
       };
 
-      // Salvar localmente
+      // Salvar apenas localmente no IndexedDB
       saveFormData(data);
 
-      // Salvar no banco de dados automaticamente se houver dados suficientes
-      const hasMinimumData = formData.nomeEquipamento && osNumber;
-      if (hasMinimumData) {
-        autoSaveToDatabase(data);
-      }
+      // Não salvar automaticamente no backend a cada alteração
+      // const hasMinimumData = formData.nomeEquipamento && osNumber;
+      // if (hasMinimumData) {
+      //   autoSaveToDatabase(data);
+      // }
     }
   }, [formData, osNumber, manutencaoCorretiva, naoProgramados, conclusao, attachments, actionItems, viewMode]);
 
   // Função para salvar automaticamente no banco de dados
+  // Comentada para evitar o salvamento automático a cada alteração
+  /*
   const autoSaveToDatabase = async (data) => {
     try {
       // Prepara o documento para ser salvo
@@ -183,9 +185,9 @@ function App() {
 
       // Verificar se já existe um documento com este número de OS
       try {
-        const docExistente = await documentosService.listarDocumentos(0, 100);
-        const documentoExistente = docExistente.find(doc => doc.osNumber === osNumber);
-
+        const documentosExistentes = await documentosService.listarDocumentos(0, 100);
+        const documentoExistente = documentosExistentes.find(doc => doc.osNumber === osNumber);
+        
         if (documentoExistente) {
           // Atualiza o documento existente
           await documentosService.atualizarDocumento(documentoExistente.id, documentoData);
@@ -196,18 +198,13 @@ function App() {
           console.log('Documento salvo automaticamente no banco de dados');
         }
       } catch (err) {
-        // Se der erro ao buscar, tenta criar
-        try {
-          await documentosService.criarDocumento(documentoData);
-          console.log('Documento salvo automaticamente no banco de dados (após erro de busca)');
-        } catch (createErr) {
-          console.error('Erro ao salvar automaticamente:', createErr);
-        }
+        console.error('Erro ao verificar documentos existentes:', err);
       }
     } catch (err) {
       console.error('Erro no salvamento automático:', err);
     }
   };
+  */
 
   const obterDocumentoPorId = async (id) => {
     setIsLoading(true);
@@ -276,8 +273,21 @@ function App() {
     };
 
     try {
-      // Salva o documento na API
-      const documentoSalvo = await documentosService.criarDocumento(documentoData);
+      let documentoSalvo;
+
+      // Primeiro, tenta recuperar todos os documentos para verificar se já existe um com o mesmo número de OS
+      const documentosExistentes = await documentosService.listarDocumentos(0, 100);
+      const documentoExistente = documentosExistentes.find(doc => doc.osNumber === osNumber);
+
+      if (documentoExistente) {
+        // Se já existe um documento com o mesmo número de OS, atualiza-o
+        console.log('Encontrado documento existente, atualizando...', documentoExistente.id);
+        documentoSalvo = await documentosService.atualizarDocumento(documentoExistente.id, documentoData);
+      } else {
+        // Caso contrário, cria um novo documento
+        console.log('Criando novo documento...');
+        documentoSalvo = await documentosService.criarDocumento(documentoData);
+      }
 
       // Atualiza o estado com o documento salvo
       setSavedDocument(documentoSalvo);
