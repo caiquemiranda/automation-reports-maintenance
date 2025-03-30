@@ -11,6 +11,7 @@ import AttachmentSection from './components/AttachmentSection';
 import ConclusionSection from './components/ConclusionSection';
 import SignaturesSection from './components/SignaturesSection';
 import SavedDocumentView from './components/SavedDocumentView';
+import Sidebar from './components/Sidebar';
 
 // Serviços
 import { documentosService } from './services/api';
@@ -57,6 +58,12 @@ function App() {
   const [savedDocument, setSavedDocument] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+
+  // Controlador da visibilidade da barra lateral
+  const toggleSidebar = () => {
+    setSidebarVisible(prev => !prev);
+  };
 
   // Formatação das datas para o formato do componente date
   useEffect(() => {
@@ -91,13 +98,40 @@ function App() {
       if (savedData.actionItems) setActionItems(savedData.actionItems);
     }
 
+    // Verificar o serviço de backend ao iniciar
+    checkBackendService();
+
     // Verifica se há um documento para visualizar na URL
     const urlParams = new URLSearchParams(window.location.search);
     const documentId = urlParams.get('document');
     if (documentId) {
       obterDocumentoPorId(documentId);
     }
+
+    // Adicionar um listener para detectar cliques na barra lateral
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.sidebar-toggle')) {
+        toggleSidebar();
+      }
+    });
+
+    // Limpar listener quando o componente for desmontado
+    return () => {
+      document.removeEventListener('click', toggleSidebar);
+    };
   }, []);
+
+  // Verifica se o serviço de backend está funcionando
+  const checkBackendService = async () => {
+    try {
+      // Tenta acessar o endpoint de health check
+      await fetch(`${process.env.REACT_APP_API_URL}/health`);
+      console.log('Backend conectado com sucesso');
+    } catch (err) {
+      console.error('Erro ao conectar ao backend:', err);
+      setError('Não foi possível conectar ao servidor. Alguns recursos podem não funcionar corretamente.');
+    }
+  };
 
   // Salvar dados quando houver mudanças
   useEffect(() => {
@@ -213,86 +247,100 @@ function App() {
     window.history.pushState({}, '', url);
   };
 
+  const handleSelectDocument = (documentId) => {
+    obterDocumentoPorId(documentId);
+  };
+
   // Renderiza o documento em modo de visualização
   if (viewMode === 'view' && savedDocument) {
-    return <SavedDocumentView document={savedDocument} onBack={handleBackToEdit} />;
+    return (
+      <>
+        <Sidebar onSelectDocument={handleSelectDocument} />
+        <SavedDocumentView document={savedDocument} onBack={handleBackToEdit} />
+      </>
+    );
   }
 
   // Renderiza o formulário em modo de edição
   return (
-    <div className="main-container">
-      {error && <div className="error-message">{error}</div>}
+    <>
+      <Sidebar onSelectDocument={handleSelectDocument} />
 
-      <div className="edit-buttons">
-        <button className="btn-action" onClick={handlePrint}>Imprimir Documento</button>
-      </div>
+      <div className={`main-container ${sidebarVisible ? 'with-sidebar' : ''}`}>
+        {error && <div className="error-message">{error}</div>}
 
-      <div className="container" id="document">
-        <Header
-          osNumber={osNumber}
-          setOsNumber={setOsNumber}
-          manutencaoCorretiva={manutencaoCorretiva}
-          setManutencaoCorretiva={setManutencaoCorretiva}
-          naoProgramados={naoProgramados}
-          setNaoProgramados={setNaoProgramados}
-        />
+        <div className="edit-buttons">
+          <button className="btn-action" onClick={handlePrint}>Imprimir Documento</button>
+          <button className="btn-action" onClick={toggleSidebar}>{sidebarVisible ? 'Ocultar Histórico' : 'Mostrar Histórico'}</button>
+        </div>
 
-        <div className="divider"></div>
+        <div className="container" id="document">
+          <Header
+            osNumber={osNumber}
+            setOsNumber={setOsNumber}
+            manutencaoCorretiva={manutencaoCorretiva}
+            setManutencaoCorretiva={setManutencaoCorretiva}
+            naoProgramados={naoProgramados}
+            setNaoProgramados={setNaoProgramados}
+          />
 
-        <InfoSection
-          formData={formData}
-          handleInputChange={handleInputChange}
-          osNumber={osNumber}
-          setOsNumber={setOsNumber}
-          requisitantes={REQUISITANTES}
-        />
+          <div className="divider"></div>
 
-        <div className="divider strong-divider"></div>
+          <InfoSection
+            formData={formData}
+            handleInputChange={handleInputChange}
+            osNumber={osNumber}
+            setOsNumber={setOsNumber}
+            requisitantes={REQUISITANTES}
+          />
 
-        <ServiceSection
-          formData={formData}
-          handleInputChange={handleInputChange}
-        />
+          <div className="divider strong-divider"></div>
 
-        <ObservationSection
-          formData={formData}
-          handleInputChange={handleInputChange}
-        />
+          <ServiceSection
+            formData={formData}
+            handleInputChange={handleInputChange}
+          />
 
-        <ActionSection
-          formData={formData}
-          handleInputChange={handleInputChange}
-          actionItems={actionItems}
-          setActionItems={setActionItems}
-        />
+          <ObservationSection
+            formData={formData}
+            handleInputChange={handleInputChange}
+          />
 
-        <AttachmentSection
-          attachments={attachments}
-          setAttachments={setAttachments}
-        />
+          <ActionSection
+            formData={formData}
+            handleInputChange={handleInputChange}
+            actionItems={actionItems}
+            setActionItems={setActionItems}
+          />
 
-        <ConclusionSection
-          conclusao={conclusao}
-          handleConclusaoChange={handleConclusaoChange}
-        />
+          <AttachmentSection
+            attachments={attachments}
+            setAttachments={setAttachments}
+          />
 
-        <SignaturesSection
-          formData={formData}
-          handleDateChange={handleDateChange}
-        />
+          <ConclusionSection
+            conclusao={conclusao}
+            handleConclusaoChange={handleConclusaoChange}
+          />
 
-        {/* Botão para salvar o documento */}
-        <div className="save-document-container">
-          <button
-            className="btn-save-document"
-            onClick={handleSaveDocument}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Salvando...' : 'Salvar Documento Final'}
-          </button>
+          <SignaturesSection
+            formData={formData}
+            handleDateChange={handleDateChange}
+          />
+
+          {/* Botão para salvar o documento */}
+          <div className="save-document-container">
+            <button
+              className="btn-save-document"
+              onClick={handleSaveDocument}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Salvando...' : 'Salvar Documento Final'}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

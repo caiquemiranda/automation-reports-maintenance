@@ -646,3 +646,132 @@ textarea.form-control {
 .loading {
   animation: pulse 1.5s infinite;
 }
+
+/* Estilos para a barra lateral */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 300px;
+  background-color: #f8f9fa;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar.hidden {
+  transform: translateX(-290px);
+}
+
+.sidebar.visible {
+  transform: translateX(0);
+}
+
+.sidebar-toggle {
+  position: absolute;
+  right: 0;
+  top: 20px;
+  width: 20px;
+  height: 40px;
+  background-color: #2980b9;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.sidebar-content {
+  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.sidebar h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #2980b9;
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 10px;
+}
+
+.document-list {
+  margin-bottom: 20px;
+}
+
+.document-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.document-list li {
+  padding: 10px;
+  border-bottom: 1px solid #e9ecef;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.document-list li:hover {
+  background-color: #e9ecef;
+}
+
+.doc-title {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.doc-info {
+  font-size: 12px;
+  color: #6c757d;
+  margin: 5px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.doc-date {
+  font-size: 10px;
+  color: #6c757d;
+}
+
+.btn-refresh {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #495057;
+}
+
+.btn-refresh:hover {
+  background-color: #e9ecef;
+}
+
+.btn-refresh:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Ajustes para o layout principal quando a barra lateral está visível */
+.main-container.with-sidebar {
+  margin-left: 300px;
+}
+
+@media print {
+  .sidebar {
+    display: none !important;
+  }
+
+  .main-container.with-sidebar {
+    margin-left: 0;
+  }
+}
