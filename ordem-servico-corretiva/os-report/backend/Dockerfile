@@ -14,7 +14,6 @@ COPY requirements.txt .
 
 # Instalar dependências Python com verbose para ver possíveis erros
 RUN pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir sqlmodel && \
     pip list | grep sqlmodel
 
 # Criar diretório para uploads e banco de dados com permissões adequadas

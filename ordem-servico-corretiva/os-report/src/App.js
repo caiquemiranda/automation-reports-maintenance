@@ -9,7 +9,7 @@ import ObservationSection from './components/ObservationSection';
 import ActionSection from './components/ActionSection';
 import AttachmentSection from './components/AttachmentSection';
 import ConclusionSection from './components/ConclusionSection';
-import SignaturesSection from './components/SignaturesSection';
+import TecnicoMaterialSection from './components/TecnicoMaterialSection';
 import SavedDocumentView from './components/SavedDocumentView';
 import Sidebar from './components/Sidebar';
 
@@ -39,6 +39,8 @@ const initialFormData = {
   servico: 'Troca da lente, após o detector de Fumaça (N)-140.215.F30',
   observacao: 'O dispositivo encontrava-se danificado como citou "no cheiro" no final de inspeção, pessoal fumando escondido.',
   acaoCorretiva: 'Foi realizada a troca do dispositivo por um novo do mesmo modelo (sensor de fumaça convencional), onde foi realizado a limpeza interna das conexões e ajuste no dispositivo, o que normalizou o seu funcionamento conforme especificações. Programação e instalação do detector de fumaça após a troca do equipamento que apresentava problema.',
+  tecnicoResponsavel: '',
+  materiaisUtilizados: [],
   datas: ['', '', '', '']
 };
 
@@ -437,9 +439,9 @@ function App() {
             handleConclusaoChange={handleConclusaoChange}
           />
 
-          <SignaturesSection
+          <TecnicoMaterialSection
             formData={formData}
-            handleDateChange={handleDateChange}
+            handleInputChange={handleInputChange}
           />
 
           {/* Botão para salvar o documento */}
