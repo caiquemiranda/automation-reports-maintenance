@@ -197,35 +197,37 @@ const SavedDocumentView = ({ document, onBack }) => {
                 )}
 
                 {/* Seção de Conclusão */}
-                <div className="conclusion-section">
-                    <div className="section-label">CONCLUSÃO:</div>
-                    <div className="conclusion-options">
-                        <div className="conclusion-option">
-                            <input
-                                type="radio"
-                                checked={conclusao.normal}
-                                readOnly
-                                disabled
-                            />
-                            <label>Equipamento normal</label>
-                        </div>
-                        <div className="conclusion-option">
-                            <input
-                                type="radio"
-                                checked={conclusao.parcial}
-                                readOnly
-                                disabled
-                            />
-                            <label>Equipamento parcial</label>
-                        </div>
-                        <div className="conclusion-option">
-                            <input
-                                type="radio"
-                                checked={conclusao.inoperante}
-                                readOnly
-                                disabled
-                            />
-                            <label>Equipamento inoperante</label>
+                <div className="conclusion-page-wrapper">
+                    <div className="conclusion-section">
+                        <div className="section-label">CONCLUSÃO:</div>
+                        <div className="conclusion-options">
+                            <div className={`conclusion-option ${conclusao.normal ? 'selected' : ''}`}>
+                                <input
+                                    type="radio"
+                                    checked={conclusao.normal}
+                                    readOnly
+                                    disabled
+                                />
+                                <label>Equipamento normal</label>
+                            </div>
+                            <div className={`conclusion-option ${conclusao.parcial ? 'selected' : ''}`}>
+                                <input
+                                    type="radio"
+                                    checked={conclusao.parcial}
+                                    readOnly
+                                    disabled
+                                />
+                                <label>Equipamento parcial</label>
+                            </div>
+                            <div className={`conclusion-option ${conclusao.inoperante ? 'selected' : ''}`}>
+                                <input
+                                    type="radio"
+                                    checked={conclusao.inoperante}
+                                    readOnly
+                                    disabled
+                                />
+                                <label>Equipamento inoperante</label>
+                            </div>
                         </div>
                     </div>
                 </div>

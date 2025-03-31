@@ -18,54 +18,56 @@ const ConclusionSection = ({ conclusao, handleConclusaoChange }) => {
   };
 
   return (
-    <div className="conclusion-section">
-      <div className="section-label">CONCLUSÃO:</div>
-      <div className={`conclusion-options ${!algumaSelecionada ? 'required-field' : ''}`}>
-        <div 
-          className={`conclusion-option ${conclusao.normal ? 'selected' : ''}`} 
-          onClick={() => handleOptionClick('normal')}
-        >
-          <input
-            type="radio"
-            id="equipamento-normal"
-            name="conclusao-estado"
-            checked={conclusao.normal}
-            onChange={() => handleConclusaoChange('normal', true)}
-            required={!algumaSelecionada}
-          />
-          <label htmlFor="equipamento-normal">Equipamento normal</label>
-        </div>
-        <div 
-          className={`conclusion-option ${conclusao.parcial ? 'selected' : ''}`}
-          onClick={() => handleOptionClick('parcial')}
-        >
-          <input
-            type="radio"
-            id="equipamento-parcial"
-            name="conclusao-estado"
-            checked={conclusao.parcial}
-            onChange={() => handleConclusaoChange('parcial', true)}
-          />
-          <label htmlFor="equipamento-parcial">Equipamento parcial</label>
-        </div>
-        <div 
-          className={`conclusion-option ${conclusao.inoperante ? 'selected' : ''}`}
-          onClick={() => handleOptionClick('inoperante')}
-        >
-          <input
-            type="radio"
-            id="equipamento-inop"
-            name="conclusao-estado"
-            checked={conclusao.inoperante}
-            onChange={() => handleConclusaoChange('inoperante', true)}
-          />
-          <label htmlFor="equipamento-inop">Equipamento inoperante</label>
-        </div>
-        {!algumaSelecionada && (
-          <div className="required-message">
-            * Selecione uma opção para conclusão
+    <div className="conclusion-page-wrapper">
+      <div className="conclusion-section">
+        <div className="section-label">CONCLUSÃO:</div>
+        <div className="conclusion-options">
+          <div
+            className={`conclusion-option ${conclusao.normal ? 'selected' : ''}`}
+            onClick={() => handleOptionClick('normal')}
+          >
+            <input
+              type="radio"
+              id="equipamento-normal"
+              name="conclusao-estado"
+              checked={conclusao.normal}
+              onChange={() => handleConclusaoChange('normal', true)}
+              required={!algumaSelecionada}
+            />
+            <label htmlFor="equipamento-normal">Equipamento normal</label>
           </div>
-        )}
+          <div
+            className={`conclusion-option ${conclusao.parcial ? 'selected' : ''}`}
+            onClick={() => handleOptionClick('parcial')}
+          >
+            <input
+              type="radio"
+              id="equipamento-parcial"
+              name="conclusao-estado"
+              checked={conclusao.parcial}
+              onChange={() => handleConclusaoChange('parcial', true)}
+            />
+            <label htmlFor="equipamento-parcial">Equipamento parcial</label>
+          </div>
+          <div
+            className={`conclusion-option ${conclusao.inoperante ? 'selected' : ''}`}
+            onClick={() => handleOptionClick('inoperante')}
+          >
+            <input
+              type="radio"
+              id="equipamento-inop"
+              name="conclusao-estado"
+              checked={conclusao.inoperante}
+              onChange={() => handleConclusaoChange('inoperante', true)}
+            />
+            <label htmlFor="equipamento-inop">Equipamento inoperante</label>
+          </div>
+          {!algumaSelecionada && (
+            <div className="required-message">
+              * Selecione uma opção para conclusão
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

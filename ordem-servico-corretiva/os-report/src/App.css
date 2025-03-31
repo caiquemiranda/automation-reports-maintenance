@@ -317,6 +317,8 @@ body {
 
 .conclusion-section {
   margin: 25px 0;
+  page-break-before: always;
+  break-before: always;
 }
 
 .conclusion-options {
@@ -326,6 +328,7 @@ body {
   border-bottom: 1px solid #2980b9;
   padding: 10px 0;
   page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .conclusion-option {
@@ -551,6 +554,27 @@ body {
   .layout-buttons,
   .attachment-instructions {
     display: none !important;
+  }
+
+  /* Forçar a seção de conclusão a sempre começar em uma nova página */
+  .conclusion-section {
+    page-break-before: always;
+    break-before: always;
+  }
+
+  /* Garantir que os componentes não sejam quebrados entre páginas */
+  .conclusion-section,
+  .conclusion-options,
+  .tecnico-material-section,
+  .signatures-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Ajustar o tamanho de componentes para melhor caber na página */
+  .attachment-section {
+    page-break-after: always;
+    break-after: always;
   }
 }
 
@@ -984,6 +1008,8 @@ input:disabled {
   border: 1px solid #ccc;
   padding: 15px;
   border-radius: 5px;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .section-container {
@@ -1224,4 +1250,21 @@ input:disabled {
 .layout-button:hover {
   background-color: #e1f0fa;
   border-color: #2980b9;
+}
+
+/* Estilo para garantir que a seção de conclusão fique em uma nova página na impressão */
+.conclusion-page-wrapper {
+  margin-top: 30px;
+}
+
+@media print {
+  .conclusion-page-wrapper {
+    page-break-before: always;
+    break-before: always;
+  }
+
+  /* Remover margem superior quando impressa para evitar espaços em branco */
+  .conclusion-section {
+    margin-top: 0;
+  }
 }
