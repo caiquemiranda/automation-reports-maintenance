@@ -207,9 +207,12 @@ body {
 
 .attachment-container {
   border: 1px dashed #ccc;
-  padding: 10px;
+  padding: 15px;
   border-radius: 4px;
   min-height: 100px;
+  width: 100%;
+  max-width: 730px;
+  margin: 0 auto;
 }
 
 .attachment-controls {
@@ -237,6 +240,7 @@ body {
   gap: 15px;
   margin-top: 10px;
   min-height: 150px;
+  justify-content: center;
 }
 
 .attachment-item {
@@ -271,10 +275,16 @@ body {
 }
 
 .attachment-instructions {
-  margin-top: 10px;
+  margin-top: 15px;
   color: #666;
   font-size: 12px;
   text-align: center;
+  background-color: #f8f8f8;
+  padding: 8px;
+  border-radius: 4px;
+  max-width: 730px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .attachment-description {
@@ -666,6 +676,10 @@ textarea.form-control {
   flex-wrap: wrap;
   gap: 15px;
   margin-top: 10px;
+  justify-content: center;
+  max-width: 730px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .attachment-item-readonly {
@@ -1158,4 +1172,30 @@ input:disabled {
   .size-controls {
     display: none !important;
   }
+}
+
+/* Estilos para os layouts específicos de imagem */
+.layout-hint {
+  margin-top: 8px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.layout-button {
+  display: flex;
+  align-items: center;
+  background-color: #f0f7fb;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.layout-button:hover {
+  background-color: #e1f0fa;
+  border-color: #2980b9;
 }

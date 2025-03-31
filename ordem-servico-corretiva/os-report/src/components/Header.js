@@ -26,7 +26,7 @@ const Header = ({
 
       <div className="title-container">
         <h1 className="text-center">
-          ORDEM DE SERVIÇO - OS-
+          ORDEM DE SERVIÇO 
           <span
             contentEditable
             suppressContentEditableWarning

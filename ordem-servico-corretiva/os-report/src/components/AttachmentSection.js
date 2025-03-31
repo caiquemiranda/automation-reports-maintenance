@@ -158,6 +158,44 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
     setAttachments(updatedAttachments);
   };
 
+  // Aplicar layout predefinido para as imagens
+  const applyLayout = (layoutType) => {
+    if (attachments.length === 0) return;
+
+    const updatedAttachments = [...attachments];
+
+    switch (layoutType) {
+      case '2-landscape':
+        // Layout para 2 imagens em paisagem
+        updatedAttachments.forEach((attachment, index) => {
+          attachment.width = '335';
+          attachment.height = 'auto';
+        });
+        break;
+
+      case '3-portrait':
+        // Layout para 3 imagens em retrato
+        updatedAttachments.forEach((attachment, index) => {
+          attachment.width = '225';
+          attachment.height = 'auto';
+        });
+        break;
+
+      case 'full-width':
+        // Uma imagem em largura total
+        updatedAttachments.forEach((attachment, index) => {
+          attachment.width = '690';
+          attachment.height = 'auto';
+        });
+        break;
+
+      default:
+        break;
+    }
+
+    setAttachments(updatedAttachments);
+  };
+
   return (
     <div className="attachment-section">
       <div className="section-label">ANEXOS:</div>
@@ -212,8 +250,15 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
                       <option value="100">100px</option>
                       <option value="150">150px</option>
                       <option value="200">200px</option>
+                      <option value="225">225px (3 fotos retrato)</option>
                       <option value="250">250px</option>
                       <option value="300">300px</option>
+                      <option value="335">335px (2 fotos paisagem)</option>
+                      <option value="350">350px</option>
+                      <option value="400">400px</option>
+                      <option value="450">450px</option>
+                      <option value="500">500px</option>
+                      <option value="690">690px (largura total)</option>
                     </select>
                   </div>
                   <div className="size-control-row">
@@ -228,6 +273,11 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
                       <option value="200">200px</option>
                       <option value="250">250px</option>
                       <option value="300">300px</option>
+                      <option value="310">310px</option>
+                      <option value="320">320px</option>
+                      <option value="325">325px</option>
+                      <option value="330">330px</option>
+                      <option value="335">335px</option>
                     </select>
                   </div>
                   <button
@@ -285,6 +335,33 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
             </>
           )}
         </div>
+
+        {attachments.length > 0 && (
+          <div className="layout-hint">
+            <span style={{ fontSize: '12px', marginRight: '5px' }}>Layouts pré-definidos:</span>
+            <button
+              className="layout-button"
+              onClick={() => applyLayout('2-landscape')}
+              title="Ideal para 2 imagens lado a lado"
+            >
+              2 Fotos Paisagem
+            </button>
+            <button
+              className="layout-button"
+              onClick={() => applyLayout('3-portrait')}
+              title="Ideal para 3 imagens lado a lado"
+            >
+              3 Fotos Retrato
+            </button>
+            <button
+              className="layout-button"
+              onClick={() => applyLayout('full-width')}
+              title="Imagem em largura total"
+            >
+              Largura Total
+            </button>
+          </div>
+        )}
       </div>
       <div className="attachment-instructions">
         <small>* Arraste as imagens para reorganizá-las conforme desejado ou clique no botão de redimensionar para ajustar o tamanho</small>
