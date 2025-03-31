@@ -168,7 +168,7 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
       case '2-landscape':
         // Layout para 2 imagens em paisagem
         updatedAttachments.forEach((attachment, index) => {
-          attachment.width = '335';
+          attachment.width = '325';
           attachment.height = 'auto';
         });
         break;
@@ -187,6 +187,22 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
           attachment.width = '690';
           attachment.height = 'auto';
         });
+        break;
+
+      case 'side-by-side':
+        // Duas imagens lado a lado com largura calculada para caber exatamente
+        if (attachments.length >= 2) {
+          // Primeira metade das imagens na primeira linha
+          for (let i = 0; i < Math.min(2, attachments.length); i++) {
+            updatedAttachments[i].width = '325';
+            updatedAttachments[i].height = 'auto';
+          }
+          // Restante das imagens em largura total
+          for (let i = 2; i < attachments.length; i++) {
+            updatedAttachments[i].width = '690';
+            updatedAttachments[i].height = 'auto';
+          }
+        }
         break;
 
       default:
@@ -243,21 +259,14 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
                   <div className="size-control-row">
                     <label>Largura:</label>
                     <select
-                      value={attachment.width}
+                      value={attachment.width || '325'}
                       onChange={(e) => handleSizeChange(index, 'width', e.target.value)}
+                      className="size-select"
                     >
-                      <option value="auto">Auto</option>
-                      <option value="100">100px</option>
-                      <option value="150">150px</option>
-                      <option value="200">200px</option>
-                      <option value="225">225px (3 fotos retrato)</option>
-                      <option value="250">250px</option>
-                      <option value="300">300px</option>
-                      <option value="335">335px (2 fotos paisagem)</option>
-                      <option value="350">350px</option>
-                      <option value="400">400px</option>
+                      <option value="225">225px (3 imagens)</option>
+                      <option value="325">325px (2 imagens)</option>
                       <option value="450">450px</option>
-                      <option value="500">500px</option>
+                      <option value="550">550px</option>
                       <option value="690">690px (largura total)</option>
                     </select>
                   </div>

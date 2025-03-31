@@ -206,13 +206,14 @@ body {
 }
 
 .attachment-container {
-  border: 1px dashed #ccc;
+  margin: 20px auto;
+  max-width: 700px;
   padding: 15px;
-  border-radius: 4px;
+  background-color: #f9f9f9;
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+  text-align: center;
   min-height: 100px;
-  width: 100%;
-  max-width: 730px;
-  margin: 0 auto;
 }
 
 .attachment-controls {
@@ -237,21 +238,26 @@ body {
 #image-attachments {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-top: 10px;
-  min-height: 150px;
   justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  min-height: 150px;
 }
 
 .attachment-item {
   position: relative;
-  width: 200px;
   border: 1px solid #ddd;
   border-radius: 4px;
+  padding: 5px;
+  background-color: white;
   overflow: hidden;
   cursor: move;
-  margin-bottom: 15px;
   transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .attachment-item.dragging {
@@ -537,6 +543,14 @@ body {
 
   .os-number-editable {
     border-bottom: none;
+  }
+
+  .attachment-controls-overlay,
+  .btn-resize,
+  .size-controls,
+  .layout-buttons,
+  .attachment-instructions {
+    display: none !important;
   }
 }
 
