@@ -7,7 +7,7 @@ import React from 'react';
  * @param {Function} props.setOsNumber - Função para atualizar o número da OS
  * @param {boolean} props.manutencaoCorretiva - Estado do checkbox de manutenção corretiva
  * @param {Function} props.setManutencaoCorretiva - Função para atualizar o estado
- * @param {boolean} props.naoProgramados - Estado do checkbox de não programados
+ * @param {boolean} props.naoProgramados - Estado do checkbox de manutenção planejada
  * @param {Function} props.setNaoProgramados - Função para atualizar o estado
  */
 const Header = ({
@@ -20,17 +20,23 @@ const Header = ({
 }) => {
   return (
     <div className="header">
-      <div className="title">
+      <div className="logo">
+        <img src="/logo_IBS.png" alt="IBSystems Logo" className="logo-img" />
+      </div>
+
+      <div className="title-container">
         <h1 className="text-center">
-          ORDEM DE SERVIÇO CORRETIVA - OS-
+          ORDEM DE SERVIÇO - OS-
           <span
             contentEditable
             suppressContentEditableWarning
             onBlur={(e) => setOsNumber(e.target.textContent)}
+            className="os-number-editable"
           >
             {osNumber}
           </span>
         </h1>
+
         <div className="checkboxes">
           <div className="checkbox-item">
             <input
@@ -50,12 +56,9 @@ const Header = ({
               checked={naoProgramados}
               onChange={(e) => setNaoProgramados(e.target.checked)}
             />
-            <label htmlFor="naoprogramados">NÃO PROGRAMADOS</label>
+            <label htmlFor="naoprogramados">MANUTENÇÃO PLANEJADA</label>
           </div>
         </div>
-      </div>
-      <div className="logo">
-        <img src="/logo_IBS.png" alt="IBSystems Logo" className="logo-img" />
       </div>
     </div>
   );

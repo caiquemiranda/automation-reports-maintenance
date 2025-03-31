@@ -47,15 +47,13 @@ const SavedDocumentView = ({ document, onBack }) => {
 
             <div className="container document-readonly" id="document">
                 {/* Cabeçalho */}
-                <div className="document-status">
-                    <span>Status: {document.status || 'Finalizado'}</span>
-                    <span>Data de gravação: {formatDate(document.data_criacao)}</span>
-                </div>
-
                 <div className="header">
-                    <div className="title">
+                    <div className="logo">
+                        <img src="/logo_IBS.png" alt="IBSystems Logo" className="logo-img" />
+                    </div>
+                    <div className="title-container">
                         <h1 className="text-center">
-                            ORDEM DE SERVIÇO CORRETIVA - OS-{document.osNumber}
+                            ORDEM DE SERVIÇO - OS-{document.osNumber}
                         </h1>
                         <div className="checkboxes">
                             <div className="checkbox-item">
@@ -74,12 +72,9 @@ const SavedDocumentView = ({ document, onBack }) => {
                                     readOnly
                                     disabled
                                 />
-                                <label>NÃO PROGRAMADOS</label>
+                                <label>MANUTENÇÃO PLANEJADA</label>
                             </div>
                         </div>
-                    </div>
-                    <div className="logo">
-                        <img src="/logo_IBS.png" alt="IBSystems Logo" className="logo-img" />
                     </div>
                 </div>
 
