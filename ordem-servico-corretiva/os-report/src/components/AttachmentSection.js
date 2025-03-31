@@ -258,36 +258,59 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
                 <div className="size-controls">
                   <div className="size-control-row">
                     <label>Largura:</label>
-                    <select
-                      value={attachment.width || '325'}
-                      onChange={(e) => handleSizeChange(index, 'width', e.target.value)}
-                      className="size-select"
-                    >
-                      <option value="225">225px (3 imagens)</option>
-                      <option value="325">325px (2 imagens)</option>
-                      <option value="450">450px</option>
-                      <option value="550">550px</option>
-                      <option value="690">690px (largura total)</option>
-                    </select>
+                    <div className="size-input-group">
+                      <input
+                        type="number"
+                        value={attachment.width === 'auto' ? '' : attachment.width}
+                        onChange={(e) => handleSizeChange(index, 'width', e.target.value)}
+                        placeholder="px"
+                        className="size-input"
+                        min="50"
+                        max="690"
+                      />
+                      <span className="size-input-unit">px</span>
+                      <select
+                        onChange={(e) => handleSizeChange(index, 'width', e.target.value)}
+                        className="size-presets"
+                      >
+                        <option value="">Predefinições</option>
+                        <option value="auto">Auto</option>
+                        <option value="225">225px (3 imagens)</option>
+                        <option value="325">325px (2 imagens)</option>
+                        <option value="450">450px</option>
+                        <option value="550">550px</option>
+                        <option value="690">690px (largura total)</option>
+                      </select>
+                    </div>
                   </div>
                   <div className="size-control-row">
                     <label>Altura:</label>
-                    <select
-                      value={attachment.height}
-                      onChange={(e) => handleSizeChange(index, 'height', e.target.value)}
-                    >
-                      <option value="auto">Auto</option>
-                      <option value="100">100px</option>
-                      <option value="150">150px</option>
-                      <option value="200">200px</option>
-                      <option value="250">250px</option>
-                      <option value="300">300px</option>
-                      <option value="310">310px</option>
-                      <option value="320">320px</option>
-                      <option value="325">325px</option>
-                      <option value="330">330px</option>
-                      <option value="335">335px</option>
-                    </select>
+                    <div className="size-input-group">
+                      <input
+                        type="number"
+                        value={attachment.height === 'auto' ? '' : attachment.height}
+                        onChange={(e) => handleSizeChange(index, 'height', e.target.value)}
+                        placeholder="px"
+                        className="size-input"
+                        min="50"
+                        max="500"
+                      />
+                      <span className="size-input-unit">px</span>
+                      <select
+                        onChange={(e) => handleSizeChange(index, 'height', e.target.value)}
+                        className="size-presets"
+                      >
+                        <option value="">Predefinições</option>
+                        <option value="auto">Auto</option>
+                        <option value="100">100px</option>
+                        <option value="150">150px</option>
+                        <option value="200">200px</option>
+                        <option value="250">250px</option>
+                        <option value="300">300px</option>
+                        <option value="325">325px</option>
+                        <option value="350">350px</option>
+                      </select>
+                    </div>
                   </div>
                   <button
                     className="size-control-done"
