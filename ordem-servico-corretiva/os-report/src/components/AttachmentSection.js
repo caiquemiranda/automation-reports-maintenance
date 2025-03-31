@@ -12,6 +12,7 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
   const fileInputRef = useRef(null);
   const attachmentContainerRef = useRef(null);
   const [draggedItem, setDraggedItem] = useState(null);
+  const [editingSize, setEditingSize] = useState(null);
 
   // Efeito para configurar o sistema de arrastar e soltar após renderização
   useEffect(() => {
@@ -21,7 +22,7 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
   // Configurar funcionalidade de arrastar e soltar
   const setupDragAndDrop = () => {
     const attachmentItems = document.querySelectorAll('.attachment-item');
-    
+
     attachmentItems.forEach((item) => {
       item.addEventListener('dragstart', handleDragStart);
       item.addEventListener('dragend', handleDragEnd);
@@ -29,11 +30,11 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
       item.addEventListener('dragenter', handleDragEnter);
       item.addEventListener('dragleave', handleDragLeave);
       item.addEventListener('drop', handleDrop);
-      
+
       // Adicionar atributo para permitir arrastar
       item.setAttribute('draggable', 'true');
     });
-    
+
     return () => {
       attachmentItems.forEach((item) => {
         item.removeEventListener('dragstart', handleDragStart);
@@ -48,9 +49,15 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
 
   // Handlers para arrastar e soltar
   const handleDragStart = (e) => {
+    // Não permitir arrastar se estiver editando tamanho
+    if (editingSize !== null) {
+      e.preventDefault();
+      return;
+    }
+
     const target = e.target.closest('.attachment-item');
     if (!target) return;
-    
+
     setDraggedItem(target);
     target.classList.add('dragging');
     e.dataTransfer.effectAllowed = 'move';
@@ -86,17 +93,17 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
   const handleDrop = (e) => {
     e.preventDefault();
     const target = e.target.closest('.attachment-item');
-    
+
     if (!target || !draggedItem || target === draggedItem) return;
-    
+
     const fromIndex = parseInt(draggedItem.getAttribute('data-index'));
     const toIndex = parseInt(target.getAttribute('data-index'));
-    
+
     // Reordenar os anexos
     const newAttachments = [...attachments];
     const [movedItem] = newAttachments.splice(fromIndex, 1);
     newAttachments.splice(toIndex, 0, movedItem);
-    
+
     setAttachments(newAttachments);
     target.classList.remove('drag-over');
   };
@@ -114,7 +121,9 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
         const newAttachment = {
           id: `attachment-${Date.now()}`,
           src: e.target.result,
-          description: description || selectedFile.name
+          description: description || selectedFile.name,
+          width: 200, // Largura padrão inicial
+          height: 'auto' // Altura automática para manter proporção
         };
         setAttachments([...attachments, newAttachment]);
         setSelectedFile(null);
@@ -132,6 +141,23 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
     setAttachments(updatedAttachments);
   };
 
+  // Iniciar edição de tamanho para uma imagem
+  const startSizeEdit = (index) => {
+    setEditingSize(index);
+  };
+
+  // Finalizar edição de tamanho
+  const endSizeEdit = () => {
+    setEditingSize(null);
+  };
+
+  // Ajustar o tamanho da imagem
+  const handleSizeChange = (index, sizeType, newValue) => {
+    const updatedAttachments = [...attachments];
+    updatedAttachments[index][sizeType] = newValue;
+    setAttachments(updatedAttachments);
+  };
+
   return (
     <div className="attachment-section">
       <div className="section-label">ANEXOS:</div>
@@ -139,10 +165,11 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
       <div className="attachment-container">
         <div id="image-attachments" ref={attachmentContainerRef}>
           {attachments.map((attachment, index) => (
-            <div 
-              key={attachment.id} 
-              className="attachment-item" 
+            <div
+              key={attachment.id}
+              className={`attachment-item ${editingSize === index ? 'editing-size' : ''}`}
               data-index={index}
+              style={{ width: attachment.width === 'auto' ? 'auto' : `${attachment.width}px` }}
             >
               <button
                 className="remove-attachment"
@@ -154,6 +181,11 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
                 src={attachment.src}
                 alt="Anexo"
                 className="attachment-image"
+                style={{
+                  width: attachment.width === 'auto' ? 'auto' : '100%',
+                  height: attachment.height === 'auto' ? 'auto' : `${attachment.height}px`,
+                  maxHeight: attachment.height === 'auto' ? '150px' : 'none'
+                }}
               />
               <div
                 className="attachment-description"
@@ -167,6 +199,55 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
               >
                 {attachment.description}
               </div>
+
+              {editingSize === index ? (
+                <div className="size-controls">
+                  <div className="size-control-row">
+                    <label>Largura:</label>
+                    <select
+                      value={attachment.width}
+                      onChange={(e) => handleSizeChange(index, 'width', e.target.value)}
+                    >
+                      <option value="auto">Auto</option>
+                      <option value="100">100px</option>
+                      <option value="150">150px</option>
+                      <option value="200">200px</option>
+                      <option value="250">250px</option>
+                      <option value="300">300px</option>
+                    </select>
+                  </div>
+                  <div className="size-control-row">
+                    <label>Altura:</label>
+                    <select
+                      value={attachment.height}
+                      onChange={(e) => handleSizeChange(index, 'height', e.target.value)}
+                    >
+                      <option value="auto">Auto</option>
+                      <option value="100">100px</option>
+                      <option value="150">150px</option>
+                      <option value="200">200px</option>
+                      <option value="250">250px</option>
+                      <option value="300">300px</option>
+                    </select>
+                  </div>
+                  <button
+                    className="size-control-done"
+                    onClick={endSizeEdit}
+                  >
+                    Concluir
+                  </button>
+                </div>
+              ) : (
+                <div className="attachment-controls-overlay">
+                  <button
+                    className="btn-resize"
+                    title="Ajustar tamanho"
+                    onClick={() => startSizeEdit(index)}
+                  >
+                    <span role="img" aria-label="resize">↔️</span>
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -206,7 +287,7 @@ const AttachmentSection = ({ attachments, setAttachments }) => {
         </div>
       </div>
       <div className="attachment-instructions">
-        <small>* Arraste as imagens para reorganizá-las conforme desejado</small>
+        <small>* Arraste as imagens para reorganizá-las conforme desejado ou clique no botão de redimensionar para ajustar o tamanho</small>
       </div>
     </div>
   );

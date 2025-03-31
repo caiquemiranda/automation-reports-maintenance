@@ -170,11 +170,22 @@ const SavedDocumentView = ({ document, onBack }) => {
                         <div className="section-label">ANEXOS:</div>
                         <div className="attachment-container-readonly">
                             {attachments.map((attachment) => (
-                                <div key={attachment.id} className="attachment-item-readonly">
+                                <div
+                                    key={attachment.id}
+                                    className="attachment-item-readonly"
+                                    style={{
+                                        width: attachment.width === 'auto' ? 'auto' : `${attachment.width}px`
+                                    }}
+                                >
                                     <img
                                         src={attachment.src}
                                         alt="Anexo"
                                         className="attachment-image"
+                                        style={{
+                                            width: attachment.width === 'auto' ? 'auto' : '100%',
+                                            height: attachment.height === 'auto' ? 'auto' : `${attachment.height}px`,
+                                            maxHeight: attachment.height === 'auto' ? '150px' : 'none'
+                                        }}
                                     />
                                     <div className="attachment-description-readonly">
                                         {attachment.description}
