@@ -269,7 +269,24 @@ function App() {
   };
 
   const handlePrint = () => {
+    // Salvar o título original da página
+    const originalTitle = document.title;
+
+    // Definir o novo título com o formato OS-numero-TAG para a impressão
+    const tagEquipamento = formData.codigoManutencao || '';
+    const novoTitulo = `OS-${osNumber}-${tagEquipamento}`;
+    document.title = novoTitulo;
+
+    console.log(`Título alterado para impressão: ${novoTitulo}`);
+
+    // Chamar a função de impressão
     window.print();
+
+    // Restaurar o título original após a impressão
+    setTimeout(() => {
+      document.title = originalTitle;
+      console.log(`Título restaurado para: ${originalTitle}`);
+    }, 1000);
   };
 
   const handleSaveDocument = async () => {
