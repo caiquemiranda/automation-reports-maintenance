@@ -9,7 +9,7 @@ import React from 'react';
 const ObservationSection = ({ formData, handleInputChange }) => {
     return (
         <div className="observation-section">
-            <div className="section-label">OBSERVAÇÃO:</div>
+            <div className="section-label">Observação:</div>
             <div className="section-content">
                 <textarea
                     className="form-control"

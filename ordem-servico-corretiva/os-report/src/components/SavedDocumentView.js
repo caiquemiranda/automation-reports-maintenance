@@ -41,7 +41,7 @@ const SavedDocumentView = ({ document, onBack }) => {
         <div className="main-container">
             <div className="document-control-panel">
                 <button className="btn-action" onClick={onBack}>Voltar</button>
-                <h2>Documento Finalizado - OS-{document.osNumber}</h2>
+                <h2>Documento Finalizado - OS {document.osNumber}</h2>
                 <button className="btn-action" onClick={handlePrint}>Imprimir</button>
             </div>
 
@@ -53,7 +53,7 @@ const SavedDocumentView = ({ document, onBack }) => {
                     </div>
                     <div className="title-container">
                         <h1 className="text-center">
-                            ORDEM DE SERVIÇO - OS-{document.osNumber}
+                            ORDEM DE SERVIÇO {document.osNumber}
                         </h1>
                         <div className="checkboxes">
                             <div className="checkbox-item">
@@ -84,7 +84,7 @@ const SavedDocumentView = ({ document, onBack }) => {
                 <div className="info-section">
                     <div className="info-row">
                         <div className="info-item">
-                            <div className="info-label">Código de Manutenção:</div>
+                            <div className="info-label">TAG do Equipamento:</div>
                             <div className="info-value readonly">{formData.codigoManutencao || document.codigoManutencao || '—'}</div>
                         </div>
                         <div className="info-item">
@@ -94,7 +94,7 @@ const SavedDocumentView = ({ document, onBack }) => {
                     </div>
                     <div className="info-row">
                         <div className="info-item">
-                            <div className="info-label">Nome do Equipamento:</div>
+                            <div className="info-label">Tipo do Equipamento:</div>
                             <div className="info-value readonly">{formData.nomeEquipamento || document.nomeEquipamento}</div>
                         </div>
                         <div className="info-item">
@@ -115,7 +115,7 @@ const SavedDocumentView = ({ document, onBack }) => {
                     <div className="info-row">
                         <div className="info-item">
                             <div className="info-label">Número da O.S.:</div>
-                            <div className="info-value readonly">OS-{document.osNumber}</div>
+                            <div className="info-value readonly">{document.osNumber}</div>
                         </div>
                         <div className="info-item">
                             <div className="info-label">Requisitante:</div>
@@ -137,13 +137,13 @@ const SavedDocumentView = ({ document, onBack }) => {
 
                 {/* Seção de Serviço */}
                 <div className="service-section">
-                    <div className="section-label">SERVIÇO:</div>
+                    <div className="section-label">Serviço:</div>
                     <div className="section-content readonly">{formData.servico}</div>
                 </div>
 
                 {/* Seção de Observação */}
                 <div className="observation-section">
-                    <div className="section-label">OBSERVAÇÃO:</div>
+                    <div className="section-label">Observação:</div>
                     <div className="section-content readonly">{formData.observacao}</div>
                 </div>
 
@@ -167,7 +167,7 @@ const SavedDocumentView = ({ document, onBack }) => {
                 {/* Seção de Anexos */}
                 {attachments && attachments.length > 0 && (
                     <div className="attachment-section">
-                        <div className="section-label">ANEXOS:</div>
+                        <div className="section-label">Anexos:</div>
                         <div className="attachment-container-readonly">
                             {attachments.map((attachment) => (
                                 <div
@@ -199,7 +199,7 @@ const SavedDocumentView = ({ document, onBack }) => {
                 {/* Seção de Conclusão */}
                 <div className="conclusion-page-wrapper">
                     <div className="conclusion-section">
-                        <div className="section-label">CONCLUSÃO:</div>
+                        <div className="section-label">Conclusão:</div>
                         <div className="conclusion-options">
                             <div className={`conclusion-option ${conclusao.normal ? 'selected' : ''}`}>
                                 <input

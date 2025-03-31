@@ -9,7 +9,7 @@ import React from 'react';
 const ServiceSection = ({ formData, handleInputChange }) => {
     return (
         <div className="service-section">
-            <div className="section-label">SERVIÇO:</div>
+            <div className="section-label">Serviço:</div>
             <div className="section-content">
                 <textarea
                     className="form-control"

@@ -20,7 +20,7 @@ const ConclusionSection = ({ conclusao, handleConclusaoChange }) => {
   return (
     <div className="conclusion-page-wrapper">
       <div className="conclusion-section">
-        <div className="section-label">CONCLUSÃO:</div>
+        <div className="section-label">Conclusão:</div>
         <div className="conclusion-options">
           <div
             className={`conclusion-option ${conclusao.normal ? 'selected' : ''}`}
