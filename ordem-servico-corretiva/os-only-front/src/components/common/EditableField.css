@@ -1,0 +1,11 @@
+.editable-field {
+    border-bottom: 1px solid transparent;
+    padding: 2px;
+    min-height: 20px;
+}
+
+.editable-field:focus {
+    outline: none;
+    border-bottom: 1px solid #3498db;
+    background-color: #f8f9fa;
+}

@@ -1,0 +1,51 @@
+/* 
+  Estilos globais da aplicação 
+  Estilos específicos de componentes foram movidos para seus respectivos arquivos
+*/
+
+.main-container {
+    max-width: 21cm;
+    margin: 0 auto;
+}
+
+.edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn-action {
+    padding: 8px 15px;
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-action:hover {
+    background-color: #3498db;
+}
+
+.container {
+    background-color: white;
+    width: 21cm;
+    min-height: 29.7cm;
+    padding: 1.5cm;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.divider {
+    height: 1px;
+    background-color: black;
+    margin: 10px 0 20px;
+}
+
+.strong-divider {
+    height: 2px;
+    background-color: #2980b9;
+    margin: 25px 0;
+}
