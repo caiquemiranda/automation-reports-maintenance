@@ -1,119 +1,107 @@
-import React, { useState } from 'react';
-import './InfoSection.css';
+import React from 'react';
 
-const InfoSection = ({ numeroOs }) => {
-    const [info, setInfo] = useState({
-        codigoManutencao: '__________',
-        dataSolicitacao: '26/05/2023',
-        nomeEquipamento: 'Sistema de Alarme de Incêndio',
-        dataExecucao: '27/05/2023',
-        localizacao: 'Dispensário No.140.215 Fábrica de Farinha',
-        prioridade: 'Rotina Pamoate',
-        centroCusto: 'C097'
-    });
+const InfoSection = ({ formData, onChange }) => {
+  const handleChange = (field, value) => {
+    onChange(field, value);
+  };
 
-    const handleInfoChange = (field, e) => {
-        setInfo({
-            ...info,
-            [field]: e.target.textContent
-        });
-    };
+  const modernInputStyle = {
+    flex: 1,
+    fontSize: '12px',
+    border: '1px solid #e0e0e0',
+    borderRadius: '4px',
+    padding: '6px 10px',
+    background: 'white',
+    outline: 'none',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.05) inset',
+    transition: 'border-color 0.3s, box-shadow 0.3s'
+  };
 
+  const InfoItem = ({ label, field, value }) => {
     return (
-        <div className="info-section">
-            <div className="info-row">
-                <div className="info-item">
-                    <div className="info-label">Código de Manutenção:</div>
-                    <div
-                        className="info-value"
-                        contentEditable={true}
-                        suppressContentEditableWarning={true}
-                        onBlur={(e) => handleInfoChange('codigoManutencao', e)}
-                    >
-                        {info.codigoManutencao}
-                    </div>
-                </div>
-                <div className="info-item">
-                    <div className="info-label">Data de Solicitação:</div>
-                    <div
-                        className="info-value"
-                        contentEditable={true}
-                        suppressContentEditableWarning={true}
-                        onBlur={(e) => handleInfoChange('dataSolicitacao', e)}
-                    >
-                        {info.dataSolicitacao}
-                    </div>
-                </div>
-            </div>
-            <div className="info-row">
-                <div className="info-item">
-                    <div className="info-label">Nome do Equipamento:</div>
-                    <div
-                        className="info-value"
-                        contentEditable={true}
-                        suppressContentEditableWarning={true}
-                        onBlur={(e) => handleInfoChange('nomeEquipamento', e)}
-                    >
-                        {info.nomeEquipamento}
-                    </div>
-                </div>
-                <div className="info-item">
-                    <div className="info-label">Data de Execução:</div>
-                    <div
-                        className="info-value"
-                        contentEditable={true}
-                        suppressContentEditableWarning={true}
-                        onBlur={(e) => handleInfoChange('dataExecucao', e)}
-                    >
-                        {info.dataExecucao}
-                    </div>
-                </div>
-            </div>
-            <div className="info-row">
-                <div className="info-item">
-                    <div className="info-label">Localização:</div>
-                    <div
-                        className="info-value"
-                        contentEditable={true}
-                        suppressContentEditableWarning={true}
-                        onBlur={(e) => handleInfoChange('localizacao', e)}
-                    >
-                        {info.localizacao}
-                    </div>
-                </div>
-                <div className="info-item">
-                    <div className="info-label">Prioridade:</div>
-                    <div
-                        className="info-value"
-                        contentEditable={true}
-                        suppressContentEditableWarning={true}
-                        onBlur={(e) => handleInfoChange('prioridade', e)}
-                    >
-                        {info.prioridade}
-                    </div>
-                </div>
-            </div>
-            <div className="info-row">
-                <div className="info-item">
-                    <div className="info-label">Número da O.S.:</div>
-                    <div className="info-value os-number">
-                        OS-{numeroOs}
-                    </div>
-                </div>
-                <div className="info-item">
-                    <div className="info-label">Centro de custo:</div>
-                    <div
-                        className="info-value"
-                        contentEditable={true}
-                        suppressContentEditableWarning={true}
-                        onBlur={(e) => handleInfoChange('centroCusto', e)}
-                    >
-                        {info.centroCusto}
-                    </div>
-                </div>
-            </div>
+      <div className="info-item" style={{ marginBottom: '8px' }}>
+        <div className="info-label" style={{ 
+          fontWeight: 'bold', 
+          minWidth: '150px', 
+          fontSize: '12px',
+          color: '#444',
+          display: 'flex',
+          alignItems: 'center'
+        }}>
+          {label}:
         </div>
+        <input
+          type="text"
+          className="info-value"
+          value={value}
+          onChange={(e) => handleChange(field, e.target.value)}
+          style={modernInputStyle}
+        />
+      </div>
     );
+  };
+
+  return (
+    <div className="info-section" style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      gap: '12px', 
+      marginBottom: '20px',
+      backgroundColor: '#f9f9f9',
+      padding: '15px',
+      borderRadius: '5px',
+      border: '1px solid #e8e8e8'
+    }}>
+      <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
+        <InfoItem 
+          label="Código de Manutenção" 
+          field="codigoManutencao" 
+          value={formData.codigoManutencao} 
+        />
+        <InfoItem 
+          label="Data de Solicitação" 
+          field="dataSolicitacao" 
+          value={formData.dataSolicitacao} 
+        />
+      </div>
+      <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
+        <InfoItem 
+          label="Nome do Equipamento" 
+          field="nomeEquipamento" 
+          value={formData.nomeEquipamento} 
+        />
+        <InfoItem 
+          label="Data de Execução" 
+          field="dataExecucao" 
+          value={formData.dataExecucao} 
+        />
+      </div>
+      <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
+        <InfoItem 
+          label="Localização" 
+          field="localizacao" 
+          value={formData.localizacao} 
+        />
+        <InfoItem 
+          label="Prioridade" 
+          field="prioridade" 
+          value={formData.prioridade} 
+        />
+      </div>
+      <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
+        <InfoItem 
+          label="Número da O.S." 
+          field="numeroOsCompleto" 
+          value={`OS-${formData.numeroOs}`} 
+        />
+        <InfoItem 
+          label="Centro de custo" 
+          field="centroCusto" 
+          value={formData.centroCusto} 
+        />
+      </div>
+    </div>
+  );
 };
 
 export default InfoSection; 

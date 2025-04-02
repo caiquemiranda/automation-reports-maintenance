@@ -1,80 +1,70 @@
-# Ordem de Serviço Corretiva - IBSystems
+# Getting Started with Create React App
 
-Este projeto implementa um sistema de Ordem de Serviço Corretiva para a IBSystems. A aplicação permite criar, editar e imprimir ordens de serviço para manutenção corretiva de equipamentos.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Funcionalidades
+## Available Scripts
 
-- Preenchimento dinâmico de informações da OS
-- Campos editáveis in-line
-- Upload de imagens como anexos
-- Impressão da OS
-- Interface amigável para preenchimento rápido
+In the project directory, you can run:
 
-## Como executar o projeto
+### `npm start`
 
-1. Certifique-se de ter o Node.js instalado (versão 14 ou superior)
-2. Clone este repositório
-3. Instale as dependências:
-   ```
-   npm install
-   ```
-4. Execute o projeto em modo de desenvolvimento:
-   ```
-   npm start
-   ```
-5. Acesse a aplicação em: http://localhost:3000
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## Estrutura do Projeto
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-```
-src/
-├── components/
-│   └── common/           # Componentes reutilizáveis
-│       ├── ActionButton.js
-│       ├── EditableField.js
-├── contexts/             # Contextos para gerenciamento de estados
-│   └── OrdemServicoContext.js
-├── hooks/                # Hooks personalizados
-│   └── useDocumentActions.js
-├── pages/                # Páginas da aplicação
-│   └── OrdemServico/     # Página principal da OS
-│       ├── components/   # Componentes específicos da OS
-│       └── index.js      # Componente principal da página
-├── App.js                # Componente raiz
-└── index.js              # Ponto de entrada
-```
+### `npm test`
 
-## Tecnologias utilizadas
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-- React.js
-- Context API para gerenciamento de estados
-- CSS em módulos para estilos isolados
-- HTML5 semântico
+### `npm run build`
 
-## Como imprimir a OS
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-1. Preencha todos os campos necessários
-2. Clique no botão "Imprimir" no topo da página
-3. Configure a impressora conforme necessário
-4. Confirme a impressão
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## Como salvar a OS
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-A funcionalidade de salvar ainda será implementada em versões futuras.
+### `npm run eject`
 
-## Boas práticas implementadas
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-- Componentes altamente coesos e com baixo acoplamento
-- Uso de Context API para gerenciamento de estado global
-- Componentes reutilizáveis para partes comuns da interface
-- CSS modularizado em arquivos separados para cada componente
-- Hooks personalizados para lógica de negócio
-- Organização em pastas seguindo padrões da comunidade React
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-## Customização
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-O projeto pode ser facilmente customizado ajustando os valores iniciais no OrdemServicoContext, ou modificando os estilos CSS conforme necessário.
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
----
+## Learn More
 
-Desenvolvido para IBSystems - Intelligent Building 
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
