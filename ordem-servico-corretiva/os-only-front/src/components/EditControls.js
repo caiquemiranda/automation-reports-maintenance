@@ -1,47 +1,52 @@
 import React from 'react';
 
 const EditControls = ({ onSave, onPrint }) => {
-  return (
-    <div className="edit-buttons" style={{ 
-      display: 'flex', 
-      justifyContent: 'flex-end', 
-      gap: '10px', 
-      marginBottom: '20px' 
-    }}>
-      <button 
-        id="btn-save" 
-        className="btn-action" 
-        onClick={onSave}
-        style={{
-          padding: '8px 15px',
-          backgroundColor: '#2980b9',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          fontWeight: 'bold'
-        }}
-      >
-        Salvar Documento
-      </button>
-      <button 
-        id="btn-print" 
-        className="btn-action" 
-        onClick={onPrint}
-        style={{
-          padding: '8px 15px',
-          backgroundColor: '#2980b9',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          fontWeight: 'bold'
-        }}
-      >
-        Imprimir
-      </button>
-    </div>
-  );
+    const buttonStyle = {
+        padding: '10px 18px',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontWeight: 'bold',
+        fontSize: '14px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        transition: 'background-color 0.3s, transform 0.1s',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+    };
+
+    return (
+        <div className="edit-buttons" style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: '15px',
+            marginBottom: '25px'
+        }}>
+            <button
+                id="btn-save"
+                className="btn-action"
+                onClick={onSave}
+                style={{
+                    ...buttonStyle,
+                    backgroundColor: '#27ae60',
+                }}
+            >
+                💾 Salvar Documento
+            </button>
+            <button
+                id="btn-print"
+                className="btn-action"
+                onClick={onPrint}
+                style={{
+                    ...buttonStyle,
+                    backgroundColor: '#3498db',
+                }}
+            >
+                🖨️ Imprimir
+            </button>
+        </div>
+    );
 };
 
 export default EditControls; 

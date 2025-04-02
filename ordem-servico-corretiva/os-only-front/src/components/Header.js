@@ -15,9 +15,23 @@ const Header = ({ numeroOs, manutencaoCorretiva, naoProgramados, onChange }) => 
   };
 
   return (
-    <div className="header">
+    <div className="header" style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: '20px',
+      padding: '15px',
+      backgroundColor: '#f9f9f9',
+      borderRadius: '5px',
+      border: '1px solid #e8e8e8'
+    }}>
       <div className="title">
-        <h1 className="text-center">
+        <h1 className="text-center" style={{
+          fontSize: '20px',
+          marginBottom: '15px',
+          color: '#2980b9',
+          fontWeight: 'bold'
+        }}>
           ORDEM DE SERVIÇO CORRETIVA - OS-
           <input 
             type="text" 
@@ -27,39 +41,96 @@ const Header = ({ numeroOs, manutencaoCorretiva, naoProgramados, onChange }) => 
             style={{
               display: 'inline-block',
               minWidth: '60px',
-              borderBottom: '1px dashed #ccc',
-              background: 'transparent',
-              border: 'none',
+              border: '1px solid #e0e0e0',
+              borderRadius: '4px',
+              padding: '4px 8px',
+              background: 'white',
               outline: 'none',
-              textAlign: 'center'
+              textAlign: 'center',
+              fontSize: '18px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05) inset',
+              color: '#333'
             }}
           />
         </h1>
-        <div className="checkboxes">
-          <div className="checkbox-item">
+        <div className="checkboxes" style={{
+          display: 'flex',
+          gap: '20px',
+          marginTop: '15px'
+        }}>
+          <div className="checkbox-item" style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            backgroundColor: 'white',
+            padding: '8px 12px',
+            borderRadius: '4px',
+            border: '1px solid #e0e0e0'
+          }}>
             <input 
               type="checkbox" 
               id="manutencao" 
               name="manutencao" 
               checked={manutencaoCorretiva}
               onChange={() => handleCheckboxChange('manutencaoCorretiva')} 
+              style={{
+                width: '16px',
+                height: '16px',
+                cursor: 'pointer'
+              }}
             />
-            <label htmlFor="manutencao">MANUTENÇÃO CORRETIVA</label>
+            <label htmlFor="manutencao" style={{
+              fontSize: '13px',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}>
+              MANUTENÇÃO CORRETIVA
+            </label>
           </div>
-          <div className="checkbox-item">
+          <div className="checkbox-item" style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            backgroundColor: 'white',
+            padding: '8px 12px',
+            borderRadius: '4px',
+            border: '1px solid #e0e0e0'
+          }}>
             <input 
               type="checkbox" 
               id="naoprogramados" 
               name="naoprogramados" 
               checked={naoProgramados}
               onChange={() => handleCheckboxChange('naoProgramados')} 
+              style={{
+                width: '16px',
+                height: '16px',
+                cursor: 'pointer'
+              }}
             />
-            <label htmlFor="naoprogramados">NÃO PROGRAMADOS</label>
+            <label htmlFor="naoprogramados" style={{
+              fontSize: '13px',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}>
+              NÃO PROGRAMADOS
+            </label>
           </div>
         </div>
       </div>
-      <div className="logo">
-        <img src={logo} alt="IBSystems Logo" className="logo-img" />
+      <div className="logo" style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '10px',
+        backgroundColor: 'white',
+        borderRadius: '5px',
+        border: '1px solid #e0e0e0'
+      }}>
+        <img src={logo} alt="IBSystems Logo" className="logo-img" style={{
+          maxWidth: '120px',
+          maxHeight: '60px'
+        }} />
       </div>
     </div>
   );

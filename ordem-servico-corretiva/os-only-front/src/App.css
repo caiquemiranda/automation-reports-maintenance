@@ -6,8 +6,9 @@
 }
 
 body {
-  background-color: #f5f5f5;
+  background-color: #f0f2f5;
   padding: 20px;
+  color: #333;
 }
 
 .main-container {
@@ -21,7 +22,8 @@ body {
   min-height: 29.7cm;
   padding: 1.5cm;
   margin: 0 auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 .header {
@@ -64,13 +66,13 @@ body {
 
 .divider {
   height: 1px;
-  background-color: black;
-  margin: 10px 0 20px;
+  background-color: #e0e0e0;
+  margin: 15px 0 25px;
 }
 
 .strong-divider {
   height: 2px;
-  background-color: #2980b9;
+  background-color: #3498db;
   margin: 25px 0;
 }
 
@@ -128,6 +130,7 @@ body {
     box-shadow: none;
     width: 100%;
     padding: 0.5cm;
+    border-radius: 0;
   }
 
   button.remove-attachment {
@@ -138,12 +141,25 @@ body {
     display: none !important;
   }
 
-  input, textarea, [contenteditable="true"] {
+  input,
+  textarea {
     border: none !important;
     outline: none !important;
+    box-shadow: none !important;
   }
 
   .attachment-container {
     border: none !important;
+  }
+
+  .info-section,
+  .conclusion-section,
+  .attachment-section,
+  .header,
+  .responsavel-material-section div {
+    background-color: white !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
   }
 }
