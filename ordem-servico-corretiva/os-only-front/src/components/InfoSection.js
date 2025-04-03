@@ -6,7 +6,7 @@ const InfoSection = ({ formData, onChange }) => {
   };
 
   const modernInputStyle = {
-    flex: 1,
+    width: '100%',
     fontSize: '12px',
     border: '1px solid #e0e0e0',
     borderRadius: '4px',
@@ -23,7 +23,7 @@ const InfoSection = ({ formData, onChange }) => {
         marginBottom: '8px',
         display: 'flex',
         alignItems: 'center',
-        width: '100%'
+        width: '100%',
       }}>
         <div className="info-label" style={{
           fontWeight: 'bold',
@@ -87,6 +87,19 @@ const InfoSection = ({ formData, onChange }) => {
     'Urgência'
   ];
 
+  const rowStyle = {
+    display: 'flex',
+    gap: '20px',
+    marginBottom: '8px',
+    width: '100%'
+  };
+
+  const columnStyle = {
+    flex: '1',
+    minWidth: '0',
+    width: '50%'
+  };
+
   return (
     <div className="info-section" style={{
       display: 'flex',
@@ -98,15 +111,15 @@ const InfoSection = ({ formData, onChange }) => {
       borderRadius: '5px',
       border: '1px solid #e8e8e8'
     }}>
-      <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
-        <div style={{ flex: 1 }}>
+      <div className="info-row" style={rowStyle}>
+        <div style={columnStyle}>
           <InfoItem
             label="TAG equipamento"
             field="tagEquipamento"
             value={formData.tagEquipamento || formData.codigoManutencao}
           />
         </div>
-        <div style={{ flex: 1 }}>
+        <div style={columnStyle}>
           <InfoItem
             label="Data de Solicitação"
             field="dataSolicitacao"
@@ -115,8 +128,8 @@ const InfoSection = ({ formData, onChange }) => {
           />
         </div>
       </div>
-      <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
-        <div style={{ flex: 1 }}>
+      <div className="info-row" style={rowStyle}>
+        <div style={columnStyle}>
           <InfoItem
             label="Tipo do dispositivo"
             field="tipoDispositivo"
@@ -125,7 +138,7 @@ const InfoSection = ({ formData, onChange }) => {
             options={tiposDispositivo}
           />
         </div>
-        <div style={{ flex: 1 }}>
+        <div style={columnStyle}>
           <InfoItem
             label="Data de Execução"
             field="dataExecucao"
@@ -134,15 +147,15 @@ const InfoSection = ({ formData, onChange }) => {
           />
         </div>
       </div>
-      <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
-        <div style={{ flex: 1 }}>
+      <div className="info-row" style={rowStyle}>
+        <div style={columnStyle}>
           <InfoItem
             label="Localização"
             field="localizacao"
             value={formData.localizacao}
           />
         </div>
-        <div style={{ flex: 1 }}>
+        <div style={columnStyle}>
           <InfoItem
             label="Prioridade"
             field="prioridade"
@@ -152,15 +165,15 @@ const InfoSection = ({ formData, onChange }) => {
           />
         </div>
       </div>
-      <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
-        <div style={{ flex: 1 }}>
+      <div className="info-row" style={rowStyle}>
+        <div style={columnStyle}>
           <InfoItem
             label="Número da O.S."
             field="numeroOsCompleto"
             value={`OS-${formData.numeroOs}`}
           />
         </div>
-        <div style={{ flex: 1 }}>
+        <div style={columnStyle}>
           <InfoItem
             label="Centro de custo"
             field="centroCusto"
@@ -168,8 +181,8 @@ const InfoSection = ({ formData, onChange }) => {
           />
         </div>
       </div>
-      <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
-        <div style={{ flex: 1 }}>
+      <div className="info-row" style={rowStyle}>
+        <div style={columnStyle}>
           <InfoItem
             label="Condição Inicial"
             field="condicaoInicial"
@@ -178,7 +191,7 @@ const InfoSection = ({ formData, onChange }) => {
             options={['No Answer', 'Dirty', 'Imode']}
           />
         </div>
-        <div style={{ flex: 1 }}>
+        <div style={columnStyle}>
           <InfoItem
             label="Requisitante"
             field="requisitante"
