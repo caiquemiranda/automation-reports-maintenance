@@ -17,7 +17,7 @@ const InfoSection = ({ formData, onChange }) => {
     transition: 'border-color 0.3s, box-shadow 0.3s'
   };
 
-  const InfoItem = ({ label, field, value, type = 'text' }) => {
+  const InfoItem = ({ label, field, value, type = 'text', options = [] }) => {
     return (
       <div className="info-item" style={{ marginBottom: '8px' }}>
         <div className="info-label" style={{
@@ -33,13 +33,13 @@ const InfoSection = ({ formData, onChange }) => {
         {type === 'select' ? (
           <select
             className="info-value"
-            value={value}
+            value={value || ''}
             onChange={(e) => handleChange(field, e.target.value)}
             style={modernInputStyle}
           >
-            <option value="No Answer">No Answer</option>
-            <option value="Dirty">Dirty</option>
-            <option value="Imode">Imode</option>
+            {options.map((option, index) => (
+              <option key={index} value={option}>{option}</option>
+            ))}
           </select>
         ) : (
           <input
@@ -54,6 +54,23 @@ const InfoSection = ({ formData, onChange }) => {
     );
   };
 
+  // Tipos de dispositivos predefinidos
+  const tiposDispositivo = [
+    'Detector de fumaça',
+    'Acionador Manual',
+    'Modulo de Zona'
+  ];
+
+  // Requisitantes predefinidos
+  const requisitantes = [
+    'Selecione um requisitante',
+    'Pedro Silva',
+    'Maria Oliveira',
+    'João Santos',
+    'Ana Pereira',
+    'Carlos Eduardo'
+  ];
+
   return (
     <div className="info-section" style={{
       display: 'flex',
@@ -67,9 +84,9 @@ const InfoSection = ({ formData, onChange }) => {
     }}>
       <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
         <InfoItem
-          label="Código de Manutenção"
-          field="codigoManutencao"
-          value={formData.codigoManutencao}
+          label="TAG equipamento"
+          field="tagEquipamento"
+          value={formData.tagEquipamento || formData.codigoManutencao}
         />
         <InfoItem
           label="Data de Solicitação"
@@ -79,9 +96,11 @@ const InfoSection = ({ formData, onChange }) => {
       </div>
       <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
         <InfoItem
-          label="Nome do Equipamento"
-          field="nomeEquipamento"
-          value={formData.nomeEquipamento}
+          label="Tipo do dispositivo"
+          field="tipoDispositivo"
+          value={formData.tipoDispositivo || formData.nomeEquipamento}
+          type="select"
+          options={tiposDispositivo}
         />
         <InfoItem
           label="Data de Execução"
@@ -119,6 +138,14 @@ const InfoSection = ({ formData, onChange }) => {
           field="condicaoInicial"
           value={formData.condicaoInicial || 'No Answer'}
           type="select"
+          options={['No Answer', 'Dirty', 'Imode']}
+        />
+        <InfoItem
+          label="Requisitante"
+          field="requisitante"
+          value={formData.requisitante || 'Selecione um requisitante'}
+          type="select"
+          options={requisitantes}
         />
       </div>
     </div>
