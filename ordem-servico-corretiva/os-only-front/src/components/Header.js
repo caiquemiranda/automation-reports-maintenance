@@ -32,7 +32,7 @@ const Header = ({ numeroOs, manutencaoCorretiva, naoProgramados, onChange }) => 
           color: '#2980b9',
           fontWeight: 'bold'
         }}>
-          ORDEM DE SERVIÇO CORRETIVA - OS-
+          ORDEM DE SERVIÇO CORRETIVA
           <input 
             type="text" 
             id="numero-os" 

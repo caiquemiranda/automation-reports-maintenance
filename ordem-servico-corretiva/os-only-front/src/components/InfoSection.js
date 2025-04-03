@@ -17,12 +17,12 @@ const InfoSection = ({ formData, onChange }) => {
     transition: 'border-color 0.3s, box-shadow 0.3s'
   };
 
-  const InfoItem = ({ label, field, value }) => {
+  const InfoItem = ({ label, field, value, type = 'text' }) => {
     return (
       <div className="info-item" style={{ marginBottom: '8px' }}>
-        <div className="info-label" style={{ 
-          fontWeight: 'bold', 
-          minWidth: '150px', 
+        <div className="info-label" style={{
+          fontWeight: 'bold',
+          minWidth: '150px',
           fontSize: '12px',
           color: '#444',
           display: 'flex',
@@ -30,22 +30,35 @@ const InfoSection = ({ formData, onChange }) => {
         }}>
           {label}:
         </div>
-        <input
-          type="text"
-          className="info-value"
-          value={value}
-          onChange={(e) => handleChange(field, e.target.value)}
-          style={modernInputStyle}
-        />
+        {type === 'select' ? (
+          <select
+            className="info-value"
+            value={value}
+            onChange={(e) => handleChange(field, e.target.value)}
+            style={modernInputStyle}
+          >
+            <option value="No Answer">No Answer</option>
+            <option value="Dirty">Dirty</option>
+            <option value="Imode">Imode</option>
+          </select>
+        ) : (
+          <input
+            type={type}
+            className="info-value"
+            value={value}
+            onChange={(e) => handleChange(field, e.target.value)}
+            style={modernInputStyle}
+          />
+        )}
       </div>
     );
   };
 
   return (
-    <div className="info-section" style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      gap: '12px', 
+    <div className="info-section" style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
       marginBottom: '20px',
       backgroundColor: '#f9f9f9',
       padding: '15px',
@@ -53,51 +66,59 @@ const InfoSection = ({ formData, onChange }) => {
       border: '1px solid #e8e8e8'
     }}>
       <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
-        <InfoItem 
-          label="Código de Manutenção" 
-          field="codigoManutencao" 
-          value={formData.codigoManutencao} 
+        <InfoItem
+          label="Código de Manutenção"
+          field="codigoManutencao"
+          value={formData.codigoManutencao}
         />
-        <InfoItem 
-          label="Data de Solicitação" 
-          field="dataSolicitacao" 
-          value={formData.dataSolicitacao} 
-        />
-      </div>
-      <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
-        <InfoItem 
-          label="Nome do Equipamento" 
-          field="nomeEquipamento" 
-          value={formData.nomeEquipamento} 
-        />
-        <InfoItem 
-          label="Data de Execução" 
-          field="dataExecucao" 
-          value={formData.dataExecucao} 
+        <InfoItem
+          label="Data de Solicitação"
+          field="dataSolicitacao"
+          value={formData.dataSolicitacao}
         />
       </div>
       <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
-        <InfoItem 
-          label="Localização" 
-          field="localizacao" 
-          value={formData.localizacao} 
+        <InfoItem
+          label="Nome do Equipamento"
+          field="nomeEquipamento"
+          value={formData.nomeEquipamento}
         />
-        <InfoItem 
-          label="Prioridade" 
-          field="prioridade" 
-          value={formData.prioridade} 
+        <InfoItem
+          label="Data de Execução"
+          field="dataExecucao"
+          value={formData.dataExecucao}
         />
       </div>
       <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
-        <InfoItem 
-          label="Número da O.S." 
-          field="numeroOsCompleto" 
-          value={`OS-${formData.numeroOs}`} 
+        <InfoItem
+          label="Localização"
+          field="localizacao"
+          value={formData.localizacao}
         />
-        <InfoItem 
-          label="Centro de custo" 
-          field="centroCusto" 
-          value={formData.centroCusto} 
+        <InfoItem
+          label="Prioridade"
+          field="prioridade"
+          value={formData.prioridade}
+        />
+      </div>
+      <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
+        <InfoItem
+          label="Número da O.S."
+          field="numeroOsCompleto"
+          value={`OS-${formData.numeroOs}`}
+        />
+        <InfoItem
+          label="Centro de custo"
+          field="centroCusto"
+          value={formData.centroCusto}
+        />
+      </div>
+      <div className="info-row" style={{ display: 'flex', gap: '20px' }}>
+        <InfoItem
+          label="Condição Inicial"
+          field="condicaoInicial"
+          value={formData.condicaoInicial || 'No Answer'}
+          type="select"
         />
       </div>
     </div>
