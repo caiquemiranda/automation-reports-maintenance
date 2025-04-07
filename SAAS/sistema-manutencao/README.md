@@ -113,10 +113,35 @@ docker-compose down
 
 Se encontrar erros de incompatibilidade entre bibliotecas:
 
-1. Verifique se as versões no package.json estão corretas
+1. Verifique se as versões no package.json estão corretas:
+   - Para compatibilidade garantida, use:
+     - date-fns: 2.28.0 (exatamente esta versão)
+     - @mui/x-date-pickers: 5.0.0-beta.7 (exatamente esta versão)
+
 2. Para problemas com o date-fns e @mui/x-date-pickers:
-   - Utilize a versão 5.x do @mui/x-date-pickers com date-fns 2.x
-   - Instale com a flag `--legacy-peer-deps`
+   - Se você encontrar o erro: `Package path ./_lib/format/longFormatters is not exported from package`
+   - Reconstrua o container com:
+     ```bash
+     docker-compose down
+     docker-compose build --no-cache
+     docker-compose up
+     ```
+
+3. Em alguns casos, pode ser necessário limpar completamente:
+   ```bash
+   # Remover todos os containers Docker
+   docker-compose down
+   
+   # Remover a pasta node_modules local e o cache do npm
+   rm -rf node_modules
+   npm cache clean --force
+   
+   # Reconstruir a imagem sem usar o cache
+   docker-compose build --no-cache
+   
+   # Iniciar o container
+   docker-compose up
+   ```
 
 O aplicativo estará disponível em [http://localhost:3000](http://localhost:3000).
 

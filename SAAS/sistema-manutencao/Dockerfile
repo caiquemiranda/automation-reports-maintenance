@@ -11,8 +11,9 @@ WORKDIR /app
 # Copiar apenas os arquivos de dependências primeiro para aproveitar o cache
 COPY package.json package-lock.json* ./
 
-# Instalar dependências com force para garantir compatibilidade
-RUN npm install --legacy-peer-deps
+# Instalar dependências com flags específicas para resolver problemas de compatibilidade
+RUN npm cache clean --force && \
+    npm install --legacy-peer-deps --no-package-lock
 
 # Copiar código-fonte
 COPY . .

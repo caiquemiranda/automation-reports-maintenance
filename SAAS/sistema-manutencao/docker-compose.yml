@@ -13,6 +13,8 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - NODE_ENV=development
       - FAST_REFRESH=false
+      - GENERATE_SOURCEMAP=false
+      - SKIP_PREFLIGHT_CHECK=true
     stdin_open: true
     tty: true
     restart: unless-stopped 
