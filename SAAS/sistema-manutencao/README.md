@@ -30,7 +30,7 @@ Um sistema completo para gerenciamento de ordens de serviço de manutenção ind
 
 ```bash
 git clone https://github.com/caiquemiranda/automation-reports-maintenance
-cd sistema-manutencao
+cd SAAS/sistema-manutencao/
 ```
 
 2. Instale as dependências:
