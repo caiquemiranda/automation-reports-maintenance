@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exportação de Dados - Sistema de Manutenção</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-title">
+                <h1>Exportação de Dados</h1>
+            </div>
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-question-circle" id="help-icon"></i>
+                <i class="fas fa-cog" id="settings-icon"></i>
+                <i class="fas fa-user-circle" id="profile-icon"></i>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="home.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> DASHBOARD</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-file-alt"></i> RAS</a>
+                    <ul class="submenu">
+                        <li><a href="ras.html">Relatório Análise de Solução</a></li>
+                    </ul>
+                </li>
+                <li><a href="cronograma-anual.html"><i class="fas fa-calendar-alt"></i> CRONOGRAMA ANUAL</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-calendar-week"></i> CRONOGRAMA MENSAL</a>
+                    <ul class="submenu">
+                        <li><a href="cronograma-mensal.html">Com Funcionários</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-tools"></i> OS</a>
+                    <ul class="submenu">
+                        <li><a href="os-corretiva.html">Corretiva</a></li>
+                        <li><a href="os-planejada.html">Planejada</a></li>
+                        <li><a href="os-preventiva.html">Preventiva</a></li>
+                    </ul>
+                </li>
+                <li><a href="report-mensal.html"><i class="fas fa-file-export"></i> REPORT MENSAL</a></li>
+                <li><a href="report-diario.html"><i class="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
+                    <ul class="submenu">
+                        <li><a href="dispositivos.html">Mapa de Dispositivos</a></li>
+                    </ul>
+                </li>
+                <li><a href="analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-database"></i> DADOS</a>
+                    <ul class="submenu">
+                        <li><a href="dados-equipamentos.html">Equipamentos</a></li>
+                        <li><a href="dados-funcionarios.html">Funcionários</a></li>
+                        <li><a href="dados-relatorios.html">Relatórios</a></li>
+                        <li><a href="dados-exportacao.html">Exportação</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content">
+                <h2>Exportação de Dados</h2>
+                <p>Selecione os dados que deseja exportar e o formato de exportação.</p>
+
+                <div class="card-grid">
+                    <!-- Card para Exportação de OS -->
+                    <div class="data-card">
+                        <div class="data-card-header">
+                            <div class="data-card-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="data-card-title">Ordens de Serviço</div>
+                        </div>
+                        <div class="data-card-content">
+                            <form id="export-os-form">
+                                <div class="form-group">
+                                    <label for="os-type">Tipo:</label>
+                                    <select id="os-type" class="form-control">
+                                        <option value="all">Todos</option>
+                                        <option value="corretiva">Corretiva</option>
+                                        <option value="preventiva">Preventiva</option>
+                                        <option value="planejada">Planejada</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="os-date-start">Data Inicial:</label>
+                                    <input type="date" id="os-date-start" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="os-date-end">Data Final:</label>
+                                    <input type="date" id="os-date-end" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="os-format">Formato:</label>
+                                    <select id="os-format" class="form-control">
+                                        <option value="csv">CSV</option>
+                                        <option value="excel">Excel</option>
+                                        <option value="pdf">PDF</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="data-card-actions">
+                            <button onclick="exportData('os')">Exportar</button>
+                        </div>
+                    </div>
+
+                    <!-- Card para Exportação de Equipamentos -->
+                    <div class="data-card">
+                        <div class="data-card-header">
+                            <div class="data-card-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <div class="data-card-title">Equipamentos</div>
+                        </div>
+                        <div class="data-card-content">
+                            <form id="export-equipamentos-form">
+                                <div class="form-group">
+                                    <label for="equip-sector">Setor:</label>
+                                    <select id="equip-sector" class="form-control">
+                                        <option value="all">Todos</option>
+                                        <option value="producao">Produção</option>
+                                        <option value="embalagem">Embalagem</option>
+                                        <option value="distribuicao">Distribuição</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="equip-status">Status:</label>
+                                    <select id="equip-status" class="form-control">
+                                        <option value="all">Todos</option>
+                                        <option value="active">Ativo</option>
+                                        <option value="inactive">Inativo</option>
+                                        <option value="maintenance">Em Manutenção</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="equip-include-history">Incluir Histórico:</label>
+                                    <input type="checkbox" id="equip-include-history" class="form-checkbox">
+                                </div>
+                                <div class="form-group">
+                                    <label for="equip-format">Formato:</label>
+                                    <select id="equip-format" class="form-control">
+                                        <option value="csv">CSV</option>
+                                        <option value="excel">Excel</option>
+                                        <option value="pdf">PDF</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="data-card-actions">
+                            <button onclick="exportData('equipamentos')">Exportar</button>
+                        </div>
+                    </div>
+
+                    <!-- Card para Exportação de Relatórios -->
+                    <div class="data-card">
+                        <div class="data-card-header">
+                            <div class="data-card-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="data-card-title">Relatórios</div>
+                        </div>
+                        <div class="data-card-content">
+                            <form id="export-relatorios-form">
+                                <div class="form-group">
+                                    <label for="report-type">Tipo:</label>
+                                    <select id="report-type" class="form-control">
+                                        <option value="all">Todos</option>
+                                        <option value="ras">RAS</option>
+                                        <option value="falhas">Falhas</option>
+                                        <option value="mensal">Mensal</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="report-date-start">Data Inicial:</label>
+                                    <input type="date" id="report-date-start" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="report-date-end">Data Final:</label>
+                                    <input type="date" id="report-date-end" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="report-format">Formato:</label>
+                                    <select id="report-format" class="form-control">
+                                        <option value="csv">CSV</option>
+                                        <option value="excel">Excel</option>
+                                        <option value="pdf">PDF</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="data-card-actions">
+                            <button onclick="exportData('relatorios')">Exportar</button>
+                        </div>
+                    </div>
+
+                    <!-- Card para Exportação de Funcionários -->
+                    <div class="data-card">
+                        <div class="data-card-header">
+                            <div class="data-card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="data-card-title">Funcionários</div>
+                        </div>
+                        <div class="data-card-content">
+                            <form id="export-funcionarios-form">
+                                <div class="form-group">
+                                    <label for="func-sector">Setor:</label>
+                                    <select id="func-sector" class="form-control">
+                                        <option value="all">Todos</option>
+                                        <option value="manutencao">Manutenção</option>
+                                        <option value="producao">Produção</option>
+                                        <option value="administrativo">Administrativo</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="func-role">Função:</label>
+                                    <select id="func-role" class="form-control">
+                                        <option value="all">Todas</option>
+                                        <option value="tecnico">Técnico</option>
+                                        <option value="engenheiro">Engenheiro</option>
+                                        <option value="gerente">Gerente</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="func-include-history">Incluir Histórico:</label>
+                                    <input type="checkbox" id="func-include-history" class="form-checkbox">
+                                </div>
+                                <div class="form-group">
+                                    <label for="func-format">Formato:</label>
+                                    <select id="func-format" class="form-control">
+                                        <option value="csv">CSV</option>
+                                        <option value="excel">Excel</option>
+                                        <option value="pdf">PDF</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="data-card-actions">
+                            <button onclick="exportData('funcionarios')">Exportar</button>
+                        </div>
+                    </div>
+
+                    <!-- Card para Exportação de Indicadores de Desempenho -->
+                    <div class="data-card">
+                        <div class="data-card-header">
+                            <div class="data-card-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="data-card-title">Indicadores de Desempenho</div>
+                        </div>
+                        <div class="data-card-content">
+                            <form id="export-indicadores-form">
+                                <div class="form-group">
+                                    <label for="indic-type">Tipo:</label>
+                                    <select id="indic-type" class="form-control">
+                                        <option value="all">Todos</option>
+                                        <option value="mtbf">MTBF</option>
+                                        <option value="mttr">MTTR</option>
+                                        <option value="disponibilidade">Disponibilidade</option>
+                                        <option value="custo">Custo</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="indic-period">Período:</label>
+                                    <select id="indic-period" class="form-control">
+                                        <option value="mensal">Mensal</option>
+                                        <option value="trimestral">Trimestral</option>
+                                        <option value="semestral">Semestral</option>
+                                        <option value="anual">Anual</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="indic-date-start">Data Inicial:</label>
+                                    <input type="date" id="indic-date-start" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="indic-date-end">Data Final:</label>
+                                    <input type="date" id="indic-date-end" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="indic-format">Formato:</label>
+                                    <select id="indic-format" class="form-control">
+                                        <option value="csv">CSV</option>
+                                        <option value="excel">Excel</option>
+                                        <option value="pdf">PDF</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="data-card-actions">
+                            <button onclick="exportData('indicadores')">Exportar</button>
+                        </div>
+                    </div>
+
+                    <!-- Card para Exportação Completa -->
+                    <div class="data-card">
+                        <div class="data-card-header">
+                            <div class="data-card-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="data-card-title">Exportação Completa</div>
+                        </div>
+                        <div class="data-card-content">
+                            <form id="export-completo-form">
+                                <div class="form-group">
+                                    <label for="completo-date-start">Data Inicial:</label>
+                                    <input type="date" id="completo-date-start" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="completo-date-end">Data Final:</label>
+                                    <input type="date" id="completo-date-end" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="completo-format">Formato:</label>
+                                    <select id="completo-format" class="form-control">
+                                        <option value="zip">ZIP (Todos os formatos)</option>
+                                        <option value="excel">Excel (Múltiplas planilhas)</option>
+                                        <option value="pdf">PDF (Relatório completo)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="completo-include-attachments">Incluir Anexos:</label>
+                                    <input type="checkbox" id="completo-include-attachments" class="form-checkbox">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="data-card-actions">
+                            <button onclick="exportData('completo')">Exportar Tudo</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de carregamento -->
+                <div class="modal" id="loading-modal">
+                    <div class="modal-content loading-content">
+                        <div class="loading-spinner"></div>
+                        <p>Processando exportação...</p>
+                    </div>
+                </div>
+
+                <!-- Modal de sucesso -->
+                <div class="modal" id="success-modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>Exportação Concluída</h2>
+                            <span class="close-button" data-close-button>&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <p>Seus dados foram exportados com sucesso.</p>
+                            <p>Você pode baixar o arquivo agora ou encontrá-lo na pasta de downloads.</p>
+                            <div class="modal-actions">
+                                <button id="download-button">Baixar Arquivo</button>
+                                <button data-close-button>Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="overlay"></div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+    <script>
+        // Função para exportar dados
+        function exportData(type) {
+            // Inicializar modal de carregamento
+            const loadingModal = document.getElementById('loading-modal');
+            const successModal = document.getElementById('success-modal');
+            const overlay = document.getElementById('overlay');
+
+            loadingModal.classList.add('active');
+            overlay.classList.add('active');
+
+            // Simular processo de exportação
+            setTimeout(() => {
+                // Fechar modal de carregamento
+                loadingModal.classList.remove('active');
+
+                // Mostrar modal de sucesso
+                successModal.classList.add('active');
+
+                // Configurar botão de download
+                const downloadButton = document.getElementById('download-button');
+                downloadButton.addEventListener('click', function () {
+                    // Simular download
+                    let format = 'csv';
+
+                    // Obter formato selecionado
+                    if (type === 'os') {
+                        format = document.getElementById('os-format').value;
+                    } else if (type === 'equipamentos') {
+                        format = document.getElementById('equip-format').value;
+                    } else if (type === 'relatorios') {
+                        format = document.getElementById('report-format').value;
+                    } else if (type === 'funcionarios') {
+                        format = document.getElementById('func-format').value;
+                    } else if (type === 'indicadores') {
+                        format = document.getElementById('indic-format').value;
+                    } else if (type === 'completo') {
+                        format = document.getElementById('completo-format').value;
+                    }
+
+                    // Criar link de download
+                    const link = document.createElement('a');
+                    link.href = `#`;
+                    link.download = `exportacao_${type}_${new Date().toISOString().slice(0, 10)}.${format}`;
+                    link.click();
+
+                    // Fechar modal após download
+                    successModal.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+            }, 2000);
+        }
+
+        // Configurar data mínima/máxima e preencher data atual nos campos de data
+        document.addEventListener('DOMContentLoaded', function () {
+            const dateInputs = document.querySelectorAll('input[type="date"]');
+            const today = new Date().toISOString().split('T')[0];
+            const oneMonthAgo = new Date();
+            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+            const oneMonthAgoStr = oneMonthAgo.toISOString().split('T')[0];
+
+            dateInputs.forEach(input => {
+                if (input.id.includes('date-start')) {
+                    input.value = oneMonthAgoStr;
+                } else if (input.id.includes('date-end')) {
+                    input.value = today;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

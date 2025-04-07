@@ -17,40 +17,39 @@ body {
 
 /* Top Bar Styles */
 .top-bar {
-    background-color: #3498db;
-    color: white;
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    background-color: #fff;
     padding: 10px 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 2;
+    position: fixed;
+    top: 0;
+    width: calc(100% - 220px);
+    z-index: 100;
+    height: 60px;
 }
 
+/* Título da top bar */
+.top-title {
+    font-size: 18px;
+}
+
+/* Ícones na top bar */
 .top-icons {
     display: flex;
-    margin-left: auto;
     gap: 20px;
 }
 
 .top-icons i {
-    font-size: 18px;
+    font-size: 20px;
+    color: #555;
     cursor: pointer;
     transition: color 0.3s;
 }
 
 .top-icons i:hover {
-    color: #e6e6e6;
-}
-
-.top-title {
-    flex: 1;
-}
-
-.top-title h1 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: normal;
+    color: #3498db;
 }
 
 /* Sidebar Styles */
@@ -255,11 +254,11 @@ body {
 }
 
 .data-card {
-    background-color: white;
+    background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .data-card:hover {
@@ -270,7 +269,8 @@ body {
 .data-card-header {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
 }
 
 .data-card-icon {
@@ -281,12 +281,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 12px;
+    margin-right: 10px;
 }
 
 .data-card-icon i {
+    font-size: 20px;
     color: #3498db;
-    font-size: 18px;
 }
 
 .data-card-title {
@@ -296,15 +296,19 @@ body {
 }
 
 .data-card-content {
-    margin-bottom: 15px;
+    padding: 10px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .data-card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 15px;
     border-top: 1px solid #eee;
-    padding-top: 15px;
 }
 
 .data-card-value {
@@ -314,9 +318,11 @@ body {
 }
 
 .data-card-change {
+    font-size: 14px;
+    font-weight: 600;
     display: flex;
     align-items: center;
-    font-size: 14px;
+    gap: 5px;
 }
 
 .data-card-change.positive {
@@ -328,22 +334,131 @@ body {
 }
 
 .data-card-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
+    padding: 0 15px 15px;
 }
 
 .data-card-actions button {
-    background-color: transparent;
+    width: 100%;
+    padding: 8px;
+    background-color: #3498db;
+    color: white;
     border: none;
-    color: #3498db;
+    border-radius: 4px;
     cursor: pointer;
-    padding: 5px 10px;
-    font-size: 14px;
+    transition: background-color 0.3s;
 }
 
 .data-card-actions button:hover {
-    text-decoration: underline;
+    background-color: #2980b9;
+}
+
+/* Estilos para dropdowns dos ícones de topo */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s;
+    font-size: 14px;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.profile-header {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    display: block;
+    background-color: #f1f1f1;
+    overflow: hidden;
+}
+
+.profile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.profile-role {
+    color: #777;
+    font-size: 12px;
+}
+
+/* Responsividade para cards de análise */
+@media (max-width: 768px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estilos para tabs nas páginas */
+.tab-container {
+    margin-bottom: 20px;
+}
+
+.tab-buttons {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-weight: 600;
+    color: #555;
+    transition: all 0.3s;
+}
+
+.tab-button.active {
+    color: #3498db;
+    border-bottom-color: #3498db;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
 }
 
 /* Tela de exportação de dados */

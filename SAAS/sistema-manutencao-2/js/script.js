@@ -6,22 +6,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', function () {
-            sidebar.classList.toggle('sidebar-collapsed');
-            mainContent.classList.toggle('main-content-expanded');
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
         });
     }
 
     // Toggle dos Submenus
-    const submenuItems = document.querySelectorAll('.has-submenu');
+    const submenus = document.querySelectorAll('.has-submenu');
 
-    submenuItems.forEach(item => {
-        const link = item.querySelector('a');
-        link.addEventListener('click', function (e) {
-            if (e.target.tagName === 'A' || e.target.parentElement.tagName === 'A') {
-                if (e.target.parentElement.classList.contains('has-submenu') || e.target.classList.contains('has-submenu')) {
-                    e.preventDefault();
-                    this.classList.toggle('active');
-                }
+    submenus.forEach(function (submenu) {
+        submenu.addEventListener('click', function (e) {
+            if (e.target.closest('a') && e.target.closest('a').nextElementSibling) {
+                e.preventDefault();
+                const submenuList = this.querySelector('.submenu');
+                submenuList.classList.toggle('active');
             }
         });
     });
@@ -36,27 +34,198 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Tabs functionality
+    const tabButtons = document.querySelectorAll('.tab-button');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabContainer = button.closest('.tab-container');
+            const tabId = button.getAttribute('data-tab');
+
+            // Remove active class from all buttons and contents
+            tabContainer.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            tabContainer.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Add active class to clicked button and corresponding content
+            button.classList.add('active');
+            tabContainer.querySelector(`.tab-content[data-tab="${tabId}"]`).classList.add('active');
+        });
+    });
+
+    // Modal funcionality
+    const modalTriggers = document.querySelectorAll('[data-modal-target]');
+    const closeButtons = document.querySelectorAll('[data-close-button]');
+    const overlay = document.getElementById('overlay');
+
+    modalTriggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+            const modal = document.querySelector(trigger.dataset.modalTarget);
+            openModal(modal);
+        });
+    });
+
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            const modals = document.querySelectorAll('.modal.active');
+            modals.forEach(modal => {
+                closeModal(modal);
+            });
+        });
+    }
+
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const modal = button.closest('.modal');
+            closeModal(modal);
+        });
+    });
+
+    function openModal(modal) {
+        if (modal == null) return;
+        modal.classList.add('active');
+        if (overlay) overlay.classList.add('active');
+    }
+
+    function closeModal(modal) {
+        if (modal == null) return;
+        modal.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
+    }
+
     // Dropdown para perfil, configurações e ajuda
     const profileIcon = document.getElementById('profile-icon');
     const settingsIcon = document.getElementById('settings-icon');
     const helpIcon = document.getElementById('help-icon');
 
+    // Criação dinâmica dos dropdowns
     if (profileIcon) {
-        profileIcon.addEventListener('click', function () {
-            window.location.href = 'profile.html';
-        });
+        createProfileDropdown(profileIcon);
     }
 
     if (settingsIcon) {
-        settingsIcon.addEventListener('click', function () {
-            window.location.href = 'settings.html';
-        });
+        createSettingsDropdown(settingsIcon);
     }
 
     if (helpIcon) {
-        helpIcon.addEventListener('click', function () {
-            window.location.href = 'help.html';
+        createHelpDropdown(helpIcon);
+    }
+
+    // Função para criar o dropdown de perfil
+    function createProfileDropdown(icon) {
+        const dropdown = document.createElement('div');
+        dropdown.className = 'dropdown';
+
+        const profileContent = document.createElement('div');
+        profileContent.className = 'dropdown-content';
+
+        // Cabeçalho do perfil
+        const profileHeader = document.createElement('div');
+        profileHeader.className = 'profile-header';
+
+        const profileImg = document.createElement('div');
+        profileImg.className = 'profile-img';
+        profileImg.innerHTML = '<img src="../assets/profile-placeholder.jpg" alt="Perfil" onerror="this.src=\'https://via.placeholder.com/60\'">';
+
+        const profileName = document.createElement('div');
+        profileName.className = 'profile-name';
+        profileName.textContent = 'João da Silva';
+
+        const profileRole = document.createElement('div');
+        profileRole.className = 'profile-role';
+        profileRole.textContent = 'Técnico de Manutenção';
+
+        profileHeader.appendChild(profileImg);
+        profileHeader.appendChild(profileName);
+        profileHeader.appendChild(profileRole);
+
+        // Links do perfil
+        const links = [
+            { text: 'Meu Perfil', href: 'perfil.html' },
+            { text: 'Minhas Tarefas', href: 'tarefas.html' },
+            { text: 'Configurações', href: 'configuracoes.html' },
+            { text: 'Sair', href: 'index.html' }
+        ];
+
+        profileContent.appendChild(profileHeader);
+
+        links.forEach(link => {
+            const a = document.createElement('a');
+            a.href = link.href;
+            a.textContent = link.text;
+            profileContent.appendChild(a);
         });
+
+        // Substituir o ícone pelo dropdown
+        const parentElement = icon.parentElement;
+        dropdown.appendChild(icon.cloneNode(true));
+        dropdown.appendChild(profileContent);
+
+        parentElement.replaceChild(dropdown, icon);
+    }
+
+    // Função para criar o dropdown de configurações
+    function createSettingsDropdown(icon) {
+        const dropdown = document.createElement('div');
+        dropdown.className = 'dropdown';
+
+        const settingsContent = document.createElement('div');
+        settingsContent.className = 'dropdown-content';
+
+        const links = [
+            { text: 'Configurações Gerais', href: 'configuracoes.html' },
+            { text: 'Aparência', href: 'configuracoes-aparencia.html' },
+            { text: 'Notificações', href: 'configuracoes-notificacoes.html' },
+            { text: 'Segurança', href: 'configuracoes-seguranca.html' }
+        ];
+
+        links.forEach(link => {
+            const a = document.createElement('a');
+            a.href = link.href;
+            a.textContent = link.text;
+            settingsContent.appendChild(a);
+        });
+
+        // Substituir o ícone pelo dropdown
+        const parentElement = icon.parentElement;
+        dropdown.appendChild(icon.cloneNode(true));
+        dropdown.appendChild(settingsContent);
+
+        parentElement.replaceChild(dropdown, icon);
+    }
+
+    // Função para criar o dropdown de ajuda
+    function createHelpDropdown(icon) {
+        const dropdown = document.createElement('div');
+        dropdown.className = 'dropdown';
+
+        const helpContent = document.createElement('div');
+        helpContent.className = 'dropdown-content';
+
+        const links = [
+            { text: 'Central de Ajuda', href: 'ajuda.html' },
+            { text: 'Tutoriais', href: 'tutoriais.html' },
+            { text: 'FAQ', href: 'faq.html' },
+            { text: 'Contatar Suporte', href: 'suporte.html' }
+        ];
+
+        links.forEach(link => {
+            const a = document.createElement('a');
+            a.href = link.href;
+            a.textContent = link.text;
+            helpContent.appendChild(a);
+        });
+
+        // Substituir o ícone pelo dropdown
+        const parentElement = icon.parentElement;
+        dropdown.appendChild(icon.cloneNode(true));
+        dropdown.appendChild(helpContent);
+
+        parentElement.replaceChild(dropdown, icon);
     }
 
     // Exportação de dados
@@ -90,4 +259,20 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Filtros aplicados:', filterParams);
         });
     });
-}); 
+
+    // Inicializar todos os gráficos na página inicial
+    initCharts();
+});
+
+// Função para inicializar gráficos se estiverem presentes na página
+function initCharts() {
+    // Verifica se Chart.js está disponível
+    if (typeof Chart === 'undefined') return;
+
+    // Inicializa apenas se houver canvas para gráficos na página
+    const chartCanvases = document.querySelectorAll('canvas[id$="Chart"]');
+    if (chartCanvases.length === 0) return;
+
+    // O resto da inicialização dos gráficos será específico para cada página
+    // e já está incluído no código HTML específico de cada página
+} 
