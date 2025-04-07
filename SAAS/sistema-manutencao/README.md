@@ -58,6 +58,43 @@ npm start
 
 O aplicativo estará disponível em [http://localhost:3000](http://localhost:3000).
 
+## Executando com Docker
+
+Se você estiver enfrentando problemas para executar o projeto localmente, você pode usar Docker para executá-lo em um ambiente isolado.
+
+### Requisitos
+
+- Docker
+- Docker Compose
+
+### Executando com Docker Compose
+
+1. No diretório do projeto, execute:
+
+```bash
+docker-compose up
+```
+
+2. Para reconstruir a imagem (após alterações no Dockerfile):
+
+```bash
+docker-compose up --build
+```
+
+3. Para executar em segundo plano:
+
+```bash
+docker-compose up -d
+```
+
+4. Para parar os containers:
+
+```bash
+docker-compose down
+```
+
+O aplicativo estará disponível em [http://localhost:3000](http://localhost:3000).
+
 ## Estrutura do Projeto
 
 ```
