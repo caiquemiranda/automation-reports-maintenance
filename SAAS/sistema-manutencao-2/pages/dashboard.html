@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema de Manutenção</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-home"></i>
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="top-title">
+                <h1>Dashboard</h1>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="home.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> DASHBOARD</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-file-alt"></i> RAS</a>
+                    <ul class="submenu">
+                        <li><a href="ras.html">Relatório Análise de Solução</a></li>
+                    </ul>
+                </li>
+                <li><a href="cronograma-anual.html"><i class="fas fa-calendar-alt"></i> CRONOGRAMA ANUAL</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-calendar-week"></i> CRONOGRAMA MENSAL</a>
+                    <ul class="submenu">
+                        <li><a href="cronograma-mensal.html">Com Funcionários</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-tools"></i> OS</a>
+                    <ul class="submenu">
+                        <li><a href="os-corretiva.html">Corretiva</a></li>
+                        <li><a href="os-planejada.html">Planejada</a></li>
+                        <li><a href="os-preventiva.html">Preventiva</a></li>
+                    </ul>
+                </li>
+                <li><a href="report-mensal.html"><i class="fas fa-file-export"></i> REPORT MENSAL</a></li>
+                <li><a href="report-diario.html"><i class="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
+                    <ul class="submenu">
+                        <li><a href="dispositivos-localizacao.html">Localização</a></li>
+                        <li><a href="dispositivos-tipo.html">Tipo</a></li>
+                        <li><a href="dispositivos-acesso-teste.html">Acesso Teste</a></li>
+                        <li><a href="dispositivos-acesso-manutencao.html">Acesso Manutenção</a></li>
+                        <li><a href="dispositivos-falhas.html">Principais Falhas</a></li>
+                        <li><a href="dispositivos-datasheet.html">Datasheet</a></li>
+                        <li><a href="dispositivos-foto.html">Foto Local</a></li>
+                        <li><a href="dispositivos-historico.html">Histórico</a></li>
+                    </ul>
+                </li>
+                <li><a href="analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content">
+                <h2>Dashboard de Manutenção</h2>
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <canvas id="osChart"></canvas>
+                    </div>
+                    <div class="dashboard-card">
+                        <canvas id="falhasChart"></canvas>
+                    </div>
+                    <div class="dashboard-card">
+                        <canvas id="uptimeChart"></canvas>
+                    </div>
+                    <div class="dashboard-card">
+                        <canvas id="mtbfChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+    <script>
+        // Gráfico de Ordens de Serviço
+        const osCtx = document.getElementById('osChart').getContext('2d');
+        new Chart(osCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Corretiva', 'Preventiva', 'Planejada'],
+                datasets: [{
+                    label: 'Ordens de Serviço',
+                    data: [12, 19, 8],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Gráfico de Falhas
+        const falhasCtx = document.getElementById('falhasChart').getContext('2d');
+        new Chart(falhasCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                datasets: [{
+                    label: 'Falhas por Mês',
+                    data: [12, 19, 3, 5, 2, 3],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Gráfico de Uptime
+        const uptimeCtx = document.getElementById('uptimeChart').getContext('2d');
+        new Chart(uptimeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Uptime', 'Downtime'],
+                datasets: [{
+                    data: [99.9, 0.1],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Gráfico de MTBF
+        const mtbfCtx = document.getElementById('mtbfChart').getContext('2d');
+        new Chart(mtbfCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                datasets: [{
+                    label: 'MTBF (dias)',
+                    data: [90, 95, 100, 105, 110, 120],
+                    fill: false,
+                    borderColor: 'rgb(255, 159, 64)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+</body>
+
+</html>

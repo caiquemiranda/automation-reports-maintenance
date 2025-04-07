@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronograma Anual - Sistema de Manutenção</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/forms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-home"></i>
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="top-title">
+                <h1>Cronograma Anual</h1>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="home.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> DASHBOARD</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-file-alt"></i> RAS</a>
+                    <ul class="submenu">
+                        <li><a href="ras.html">Relatório Análise de Solução</a></li>
+                    </ul>
+                </li>
+                <li><a href="cronograma-anual.html"><i class="fas fa-calendar-alt"></i> CRONOGRAMA ANUAL</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-calendar-week"></i> CRONOGRAMA MENSAL</a>
+                    <ul class="submenu">
+                        <li><a href="cronograma-mensal.html">Com Funcionários</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-tools"></i> OS</a>
+                    <ul class="submenu">
+                        <li><a href="os-corretiva.html">Corretiva</a></li>
+                        <li><a href="os-planejada.html">Planejada</a></li>
+                        <li><a href="os-preventiva.html">Preventiva</a></li>
+                    </ul>
+                </li>
+                <li><a href="report-mensal.html"><i class="fas fa-file-export"></i> REPORT MENSAL</a></li>
+                <li><a href="report-diario.html"><i class="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
+                    <ul class="submenu">
+                        <li><a href="dispositivos-localizacao.html">Localização</a></li>
+                        <li><a href="dispositivos-tipo.html">Tipo</a></li>
+                        <li><a href="dispositivos-acesso-teste.html">Acesso Teste</a></li>
+                        <li><a href="dispositivos-acesso-manutencao.html">Acesso Manutenção</a></li>
+                        <li><a href="dispositivos-falhas.html">Principais Falhas</a></li>
+                        <li><a href="dispositivos-datasheet.html">Datasheet</a></li>
+                        <li><a href="dispositivos-foto.html">Foto Local</a></li>
+                        <li><a href="dispositivos-historico.html">Histórico</a></li>
+                    </ul>
+                </li>
+                <li><a href="analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content">
+                <h2>Cronograma Anual de Manutenção</h2>
+                <div class="calendar-container">
+                    <div id="calendar"></div>
+                </div>
+                <div class="form-container">
+                    <form id="eventForm">
+                        <div class="form-group">
+                            <label for="eventTitle">Título do Evento:</label>
+                            <input type="text" id="eventTitle" name="eventTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDate">Data:</label>
+                            <input type="date" id="eventDate" name="eventDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventType">Tipo de Manutenção:</label>
+                            <select id="eventType" name="eventType" required>
+                                <option value="preventiva">Preventiva</option>
+                                <option value="corretiva">Corretiva</option>
+                                <option value="planejada">Planejada</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDescription">Descrição:</label>
+                            <textarea id="eventDescription" name="eventDescription" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Adicionar Evento</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'pt-br',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                    {
+                        title: 'Manutenção Preventiva',
+                        start: '2024-01-15',
+                        backgroundColor: '#2ecc71'
+                    },
+                    {
+                        title: 'Manutenção Corretiva',
+                        start: '2024-02-20',
+                        backgroundColor: '#e74c3c'
+                    }
+                ],
+                eventClick: function (info) {
+                    alert('Evento: ' + info.event.title);
+                }
+            });
+            calendar.render();
+        });
+    </script>
+</body>
+
+</html>

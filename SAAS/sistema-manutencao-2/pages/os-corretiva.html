@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS Corretiva - Sistema de Manutenção</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/forms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-home"></i>
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="top-title">
+                <h1>Ordens de Serviço Corretiva</h1>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="home.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> DASHBOARD</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-file-alt"></i> RAS</a>
+                    <ul class="submenu">
+                        <li><a href="ras.html">Relatório Análise de Solução</a></li>
+                    </ul>
+                </li>
+                <li><a href="cronograma-anual.html"><i class="fas fa-calendar-alt"></i> CRONOGRAMA ANUAL</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-calendar-week"></i> CRONOGRAMA MENSAL</a>
+                    <ul class="submenu">
+                        <li><a href="cronograma-mensal.html">Com Funcionários</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-tools"></i> OS</a>
+                    <ul class="submenu">
+                        <li><a href="os-corretiva.html">Corretiva</a></li>
+                        <li><a href="os-planejada.html">Planejada</a></li>
+                        <li><a href="os-preventiva.html">Preventiva</a></li>
+                    </ul>
+                </li>
+                <li><a href="report-mensal.html"><i class="fas fa-file-export"></i> REPORT MENSAL</a></li>
+                <li><a href="report-diario.html"><i class="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
+                    <ul class="submenu">
+                        <li><a href="dispositivos-localizacao.html">Localização</a></li>
+                        <li><a href="dispositivos-tipo.html">Tipo</a></li>
+                        <li><a href="dispositivos-acesso-teste.html">Acesso Teste</a></li>
+                        <li><a href="dispositivos-acesso-manutencao.html">Acesso Manutenção</a></li>
+                        <li><a href="dispositivos-falhas.html">Principais Falhas</a></li>
+                        <li><a href="dispositivos-datasheet.html">Datasheet</a></li>
+                        <li><a href="dispositivos-foto.html">Foto Local</a></li>
+                        <li><a href="dispositivos-historico.html">Histórico</a></li>
+                    </ul>
+                </li>
+                <li><a href="analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content">
+                <h2>Ordens de Serviço Corretiva</h2>
+                <div class="form-container">
+                    <form id="osCorretivaForm">
+                        <div class="form-group">
+                            <label for="numeroOS">Número da OS:</label>
+                            <input type="text" id="numeroOS" name="numeroOS" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dataAbertura">Data de Abertura:</label>
+                            <input type="date" id="dataAbertura" name="dataAbertura" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="equipamento">Equipamento:</label>
+                            <input type="text" id="equipamento" name="equipamento" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="localizacao">Localização:</label>
+                            <input type="text" id="localizacao" name="localizacao" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="descricaoFalha">Descrição da Falha:</label>
+                            <textarea id="descricaoFalha" name="descricaoFalha" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="prioridade">Prioridade:</label>
+                            <select id="prioridade" name="prioridade" required>
+                                <option value="baixa">Baixa</option>
+                                <option value="media">Média</option>
+                                <option value="alta">Alta</option>
+                                <option value="critica">Crítica</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tecnico">Técnico Responsável:</label>
+                            <input type="text" id="tecnico" name="tecnico" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status:</label>
+                            <select id="status" name="status" required>
+                                <option value="aberta">Aberta</option>
+                                <option value="em_andamento">Em Andamento</option>
+                                <option value="aguardando_pecas">Aguardando Peças</option>
+                                <option value="concluida">Concluída</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-submit">Salvar OS</button>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <h3>OS Corretivas Recentes</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Data</th>
+                                <th>Equipamento</th>
+                                <th>Prioridade</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>OS-2024-001</td>
+                                <td>15/01/2024</td>
+                                <td>Sensor de Temperatura</td>
+                                <td><span class="badge badge-high">Alta</span></td>
+                                <td><span class="badge badge-open">Aberta</span></td>
+                                <td>
+                                    <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>OS-2024-002</td>
+                                <td>16/01/2024</td>
+                                <td>Controlador de Pressão</td>
+                                <td><span class="badge badge-medium">Média</span></td>
+                                <td><span class="badge badge-progress">Em Andamento</span></td>
+                                <td>
+                                    <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+</body>
+
+</html>

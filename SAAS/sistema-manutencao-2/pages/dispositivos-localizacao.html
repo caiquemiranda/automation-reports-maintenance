@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Dispositivos - Sistema de Manutenção</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/forms.css">
+    <link rel="stylesheet" href="../css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-home"></i>
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="top-title">
+                <h1>Mapa de Dispositivos</h1>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="home.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> DASHBOARD</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-file-alt"></i> RAS</a>
+                    <ul class="submenu">
+                        <li><a href="ras.html">Relatório Análise de Solução</a></li>
+                    </ul>
+                </li>
+                <li><a href="cronograma-anual.html"><i class="fas fa-calendar-alt"></i> CRONOGRAMA ANUAL</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-calendar-week"></i> CRONOGRAMA MENSAL</a>
+                    <ul class="submenu">
+                        <li><a href="cronograma-mensal.html">Com Funcionários</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-tools"></i> OS</a>
+                    <ul class="submenu">
+                        <li><a href="os-corretiva.html">Corretiva</a></li>
+                        <li><a href="os-planejada.html">Planejada</a></li>
+                        <li><a href="os-preventiva.html">Preventiva</a></li>
+                    </ul>
+                </li>
+                <li><a href="report-mensal.html"><i class="fas fa-file-export"></i> REPORT MENSAL</a></li>
+                <li><a href="report-diario.html"><i class="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
+                    <ul class="submenu">
+                        <li><a href="dispositivos-localizacao.html">Localização</a></li>
+                        <li><a href="dispositivos-tipo.html">Tipo</a></li>
+                        <li><a href="dispositivos-acesso-teste.html">Acesso Teste</a></li>
+                        <li><a href="dispositivos-acesso-manutencao.html">Acesso Manutenção</a></li>
+                        <li><a href="dispositivos-falhas.html">Principais Falhas</a></li>
+                        <li><a href="dispositivos-datasheet.html">Datasheet</a></li>
+                        <li><a href="dispositivos-foto.html">Foto Local</a></li>
+                        <li><a href="dispositivos-historico.html">Histórico</a></li>
+                    </ul>
+                </li>
+                <li><a href="analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content">
+                <h2>Mapa de Localização dos Dispositivos</h2>
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
+                <div class="table-container">
+                    <h3>Lista de Dispositivos</h3>
+                    <div class="table-filters">
+                        <div class="filter-group">
+                            <label for="filterType">Tipo:</label>
+                            <select id="filterType">
+                                <option value="">Todos</option>
+                                <option value="sensor">Sensor</option>
+                                <option value="controlador">Controlador</option>
+                                <option value="atuador">Atuador</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterStatus">Status:</label>
+                            <select id="filterStatus">
+                                <option value="">Todos</option>
+                                <option value="ativo">Ativo</option>
+                                <option value="inativo">Inativo</option>
+                                <option value="manutencao">Em Manutenção</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Tipo</th>
+                                <th>Localização</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>DEV-001</td>
+                                <td>Sensor de Temperatura</td>
+                                <td>Sensor</td>
+                                <td>Setor A - Linha 1</td>
+                                <td><span class="badge badge-completed">Ativo</span></td>
+                                <td>
+                                    <button class="btn-action"><i class="fas fa-map-marker-alt"></i></button>
+                                    <button class="btn-action"><i class="fas fa-info-circle"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>DEV-002</td>
+                                <td>Controlador de Pressão</td>
+                                <td>Controlador</td>
+                                <td>Setor B - Linha 2</td>
+                                <td><span class="badge badge-waiting">Em Manutenção</span></td>
+                                <td>
+                                    <button class="btn-action"><i class="fas fa-map-marker-alt"></i></button>
+                                    <button class="btn-action"><i class="fas fa-info-circle"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <button class="active">1</button>
+                        <button>2</button>
+                        <button>3</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Inicialização do mapa
+        var map = L.map('map').setView([-23.5505, -46.6333], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Adicionando marcadores de exemplo
+        var marker1 = L.marker([-23.5505, -46.6333]).addTo(map)
+            .bindPopup('Sensor de Temperatura<br>Setor A - Linha 1')
+            .openPopup();
+
+        var marker2 = L.marker([-23.5515, -46.6343]).addTo(map)
+            .bindPopup('Controlador de Pressão<br>Setor B - Linha 2');
+
+        // Função para filtrar a tabela
+        document.getElementById('filterType').addEventListener('change', filterTable);
+        document.getElementById('filterStatus').addEventListener('change', filterTable);
+
+        function filterTable() {
+            var typeFilter = document.getElementById('filterType').value;
+            var statusFilter = document.getElementById('filterStatus').value;
+            var rows = document.querySelectorAll('.data-table tbody tr');
+
+            rows.forEach(function (row) {
+                var type = row.cells[2].textContent.toLowerCase();
+                var status = row.cells[4].textContent.toLowerCase();
+                var typeMatch = !typeFilter || type.includes(typeFilter);
+                var statusMatch = !statusFilter || status.includes(statusFilter);
+
+                row.style.display = typeMatch && statusMatch ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+
+</html>

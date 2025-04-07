@@ -1,0 +1,135 @@
+.table-container {
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.table-container h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* Estilos para badges */
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: white;
+}
+
+.badge-high {
+    background-color: #e74c3c;
+}
+
+.badge-medium {
+    background-color: #f39c12;
+}
+
+.badge-low {
+    background-color: #2ecc71;
+}
+
+.badge-open {
+    background-color: #3498db;
+}
+
+.badge-progress {
+    background-color: #f1c40f;
+}
+
+.badge-waiting {
+    background-color: #e67e22;
+}
+
+.badge-completed {
+    background-color: #27ae60;
+}
+
+/* Estilos para botões de ação */
+.btn-action {
+    background: none;
+    border: none;
+    color: #7f8c8d;
+    cursor: pointer;
+    padding: 5px;
+    margin: 0 5px;
+    transition: color 0.3s;
+}
+
+.btn-action:hover {
+    color: #2c3e50;
+}
+
+.btn-action.edit:hover {
+    color: #3498db;
+}
+
+.btn-action.delete:hover {
+    color: #e74c3c;
+}
+
+/* Estilos para tabelas responsivas */
+@media (max-width: 768px) {
+    .data-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* Estilos para filtros de tabela */
+.table-filters {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.filter-group label {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.filter-group select,
+.filter-group input {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Estilos para paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 5px;
+}
+
+.pagination button {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.pagination button:hover {
+    background-color: #f5f5f5;
+}
+
+.pagination button.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+} 
