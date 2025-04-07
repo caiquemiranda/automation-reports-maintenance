@@ -139,7 +139,7 @@
             margin-bottom: 0;
             font-size: 16px;
         }
-        
+
         .section-title {
             margin-top: 30px;
             margin-bottom: 15px;
@@ -155,8 +155,9 @@
         <div class="top-bar">
             <div class="top-icons">
                 <i class="fas fa-bars" id="sidebar-toggle"></i>
-                <i class="fas fa-home"></i>
-                <i class="fas fa-cog"></i>
+                <i class="fas fa-question-circle" id="help-icon"></i>
+                <i class="fas fa-cog" id="settings-icon"></i>
+                <i class="fas fa-user-circle" id="profile-icon"></i>
             </div>
             <div class="top-title">
                 <h1>Home</h1>
@@ -190,7 +191,8 @@
                     </ul>
                 </li>
                 <li><a href="report-mensal.html"><i class="fas fa-file-export"></i> REPORT MENSAL</a></li>
-                <li><a href="report-diario.html"><i class="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a></li>
+                <li><a href="report-diario.html"><i class="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a>
+                </li>
                 <li class="has-submenu">
                     <a href="#"><i class="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
                     <ul class="submenu">
@@ -198,6 +200,15 @@
                     </ul>
                 </li>
                 <li><a href="analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-database"></i> DADOS</a>
+                    <ul class="submenu">
+                        <li><a href="dados-equipamentos.html">Equipamentos</a></li>
+                        <li><a href="dados-funcionarios.html">Funcionários</a></li>
+                        <li><a href="dados-relatorios.html">Relatórios</a></li>
+                        <li><a href="dados-exportacao.html">Exportação</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
 
@@ -286,7 +297,8 @@
                             <i class="fas fa-wrench"></i>
                         </div>
                         <div class="activity-content">
-                            <p><strong><a href="os-corretiva.html">OS-2024-014</a></strong> - Manutenção corretiva na Válvula Proporcional concluída</p>
+                            <p><strong><a href="os-corretiva.html">OS-2024-014</a></strong> - Manutenção corretiva na
+                                Válvula Proporcional concluída</p>
                             <div class="date">Hoje às 10:35 - Técnico: Pedro Souza</div>
                         </div>
                     </div>
@@ -295,7 +307,8 @@
                             <i class="fas fa-clipboard-check"></i>
                         </div>
                         <div class="activity-content">
-                            <p><strong><a href="report-diario.html">Relatório</a></strong> - Falha reportada no Sistema Supervisório</p>
+                            <p><strong><a href="report-diario.html">Relatório</a></strong> - Falha reportada no Sistema
+                                Supervisório</p>
                             <div class="date">Hoje às 09:15 - Operador: Carlos Pereira</div>
                         </div>
                     </div>
@@ -304,7 +317,8 @@
                             <i class="fas fa-calendar-check"></i>
                         </div>
                         <div class="activity-content">
-                            <p><strong><a href="cronograma-mensal.html">Agendamento</a></strong> - Manutenção preventiva agendada para Compressor 2</p>
+                            <p><strong><a href="cronograma-mensal.html">Agendamento</a></strong> - Manutenção preventiva
+                                agendada para Compressor 2</p>
                             <div class="date">Ontem às 16:40 - Planejador: Ana Oliveira</div>
                         </div>
                     </div>
@@ -313,7 +327,8 @@
                             <i class="fas fa-wrench"></i>
                         </div>
                         <div class="activity-content">
-                            <p><strong><a href="dispositivos.html">Dispositivo D002</a></strong> - Controlador de Pressão em manutenção</p>
+                            <p><strong><a href="dispositivos.html">Dispositivo D002</a></strong> - Controlador de
+                                Pressão em manutenção</p>
                             <div class="date">Ontem às 14:20 - Técnico: Maria Santos</div>
                         </div>
                     </div>
@@ -322,7 +337,8 @@
                             <i class="fas fa-file-alt"></i>
                         </div>
                         <div class="activity-content">
-                            <p><strong><a href="ras.html">RAS-2024-003</a></strong> - Análise de falha no Motor Principal concluída</p>
+                            <p><strong><a href="ras.html">RAS-2024-003</a></strong> - Análise de falha no Motor
+                                Principal concluída</p>
                             <div class="date">20/02/2024 às 11:30 - Engenheiro: João Silva</div>
                         </div>
                     </div>
@@ -332,22 +348,22 @@
     </div>
     <script src="../js/script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Atualiza data e hora
             function atualizarDataHora() {
                 const agora = new Date();
                 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 document.getElementById('data-atual').textContent = agora.toLocaleDateString('pt-BR', options);
-                
+
                 const hora = agora.getHours().toString().padStart(2, '0');
                 const minutos = agora.getMinutes().toString().padStart(2, '0');
                 document.getElementById('hora-atual').textContent = `${hora}:${minutos}`;
             }
-            
+
             atualizarDataHora();
             setInterval(atualizarDataHora, 60000); // Atualiza a cada minuto
         });
     </script>
 </body>
 
-</html> 
+</html>
