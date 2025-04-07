@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -6,24 +6,13 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-    Collapse,
-    Typography,
-    Box
+    Typography
 } from '@mui/material';
 import {
     Dashboard as DashboardIcon,
     Build as BuildIcon,
     CalendarMonth as CalendarIcon,
-    Assessment as ReportIcon,
-    ExpandLess,
-    ExpandMore,
-    LocationOn as MapIcon,
-    Engineering as EngineeringIcon,
-    FindInPage as FindIcon,
-    PendingActions as PendingIcon,
-    InsertDriveFile as FileIcon,
-    Person as PersonIcon,
-    Devices as DevicesIcon
+    LocationOn as MapIcon
 } from '@mui/icons-material';
 
 const SidebarContainer = styled.div`
@@ -69,36 +58,8 @@ const MenuItemText = styled(ListItemText)`
   }
 `;
 
-const NestedList = styled(List)`
-  padding-left: 16px;
-  background-color: rgba(0, 0, 0, 0.2);
-`;
-
-const NestedItem = styled(ListItem)`
-  padding: 8px 16px 8px 30px;
-  border-left: 3px solid ${props => props.active ? '#4fc3f7' : 'transparent'};
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-`;
-
 const Sidebar = () => {
     const location = useLocation();
-    const [openCorretiva, setOpenCorretiva] = useState(true);
-    const [openPlanejada, setOpenPlanejada] = useState(false);
-    const [openRelatorios, setOpenRelatorios] = useState(false);
-
-    const handleClickCorretiva = () => {
-        setOpenCorretiva(!openCorretiva);
-    };
-
-    const handleClickPlanejada = () => {
-        setOpenPlanejada(!openPlanejada);
-    };
-
-    const handleClickRelatorios = () => {
-        setOpenRelatorios(!openRelatorios);
-    };
 
     const isActive = (path) => {
         return location.pathname === path;
@@ -113,17 +74,17 @@ const Sidebar = () => {
         {
             text: 'OS Corretiva',
             icon: <BuildIcon />,
-            children: [
-                { text: 'Nova OS', path: '/corretiva/nova' },
-                { text: 'Consulta', path: '/corretiva/consulta' },
-            ],
+            path: '/corretiva/nova',
+        },
+        {
+            text: 'OS Corretiva - Consulta',
+            icon: <BuildIcon />,
+            path: '/corretiva/consulta',
         },
         {
             text: 'OS Planejada',
             icon: <CalendarIcon />,
-            children: [
-                { text: 'Nova OS', path: '/planejada/nova' },
-            ],
+            path: '/planejada/nova',
         },
         {
             text: 'Mapa de Sensores',

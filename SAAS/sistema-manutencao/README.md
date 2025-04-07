@@ -72,6 +72,22 @@ Se você estiver enfrentando problemas para executar o projeto localmente, você
 1. No diretório do projeto, execute:
 
 ```bash
+docker-compose up --build
+```
+
+Se encontrar erros relacionados ao date-fns ou outras bibliotecas, tente:
+
+```bash
+# Remover os containers existentes
+docker-compose down
+
+# Remover a pasta node_modules local, se existir
+rm -rf node_modules
+
+# Reconstruir a imagem sem usar o cache
+docker-compose build --no-cache
+
+# Iniciar o container
 docker-compose up
 ```
 
@@ -92,6 +108,15 @@ docker-compose up -d
 ```bash
 docker-compose down
 ```
+
+### Solução de Problemas
+
+Se encontrar erros de incompatibilidade entre bibliotecas:
+
+1. Verifique se as versões no package.json estão corretas
+2. Para problemas com o date-fns e @mui/x-date-pickers:
+   - Utilize a versão 5.x do @mui/x-date-pickers com date-fns 2.x
+   - Instale com a flag `--legacy-peer-deps`
 
 O aplicativo estará disponível em [http://localhost:3000](http://localhost:3000).
 
