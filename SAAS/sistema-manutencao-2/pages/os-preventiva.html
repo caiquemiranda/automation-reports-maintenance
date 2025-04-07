@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS Preventiva - Sistema de Manutenção</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/forms.css">
+    <link rel="stylesheet" href="../css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-home"></i>
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="top-title">
+                <h1>Ordens de Serviço Preventiva</h1>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="home.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> DASHBOARD</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-file-alt"></i> RAS</a>
+                    <ul class="submenu">
+                        <li><a href="ras.html">Relatório Análise de Solução</a></li>
+                    </ul>
+                </li>
+                <li><a href="cronograma-anual.html"><i class="fas fa-calendar-alt"></i> CRONOGRAMA ANUAL</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-calendar-week"></i> CRONOGRAMA MENSAL</a>
+                    <ul class="submenu">
+                        <li><a href="cronograma-mensal.html">Com Funcionários</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-tools"></i> OS</a>
+                    <ul class="submenu">
+                        <li><a href="os-corretiva.html">Corretiva</a></li>
+                        <li><a href="os-planejada.html">Planejada</a></li>
+                        <li><a href="os-preventiva.html">Preventiva</a></li>
+                    </ul>
+                </li>
+                <li><a href="report-mensal.html"><i class="fas fa-file-export"></i> REPORT MENSAL</a></li>
+                <li><a href="report-diario.html"><i class="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
+                    <ul class="submenu">
+                        <li><a href="dispositivos-localizacao.html">Localização</a></li>
+                        <li><a href="dispositivos-tipo.html">Tipo</a></li>
+                        <li><a href="dispositivos-acesso-teste.html">Acesso Teste</a></li>
+                        <li><a href="dispositivos-acesso-manutencao.html">Acesso Manutenção</a></li>
+                        <li><a href="dispositivos-falhas.html">Principais Falhas</a></li>
+                        <li><a href="dispositivos-datasheet.html">Datasheet</a></li>
+                        <li><a href="dispositivos-foto.html">Foto Local</a></li>
+                        <li><a href="dispositivos-historico.html">Histórico</a></li>
+                    </ul>
+                </li>
+                <li><a href="analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content">
+                <h2>Ordens de Serviço Preventiva</h2>
+                <div class="form-container">
+                    <form id="osPreventivaForm">
+                        <div class="form-group">
+                            <label for="numeroOS">Número da OS:</label>
+                            <input type="text" id="numeroOS" name="numeroOS" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dataPreventiva">Data da Preventiva:</label>
+                            <input type="date" id="dataPreventiva" name="dataPreventiva" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="equipamento">Equipamento:</label>
+                            <input type="text" id="equipamento" name="equipamento" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="localizacao">Localização:</label>
+                            <input type="text" id="localizacao" name="localizacao" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipoPreventiva">Tipo de Preventiva:</label>
+                            <select id="tipoPreventiva" name="tipoPreventiva" required>
+                                <option value="diaria">Diária</option>
+                                <option value="semanal">Semanal</option>
+                                <option value="mensal">Mensal</option>
+                                <option value="trimestral">Trimestral</option>
+                                <option value="semestral">Semestral</option>
+                                <option value="anual">Anual</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="checklist">Checklist:</label>
+                            <textarea id="checklist" name="checklist" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="tecnico">Técnico Responsável:</label>
+                            <input type="text" id="tecnico" name="tecnico" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status:</label>
+                            <select id="status" name="status" required>
+                                <option value="agendada">Agendada</option>
+                                <option value="em_andamento">Em Andamento</option>
+                                <option value="concluida">Concluída</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-submit">Salvar OS</button>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <h3>OS Preventivas Recentes</h3>
+                    <div class="table-filters">
+                        <div class="filter-group">
+                            <label for="filterTipo">Tipo:</label>
+                            <select id="filterTipo">
+                                <option value="">Todos</option>
+                                <option value="diaria">Diária</option>
+                                <option value="semanal">Semanal</option>
+                                <option value="mensal">Mensal</option>
+                                <option value="trimestral">Trimestral</option>
+                                <option value="semestral">Semestral</option>
+                                <option value="anual">Anual</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterStatus">Status:</label>
+                            <select id="filterStatus">
+                                <option value="">Todos</option>
+                                <option value="agendada">Agendada</option>
+                                <option value="em_andamento">Em Andamento</option>
+                                <option value="concluida">Concluída</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Data</th>
+                                <th>Equipamento</th>
+                                <th>Tipo</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>OS-2024-005</td>
+                                <td>05/02/2024</td>
+                                <td>Compressor de Ar</td>
+                                <td>Mensal</td>
+                                <td><span class="badge badge-open">Agendada</span></td>
+                                <td>
+                                    <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>OS-2024-006</td>
+                                <td>10/02/2024</td>
+                                <td>Chiller</td>
+                                <td>Trimestral</td>
+                                <td><span class="badge badge-progress">Em Andamento</span></td>
+                                <td>
+                                    <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
