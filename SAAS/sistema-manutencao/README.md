@@ -29,7 +29,7 @@ Um sistema completo para gerenciamento de ordens de serviço de manutenção ind
 1. Clone o repositório:
 
 ```bash
-git clone [URL_DO_REPOSITÓRIO]
+git clone https://github.com/caiquemiranda/automation-reports-maintenance
 cd sistema-manutencao
 ```
 
