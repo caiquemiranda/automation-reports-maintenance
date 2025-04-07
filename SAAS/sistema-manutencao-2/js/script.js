@@ -6,22 +6,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', function () {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
+            sidebar.classList.toggle('sidebar-collapsed');
+            mainContent.classList.toggle('main-content-expanded');
         });
     }
 
     // Toggle dos Submenus
-    const submenus = document.querySelectorAll('.has-submenu');
+    const hasSubmenuItems = document.querySelectorAll('.has-submenu');
 
-    submenus.forEach(function (submenu) {
-        submenu.addEventListener('click', function (e) {
-            if (e.target.closest('a') && e.target.closest('a').nextElementSibling) {
+    hasSubmenuItems.forEach(function (item) {
+        const link = item.querySelector('a');
+        if (link) {
+            link.addEventListener('click', function (e) {
                 e.preventDefault();
-                const submenuList = this.querySelector('.submenu');
-                submenuList.classList.toggle('active');
-            }
-        });
+                item.classList.toggle('active');
+            });
+        }
     });
 
     // Fechar sidebar ao clicar fora em telas pequenas
@@ -53,7 +53,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Add active class to clicked button and corresponding content
             button.classList.add('active');
-            tabContainer.querySelector(`.tab-content[data-tab="${tabId}"]`).classList.add('active');
+            const content = tabContainer.querySelector(`.tab-content[data-tab="${tabId}"]`);
+            if (content) {
+                content.classList.add('active');
+            }
         });
     });
 
@@ -148,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
             { text: 'Meu Perfil', href: 'perfil.html' },
             { text: 'Minhas Tarefas', href: 'tarefas.html' },
             { text: 'Configurações', href: 'configuracoes.html' },
-            { text: 'Sair', href: 'index.html' }
+            { text: 'Sair', href: '../index.html' }
         ];
 
         profileContent.appendChild(profileHeader);
