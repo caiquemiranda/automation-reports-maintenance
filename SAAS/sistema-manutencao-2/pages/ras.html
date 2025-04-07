@@ -4,10 +4,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAS - Sistema de Manutenção</title>
+    <title>RAS - Relatório de Análise de Solução - Sistema de Manutenção</title>
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/forms.css">
+    <link rel="stylesheet" href="../css/tables.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .tab-container {
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: #f1f1f1;
+            border-radius: 5px 5px 0 0;
+            overflow: hidden;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border: none;
+            transition: 0.3s;
+            font-size: 16px;
+            flex: 1;
+            text-align: center;
+        }
+
+        .tab:hover {
+            background-color: #ddd;
+        }
+
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            animation: fadeEffect 1s;
+        }
+
+        @keyframes fadeEffect {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .ras-details {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,7 +81,7 @@
                 <i class="fas fa-cog"></i>
             </div>
             <div class="top-title">
-                <h1>Relatório de Análise de Solução</h1>
+                <h1>RAS - Relatório de Análise de Solução</h1>
             </div>
         </div>
 
@@ -56,14 +117,7 @@
                 <li class="has-submenu">
                     <a href="#"><i class="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
                     <ul class="submenu">
-                        <li><a href="dispositivos-localizacao.html">Localização</a></li>
-                        <li><a href="dispositivos-tipo.html">Tipo</a></li>
-                        <li><a href="dispositivos-acesso-teste.html">Acesso Teste</a></li>
-                        <li><a href="dispositivos-acesso-manutencao.html">Acesso Manutenção</a></li>
-                        <li><a href="dispositivos-falhas.html">Principais Falhas</a></li>
-                        <li><a href="dispositivos-datasheet.html">Datasheet</a></li>
-                        <li><a href="dispositivos-foto.html">Foto Local</a></li>
-                        <li><a href="dispositivos-historico.html">Histórico</a></li>
+                        <li><a href="dispositivos.html">Mapa de Dispositivos</a></li>
                     </ul>
                 </li>
                 <li><a href="analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
@@ -73,48 +127,422 @@
         <!-- Main Content -->
         <div class="main-content">
             <div class="content">
-                <h2>Relatório de Análise de Solução</h2>
-                <div class="form-container">
-                    <form id="rasForm">
-                        <div class="form-group">
-                            <label for="data">Data:</label>
-                            <input type="date" id="data" name="data" required>
+                <h2>Relatório de Análise de Solução (RAS)</h2>
+
+                <div class="tab-container">
+                    <div class="tabs">
+                        <button class="tab active" onclick="openTab(event, 'novoRAS')">Novo RAS</button>
+                        <button class="tab" onclick="openTab(event, 'historicoRAS')">Histórico</button>
+                    </div>
+
+                    <div id="novoRAS" class="tab-content" style="display: block;">
+                        <div class="form-container">
+                            <form id="rasForm">
+                                <div class="form-group">
+                                    <label for="numeroRAS">Número do RAS:</label>
+                                    <input type="text" id="numeroRAS" name="numeroRAS" value="RAS-2024-006" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dataRAS">Data:</label>
+                                    <input type="date" id="dataRAS" name="dataRAS" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="equipamento">Equipamento:</label>
+                                    <input type="text" id="equipamento" name="equipamento" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="setor">Setor:</label>
+                                    <input type="text" id="setor" name="setor" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tipoFalha">Tipo de Falha:</label>
+                                    <select id="tipoFalha" name="tipoFalha" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="elétrica">Elétrica</option>
+                                        <option value="mecânica">Mecânica</option>
+                                        <option value="hidráulica">Hidráulica</option>
+                                        <option value="pneumática">Pneumática</option>
+                                        <option value="software">Software</option>
+                                        <option value="operacional">Operacional</option>
+                                        <option value="outra">Outra</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descricaoFalha">Descrição da Falha:</label>
+                                    <textarea id="descricaoFalha" name="descricaoFalha" rows="3" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="causaRaiz">Causa Raiz:</label>
+                                    <textarea id="causaRaiz" name="causaRaiz" rows="3" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="acaoImediata">Ação Imediata:</label>
+                                    <textarea id="acaoImediata" name="acaoImediata" rows="3" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="acaoPreventiva">Ação Preventiva:</label>
+                                    <textarea id="acaoPreventiva" name="acaoPreventiva" rows="3" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="responsavel">Responsável pela Análise:</label>
+                                    <input type="text" id="responsavel" name="responsavel" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prazoImplementacao">Prazo para Implementação:</label>
+                                    <input type="date" id="prazoImplementacao" name="prazoImplementacao" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="numeroOS">Número da OS Relacionada:</label>
+                                    <input type="text" id="numeroOS" name="numeroOS">
+                                </div>
+                                <button type="submit" class="btn-submit">Registrar RAS</button>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label for="equipamento">Equipamento:</label>
-                            <input type="text" id="equipamento" name="equipamento" required>
+                    </div>
+
+                    <div id="historicoRAS" class="tab-content">
+                        <div class="table-container">
+                            <h3>Relatórios de Análise de Solução</h3>
+                            <div class="table-filters">
+                                <div class="filter-group">
+                                    <label for="filterPeriodoInicio">Período Início:</label>
+                                    <input type="date" id="filterPeriodoInicio">
+                                </div>
+                                <div class="filter-group">
+                                    <label for="filterPeriodoFim">Período Fim:</label>
+                                    <input type="date" id="filterPeriodoFim">
+                                </div>
+                                <div class="filter-group">
+                                    <label for="filterTipoFalha">Tipo de Falha:</label>
+                                    <select id="filterTipoFalha">
+                                        <option value="">Todos</option>
+                                        <option value="elétrica">Elétrica</option>
+                                        <option value="mecânica">Mecânica</option>
+                                        <option value="hidráulica">Hidráulica</option>
+                                        <option value="pneumática">Pneumática</option>
+                                        <option value="software">Software</option>
+                                        <option value="operacional">Operacional</option>
+                                        <option value="outra">Outra</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label for="filterEquipamento">Equipamento:</label>
+                                    <input type="text" id="filterEquipamento" placeholder="Buscar...">
+                                </div>
+                                <button class="btn-filter" onclick="filtrarRAS()">Filtrar</button>
+                            </div>
+
+                            <table class="data-table" id="ras-table">
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Data</th>
+                                        <th>Equipamento</th>
+                                        <th>Tipo de Falha</th>
+                                        <th>Responsável</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-ras-id="RAS-2024-001" data-tipo="mecânica">
+                                        <td>RAS-2024-001</td>
+                                        <td>15/01/2024</td>
+                                        <td>Bomba Centrífuga P-101</td>
+                                        <td>Mecânica</td>
+                                        <td>João Silva</td>
+                                        <td><span class="badge badge-completed">Concluído</span></td>
+                                        <td>
+                                            <button class="btn-action" onclick="mostrarDetalhesRAS('RAS-2024-001')"><i
+                                                    class="fas fa-eye"></i></button>
+                                            <button class="btn-action"><i class="fas fa-file-pdf"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr data-ras-id="RAS-2024-002" data-tipo="elétrica">
+                                        <td>RAS-2024-002</td>
+                                        <td>28/01/2024</td>
+                                        <td>Painel Elétrico PE-203</td>
+                                        <td>Elétrica</td>
+                                        <td>Maria Santos</td>
+                                        <td><span class="badge badge-completed">Concluído</span></td>
+                                        <td>
+                                            <button class="btn-action" onclick="mostrarDetalhesRAS('RAS-2024-002')"><i
+                                                    class="fas fa-eye"></i></button>
+                                            <button class="btn-action"><i class="fas fa-file-pdf"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr data-ras-id="RAS-2024-003" data-tipo="mecânica">
+                                        <td>RAS-2024-003</td>
+                                        <td>10/02/2024</td>
+                                        <td>Motor Principal</td>
+                                        <td>Mecânica</td>
+                                        <td>João Silva</td>
+                                        <td><span class="badge badge-completed">Concluído</span></td>
+                                        <td>
+                                            <button class="btn-action" onclick="mostrarDetalhesRAS('RAS-2024-003')"><i
+                                                    class="fas fa-eye"></i></button>
+                                            <button class="btn-action"><i class="fas fa-file-pdf"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr data-ras-id="RAS-2024-004" data-tipo="software">
+                                        <td>RAS-2024-004</td>
+                                        <td>15/02/2024</td>
+                                        <td>Sistema de Controle</td>
+                                        <td>Software</td>
+                                        <td>Pedro Souza</td>
+                                        <td><span class="badge badge-progress">Em Andamento</span></td>
+                                        <td>
+                                            <button class="btn-action" onclick="mostrarDetalhesRAS('RAS-2024-004')"><i
+                                                    class="fas fa-eye"></i></button>
+                                            <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr data-ras-id="RAS-2024-005" data-tipo="hidráulica">
+                                        <td>RAS-2024-005</td>
+                                        <td>18/02/2024</td>
+                                        <td>Válvula Proporcional</td>
+                                        <td>Hidráulica</td>
+                                        <td>Ana Oliveira</td>
+                                        <td><span class="badge badge-progress">Em Andamento</span></td>
+                                        <td>
+                                            <button class="btn-action" onclick="mostrarDetalhesRAS('RAS-2024-005')"><i
+                                                    class="fas fa-eye"></i></button>
+                                            <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="pagination">
+                                <button class="btn-page active">1</button>
+                                <button class="btn-page">2</button>
+                                <button class="btn-page">></button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="falha">Descrição da Falha:</label>
-                            <textarea id="falha" name="falha" rows="4" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="causa">Causa da Falha:</label>
-                            <textarea id="causa" name="causa" rows="4" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="solucao">Solução Aplicada:</label>
-                            <textarea id="solucao" name="solucao" rows="4" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="tecnico">Técnico Responsável:</label>
-                            <input type="text" id="tecnico" name="tecnico" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="tempo">Tempo de Resolução:</label>
-                            <input type="text" id="tempo" name="tempo" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="prevencao">Medidas Preventivas:</label>
-                            <textarea id="prevencao" name="prevencao" rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="btn-submit">Salvar Relatório</button>
-                    </form>
+                    </div>
                 </div>
+
+                <!-- Detalhes do RAS (aparece quando clica em um RAS) -->
+                <div id="ras-details" class="ras-details">
+                    <h3 id="ras-title">Detalhes do RAS</h3>
+                    <div class="ras-info" id="ras-info">
+                        <!-- Informações do RAS serão preenchidas via JavaScript -->
+                    </div>
+                    <button class="btn-submit" onclick="fecharDetalhesRAS()">Fechar</button>
+                </div>
+
             </div>
         </div>
     </div>
     <script src="../js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Preenche a data atual no campo de data do formulário
+            const hoje = new Date();
+            const dataFormatada = hoje.toISOString().split('T')[0];
+            document.getElementById('dataRAS').value = dataFormatada;
+
+            // Configuração do formulário
+            document.getElementById('rasForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                alert('RAS registrado com sucesso!');
+                this.reset();
+                document.getElementById('dataRAS').value = dataFormatada;
+            });
+        });
+
+        // Configuração das abas
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+
+            // Esconde os detalhes do RAS quando muda de aba
+            document.getElementById('ras-details').style.display = 'none';
+        }
+
+        // Filtrar RAS
+        function filtrarRAS() {
+            const tipoFalha = document.getElementById('filterTipoFalha').value.toLowerCase();
+            const equipamento = document.getElementById('filterEquipamento').value.toLowerCase();
+            const rows = document.querySelectorAll('#ras-table tbody tr');
+
+            rows.forEach(row => {
+                const rowTipo = row.getAttribute('data-tipo').toLowerCase();
+                const rowEquipamento = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+
+                let mostrar = true;
+
+                if (tipoFalha && rowTipo !== tipoFalha) {
+                    mostrar = false;
+                }
+
+                if (equipamento && !rowEquipamento.includes(equipamento)) {
+                    mostrar = false;
+                }
+
+                row.style.display = mostrar ? '' : 'none';
+            });
+        }
+
+        // Mostrar detalhes do RAS
+        function mostrarDetalhesRAS(rasId) {
+            // Dados simulados de RAS
+            const rasDetalhes = {
+                'RAS-2024-001': {
+                    numero: 'RAS-2024-001',
+                    data: '15/01/2024',
+                    equipamento: 'Bomba Centrífuga P-101',
+                    setor: 'Sala de Bombas',
+                    tipoFalha: 'Mecânica',
+                    descricaoFalha: 'Vazamento excessivo pelo selo mecânico com ruído anormal durante operação.',
+                    causaRaiz: 'Desgaste prematuro do selo mecânico devido a desalinhamento do acoplamento motor-bomba.',
+                    acaoImediata: 'Substituição do selo mecânico e realização de alinhamento a laser do conjunto.',
+                    acaoPreventiva: 'Implementar rotina de verificação de alinhamento trimestral e monitoramento de vibração mensal.',
+                    responsavel: 'João Silva',
+                    prazoImplementacao: '30/01/2024',
+                    numeroOS: 'OS-2024-005',
+                    status: 'Concluído'
+                },
+                'RAS-2024-002': {
+                    numero: 'RAS-2024-002',
+                    data: '28/01/2024',
+                    equipamento: 'Painel Elétrico PE-203',
+                    setor: 'Subestação',
+                    tipoFalha: 'Elétrica',
+                    descricaoFalha: 'Disjuntor principal disparando sem causa aparente durante operação normal.',
+                    causaRaiz: 'Sobrecarga devido a curto-circuito intermitente no circuito de controle.',
+                    acaoImediata: 'Substituição de cabos danificados e reaperto de conexões.',
+                    acaoPreventiva: 'Implementar inspeção termográfica bimestral e verificação de conexões semestral.',
+                    responsavel: 'Maria Santos',
+                    prazoImplementacao: '15/02/2024',
+                    numeroOS: 'OS-2024-008',
+                    status: 'Concluído'
+                },
+                'RAS-2024-003': {
+                    numero: 'RAS-2024-003',
+                    data: '10/02/2024',
+                    equipamento: 'Motor Principal',
+                    setor: 'Linha de Produção',
+                    tipoFalha: 'Mecânica',
+                    descricaoFalha: 'Sobreaquecimento do motor e perda de potência durante operação contínua.',
+                    causaRaiz: 'Rolamentos danificados por falta de lubrificação adequada.',
+                    acaoImediata: 'Substituição dos rolamentos e ajuste do sistema de lubrificação.',
+                    acaoPreventiva: 'Revisar plano de lubrificação e implementar sensores de temperatura nos mancais.',
+                    responsavel: 'João Silva',
+                    prazoImplementacao: '25/02/2024',
+                    numeroOS: 'OS-2024-010',
+                    status: 'Concluído'
+                },
+                'RAS-2024-004': {
+                    numero: 'RAS-2024-004',
+                    data: '15/02/2024',
+                    equipamento: 'Sistema de Controle',
+                    setor: 'Sala de Controle',
+                    tipoFalha: 'Software',
+                    descricaoFalha: 'Travamentos frequentes e perda de dados durante operação.',
+                    causaRaiz: 'Bug no software de controle versão 2.5 e conflito com atualizações recentes.',
+                    acaoImediata: 'Rollback para versão estável 2.4 e isolamento do módulo problemático.',
+                    acaoPreventiva: 'Criar ambiente de testes para validação de atualizações antes da implementação.',
+                    responsavel: 'Pedro Souza',
+                    prazoImplementacao: '28/02/2024',
+                    numeroOS: 'OS-2024-012',
+                    status: 'Em Andamento'
+                },
+                'RAS-2024-005': {
+                    numero: 'RAS-2024-005',
+                    data: '18/02/2024',
+                    equipamento: 'Válvula Proporcional',
+                    setor: 'Sistema Hidráulico',
+                    tipoFalha: 'Hidráulica',
+                    descricaoFalha: 'Resposta lenta e instabilidade no controle de fluxo.',
+                    causaRaiz: 'Contaminação do óleo hidráulico e desgaste do carretel interno.',
+                    acaoImediata: 'Limpeza do sistema e substituição do óleo contaminado.',
+                    acaoPreventiva: 'Implementar análise de óleo mensal e instalar filtros de melhor qualidade.',
+                    responsavel: 'Ana Oliveira',
+                    prazoImplementacao: '05/03/2024',
+                    numeroOS: 'OS-2024-014',
+                    status: 'Em Andamento'
+                }
+            };
+
+            const detalhes = rasDetalhes[rasId];
+            if (detalhes) {
+                document.getElementById('ras-title').textContent = `Detalhes do ${detalhes.numero}`;
+
+                let html = `
+                    <div class="form-group">
+                        <label>Número:</label>
+                        <p>${detalhes.numero}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Data:</label>
+                        <p>${detalhes.data}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Equipamento:</label>
+                        <p>${detalhes.equipamento}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Setor:</label>
+                        <p>${detalhes.setor}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Falha:</label>
+                        <p>${detalhes.tipoFalha}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição da Falha:</label>
+                        <p>${detalhes.descricaoFalha}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Causa Raiz:</label>
+                        <p>${detalhes.causaRaiz}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Ação Imediata:</label>
+                        <p>${detalhes.acaoImediata}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Ação Preventiva:</label>
+                        <p>${detalhes.acaoPreventiva}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Responsável:</label>
+                        <p>${detalhes.responsavel}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Prazo de Implementação:</label>
+                        <p>${detalhes.prazoImplementacao}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>OS Relacionada:</label>
+                        <p>${detalhes.numeroOS}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Status:</label>
+                        <p>${detalhes.status}</p>
+                    </div>
+                `;
+
+                document.getElementById('ras-info').innerHTML = html;
+                document.getElementById('ras-details').style.display = 'block';
+            }
+        }
+
+        // Fechar detalhes do RAS
+        function fecharDetalhesRAS() {
+            document.getElementById('ras-details').style.display = 'none';
+        }
+    </script>
 </body>
 
 </html>

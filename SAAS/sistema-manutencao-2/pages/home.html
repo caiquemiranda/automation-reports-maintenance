@@ -1,1 +1,353 @@
- 
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Sistema de Manutenção</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-card h3 {
+            margin-top: 0;
+            color: #3498db;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-card h3 i {
+            margin-right: 10px;
+        }
+
+        .alert-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 4px solid;
+            background-color: #f9f9f9;
+        }
+
+        .alert-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .alert-high {
+            border-left-color: #e74c3c;
+        }
+
+        .alert-medium {
+            border-left-color: #f39c12;
+        }
+
+        .alert-low {
+            border-left-color: #3498db;
+        }
+
+        .alert-item a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+        }
+
+        .alert-item a:hover {
+            text-decoration: underline;
+            color: #3498db;
+        }
+
+        .date {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .activity-item {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            margin-right: 15px;
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .activity-icon.maintenance {
+            background-color: #e74c3c;
+        }
+
+        .activity-icon.plan {
+            background-color: #2ecc71;
+        }
+
+        .activity-icon.check {
+            background-color: #f39c12;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-content p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .welcome-section {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-section h2 {
+            margin-top: 0;
+        }
+
+        .welcome-section p {
+            margin-bottom: 0;
+            font-size: 16px;
+        }
+        
+        .section-title {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-home"></i>
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="top-title">
+                <h1>Home</h1>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="home.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> DASHBOARD</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-file-alt"></i> RAS</a>
+                    <ul class="submenu">
+                        <li><a href="ras.html">Relatório Análise de Solução</a></li>
+                    </ul>
+                </li>
+                <li><a href="cronograma-anual.html"><i class="fas fa-calendar-alt"></i> CRONOGRAMA ANUAL</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-calendar-week"></i> CRONOGRAMA MENSAL</a>
+                    <ul class="submenu">
+                        <li><a href="cronograma-mensal.html">Com Funcionários</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-tools"></i> OS</a>
+                    <ul class="submenu">
+                        <li><a href="os-corretiva.html">Corretiva</a></li>
+                        <li><a href="os-planejada.html">Planejada</a></li>
+                        <li><a href="os-preventiva.html">Preventiva</a></li>
+                    </ul>
+                </li>
+                <li><a href="report-mensal.html"><i class="fas fa-file-export"></i> REPORT MENSAL</a></li>
+                <li><a href="report-diario.html"><i class="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
+                    <ul class="submenu">
+                        <li><a href="dispositivos.html">Mapa de Dispositivos</a></li>
+                    </ul>
+                </li>
+                <li><a href="analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content">
+                <div class="welcome-section">
+                    <h2>Bem-vindo ao Sistema de Manutenção</h2>
+                    <p>Hoje é <span id="data-atual"></span> | <span id="hora-atual"></span></p>
+                    <p>Você tem 5 ordens de serviço pendentes e 3 eventos agendados para esta semana.</p>
+                </div>
+
+                <div class="card-container">
+                    <div class="info-card">
+                        <h3><i class="fas fa-exclamation-circle"></i> Alertas de Prazos</h3>
+                        <div class="alert-item alert-high">
+                            <a href="os-corretiva.html">
+                                <strong>OS-2024-011</strong> - Manutenção no CLP Linha de Produção
+                                <div class="date"><i class="fas fa-clock"></i> Vence em 2 dias</div>
+                            </a>
+                        </div>
+                        <div class="alert-item alert-high">
+                            <a href="os-preventiva.html">
+                                <strong>OS-2024-015</strong> - Preventiva da Torre de Resfriamento
+                                <div class="date"><i class="fas fa-clock"></i> Vence hoje</div>
+                            </a>
+                        </div>
+                        <div class="alert-item alert-medium">
+                            <a href="os-planejada.html">
+                                <strong>OS-2024-018</strong> - Atualização do Sistema de Controle
+                                <div class="date"><i class="fas fa-clock"></i> Vence em 5 dias</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-calendar-alt"></i> Datas Importantes</h3>
+                        <div class="alert-item alert-medium">
+                            <a href="cronograma-anual.html">
+                                <strong>Manutenção Semestral</strong> - Linha de Produção Principal
+                                <div class="date"><i class="fas fa-calendar"></i> 15/03/2024</div>
+                            </a>
+                        </div>
+                        <div class="alert-item alert-low">
+                            <a href="cronograma-mensal.html">
+                                <strong>Calibração de Sensores</strong> - Todos os setores
+                                <div class="date"><i class="fas fa-calendar"></i> 25/02/2024</div>
+                            </a>
+                        </div>
+                        <div class="alert-item alert-low">
+                            <a href="cronograma-anual.html">
+                                <strong>Treinamento</strong> - Novas Técnicas de Manutenção
+                                <div class="date"><i class="fas fa-calendar"></i> 01/03/2024</div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-chart-pie"></i> Resumo de Atividades</h3>
+                        <div class="dashboard-mini">
+                            <div class="dashboard-stat">
+                                <h4>5</h4>
+                                <p>OS Abertas</p>
+                            </div>
+                            <div class="dashboard-stat">
+                                <h4>12</h4>
+                                <p>OS Concluídas</p>
+                            </div>
+                            <div class="dashboard-stat">
+                                <h4>97%</h4>
+                                <p>Disponibilidade</p>
+                            </div>
+                            <div class="dashboard-stat">
+                                <h4>3</h4>
+                                <p>Falhas hoje</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="section-title"><i class="fas fa-history"></i> Histórico de Atividades Recentes</h3>
+
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon maintenance">
+                            <i class="fas fa-wrench"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p><strong><a href="os-corretiva.html">OS-2024-014</a></strong> - Manutenção corretiva na Válvula Proporcional concluída</p>
+                            <div class="date">Hoje às 10:35 - Técnico: Pedro Souza</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon check">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p><strong><a href="report-diario.html">Relatório</a></strong> - Falha reportada no Sistema Supervisório</p>
+                            <div class="date">Hoje às 09:15 - Operador: Carlos Pereira</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon plan">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p><strong><a href="cronograma-mensal.html">Agendamento</a></strong> - Manutenção preventiva agendada para Compressor 2</p>
+                            <div class="date">Ontem às 16:40 - Planejador: Ana Oliveira</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon maintenance">
+                            <i class="fas fa-wrench"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p><strong><a href="dispositivos.html">Dispositivo D002</a></strong> - Controlador de Pressão em manutenção</p>
+                            <div class="date">Ontem às 14:20 - Técnico: Maria Santos</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p><strong><a href="ras.html">RAS-2024-003</a></strong> - Análise de falha no Motor Principal concluída</p>
+                            <div class="date">20/02/2024 às 11:30 - Engenheiro: João Silva</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Atualiza data e hora
+            function atualizarDataHora() {
+                const agora = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('data-atual').textContent = agora.toLocaleDateString('pt-BR', options);
+                
+                const hora = agora.getHours().toString().padStart(2, '0');
+                const minutos = agora.getMinutes().toString().padStart(2, '0');
+                document.getElementById('hora-atual').textContent = `${hora}:${minutos}`;
+            }
+            
+            atualizarDataHora();
+            setInterval(atualizarDataHora, 60000); // Atualiza a cada minuto
+        });
+    </script>
+</body>
+
+</html> 
