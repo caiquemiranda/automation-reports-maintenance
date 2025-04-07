@@ -1,20 +1,18 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: sistema-manutencao
     ports:
       - "3000:3000"
     volumes:
-      - .:/app
+      - ./:/app
       - /app/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
-      - NODE_ENV=development
-      - FAST_REFRESH=false
-      - GENERATE_SOURCEMAP=false
-      - SKIP_PREFLIGHT_CHECK=true
+      - BROWSER=none
+      - WDS_SOCKET_PORT=3000
     stdin_open: true
     tty: true
-    restart: unless-stopped 
+    restart: on-failure
+    command: >
+      sh -c "cd /app && npm start" 

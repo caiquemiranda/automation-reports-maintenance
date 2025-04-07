@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import {
     Build as BuildIcon,
-    CalendarMonth as CalendarIcon,
+    Today as CalendarIcon,
     Warning as WarningIcon,
     CheckCircle as CheckCircleIcon,
     Alarm as AlarmIcon,

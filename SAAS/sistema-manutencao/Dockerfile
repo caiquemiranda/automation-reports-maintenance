@@ -1,25 +1,25 @@
-# Use a imagem Node.js como base
+# Imagem base simplificada
 FROM node:16-alpine
 
-# Configurar ambiente
-ENV NODE_ENV=development
-ENV PATH /app/node_modules/.bin:$PATH
-
-# Definir diretório de trabalho
+# Diretório de trabalho
 WORKDIR /app
 
-# Copiar apenas os arquivos de dependências primeiro para aproveitar o cache
-COPY package.json package-lock.json* ./
+# Configurar ambiente
+ENV BROWSER=none
+ENV WDS_SOCKET_PORT=3000
+ENV NODE_ENV=development
 
-# Instalar dependências com flags específicas para resolver problemas de compatibilidade
-RUN npm cache clean --force && \
-    npm install --legacy-peer-deps --no-package-lock
+# Copiar package.json
+COPY package.json ./
 
-# Copiar código-fonte
+# Instalar dependências
+RUN npm install --legacy-peer-deps
+
+# Copiar todo o código fonte
 COPY . .
 
-# Expor porta 3000
+# Porta que o app usa
 EXPOSE 3000
 
-# Comando para iniciar a aplicação
+# Comando para iniciar
 CMD ["npm", "start"] 

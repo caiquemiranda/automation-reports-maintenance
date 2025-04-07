@@ -29,7 +29,9 @@ import {
     Save as SaveIcon,
     CloudUpload as UploadIcon,
     Delete as DeleteIcon,
-    Add as AddIcon
+    Add as AddIcon,
+    Today as CalendarIcon,
+    CheckCircle as CheckCircleIcon
 } from '@mui/icons-material';
 import styled from 'styled-components';
 
@@ -49,6 +51,10 @@ const SectionTitle = styled(Typography)`
   color: #455a64;
   display: flex;
   align-items: center;
+  
+  & > svg {
+    margin-right: 8px;
+  }
 `;
 
 const StyledDivider = styled(Divider)`
@@ -86,8 +92,11 @@ const NovaOSCorretiva = () => {
         documentos: []
     });
 
-    const [novoMaterial, setNovoMaterial] = useState('');
-    const [novaPeca, setNovaPeca] = useState('');
+    const [novoMaterial, setNovoMaterial] = useState({
+        nome: '',
+        quantidade: '',
+        unidade: ''
+    });
 
     // Lista de equipamentos (exemplo)
     const equipamentos = [
@@ -123,29 +132,46 @@ const NovaOSCorretiva = () => {
         setFormData({ ...formData, [name]: value });
     };
 
+    const handleMaterialChange = (e) => {
+        const { name, value } = e.target;
+        setNovoMaterial({
+            ...novoMaterial,
+            [name]: value
+        });
+    };
+
     const handleAddMaterial = () => {
-        if (novoMaterial.trim() !== '') {
+        if (novoMaterial.nome && novoMaterial.quantidade) {
             setFormData({
                 ...formData,
-                materiaisNecessarios: [...formData.materiaisNecessarios, novoMaterial]
+                materiaisNecessarios: [...formData.materiaisNecessarios, { ...novoMaterial, id: Date.now() }]
             });
-            setNovoMaterial('');
+            setNovoMaterial({
+                nome: '',
+                quantidade: '',
+                unidade: 'un'
+            });
         }
     };
 
-    const handleRemoveMaterial = (index) => {
-        const updatedMateriais = [...formData.materiaisNecessarios];
-        updatedMateriais.splice(index, 1);
-        setFormData({ ...formData, materiaisNecessarios: updatedMateriais });
+    const handleRemoveMaterial = (id) => {
+        setFormData({
+            ...formData,
+            materiaisNecessarios: formData.materiaisNecessarios.filter(material => material.id !== id)
+        });
     };
 
     const handleAddPeca = () => {
-        if (novaPeca.trim() !== '') {
+        if (novoMaterial.nome.trim() !== '') {
             setFormData({
                 ...formData,
-                pecasUtilizadas: [...formData.pecasUtilizadas, novaPeca]
+                pecasUtilizadas: [...formData.pecasUtilizadas, novoMaterial.nome]
             });
-            setNovaPeca('');
+            setNovoMaterial({
+                nome: '',
+                quantidade: '',
+                unidade: ''
+            });
         }
     };
 
@@ -184,7 +210,9 @@ const NovaOSCorretiva = () => {
             <form onSubmit={handleSubmit}>
                 {/* Informações do Equipamento */}
                 <FormSection elevation={2}>
-                    <SectionTitle variant="h6">Informações do Equipamento</SectionTitle>
+                    <SectionTitle variant="h6">
+                        Informações do Equipamento
+                    </SectionTitle>
 
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={6}>
@@ -222,23 +250,6 @@ const NovaOSCorretiva = () => {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <FormControl component="fieldset" required>
-                                <FormLabel component="legend">Prioridade</FormLabel>
-                                <RadioGroup
-                                    row
-                                    name="prioridade"
-                                    value={formData.prioridade}
-                                    onChange={handleChange}
-                                >
-                                    <FormControlLabel value="baixa" control={<Radio />} label="Baixa" />
-                                    <FormControlLabel value="media" control={<Radio />} label="Média" />
-                                    <FormControlLabel value="alta" control={<Radio />} label="Alta" />
-                                    <FormControlLabel value="urgente" control={<Radio />} label="Urgente" />
-                                </RadioGroup>
-                            </FormControl>
-                        </Grid>
-
-                        <Grid item xs={12}>
                             <TextField
                                 fullWidth
                                 required
@@ -272,7 +283,9 @@ const NovaOSCorretiva = () => {
 
                 {/* Responsável e Data */}
                 <FormSection elevation={2}>
-                    <SectionTitle variant="h6">Responsável e Data</SectionTitle>
+                    <SectionTitle variant="h6">
+                        Responsável e Data
+                    </SectionTitle>
 
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={6}>
@@ -322,62 +335,93 @@ const NovaOSCorretiva = () => {
 
                 {/* Materiais Necessários */}
                 <FormSection elevation={2}>
-                    <SectionTitle variant="h6">Materiais Necessários</SectionTitle>
+                    <SectionTitle variant="h6">
+                        Materiais Necessários
+                    </SectionTitle>
 
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={9}>
+                    <Grid container spacing={2} alignItems="flex-end">
+                        <Grid item xs={12} md={5}>
                             <TextField
                                 fullWidth
-                                label="Adicionar Material"
-                                value={novoMaterial}
-                                onChange={(e) => setNovoMaterial(e.target.value)}
-                                placeholder="Digite o nome do material..."
+                                label="Material"
+                                name="nome"
+                                value={novoMaterial.nome}
+                                onChange={handleMaterialChange}
+                                margin="normal"
                             />
                         </Grid>
-
-                        <Grid item xs={12} md={3}>
-                            <Button
+                        <Grid item xs={6} md={3}>
+                            <TextField
                                 fullWidth
+                                label="Quantidade"
+                                name="quantidade"
+                                type="number"
+                                value={novoMaterial.quantidade}
+                                onChange={handleMaterialChange}
+                                margin="normal"
+                            />
+                        </Grid>
+                        <Grid item xs={6} md={3}>
+                            <FormControl fullWidth margin="normal">
+                                <InputLabel>Unidade</InputLabel>
+                                <Select
+                                    name="unidade"
+                                    value={novoMaterial.unidade || 'un'}
+                                    onChange={handleMaterialChange}
+                                    label="Unidade"
+                                >
+                                    <MenuItem value="un">Unidade</MenuItem>
+                                    <MenuItem value="kg">Quilograma</MenuItem>
+                                    <MenuItem value="m">Metro</MenuItem>
+                                    <MenuItem value="l">Litro</MenuItem>
+                                    <MenuItem value="pç">Peça</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12} md={1}>
+                            <Button
                                 variant="contained"
                                 color="primary"
                                 onClick={handleAddMaterial}
-                                sx={{ height: '56px' }}
-                                startIcon={<AddIcon />}
+                                fullWidth
                             >
-                                Adicionar
+                                Add
                             </Button>
                         </Grid>
-
-                        <Grid item xs={12}>
-                            <Card variant="outlined" sx={{ mt: 2 }}>
-                                <CardContent>
-                                    {formData.materiaisNecessarios.length > 0 ? (
-                                        <List>
-                                            {formData.materiaisNecessarios.map((material, index) => (
-                                                <ListItem key={index} divider={index < formData.materiaisNecessarios.length - 1}>
-                                                    <ListItemText primary={material} />
-                                                    <ListItemSecondaryAction>
-                                                        <IconButton edge="end" onClick={() => handleRemoveMaterial(index)} color="error">
-                                                            <DeleteIcon />
-                                                        </IconButton>
-                                                    </ListItemSecondaryAction>
-                                                </ListItem>
-                                            ))}
-                                        </List>
-                                    ) : (
-                                        <Typography color="textSecondary" align="center">
-                                            Nenhum material adicionado
-                                        </Typography>
-                                    )}
-                                </CardContent>
-                            </Card>
-                        </Grid>
                     </Grid>
+
+                    {formData.materiaisNecessarios.length > 0 && (
+                        <Box mt={3}>
+                            <Divider sx={{ my: 2 }} />
+                            <Typography variant="subtitle1" gutterBottom>
+                                Materiais Adicionados:
+                            </Typography>
+                            <List>
+                                {formData.materiaisNecessarios.map((material) => (
+                                    <ListItem
+                                        key={material.id}
+                                        secondaryAction={
+                                            <IconButton edge="end" onClick={() => handleRemoveMaterial(material.id)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        }
+                                    >
+                                        <ListItemText
+                                            primary={material.nome}
+                                            secondary={`Quantidade: ${material.quantidade} ${material.unidade}`}
+                                        />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </Box>
+                    )}
                 </FormSection>
 
                 {/* Campos para Preenchimento Técnico */}
                 <FormSection elevation={2}>
-                    <SectionTitle variant="h6">Preenchimento Técnico</SectionTitle>
+                    <SectionTitle variant="h6">
+                        Preenchimento Técnico
+                    </SectionTitle>
 
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
@@ -418,8 +462,8 @@ const NovaOSCorretiva = () => {
                             <TextField
                                 fullWidth
                                 label="Adicionar Peça"
-                                value={novaPeca}
-                                onChange={(e) => setNovaPeca(e.target.value)}
+                                value={novoMaterial.nome}
+                                onChange={(e) => setNovoMaterial({ ...novoMaterial, nome: e.target.value })}
                                 placeholder="Digite o nome da peça utilizada..."
                             />
                         </Grid>
@@ -466,7 +510,9 @@ const NovaOSCorretiva = () => {
 
                 {/* Documentos e Assinatura */}
                 <FormSection elevation={2}>
-                    <SectionTitle variant="h6">Documentos e Assinatura</SectionTitle>
+                    <SectionTitle variant="h6">
+                        Documentos e Assinatura
+                    </SectionTitle>
 
                     <Grid container spacing={3}>
                         <Grid item xs={12}>

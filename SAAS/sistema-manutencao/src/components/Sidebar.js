@@ -10,9 +10,7 @@ import {
 } from '@mui/material';
 import {
     Dashboard as DashboardIcon,
-    Build as BuildIcon,
-    CalendarMonth as CalendarIcon,
-    LocationOn as MapIcon
+    Build as BuildIcon
 } from '@mui/icons-material';
 
 const SidebarContainer = styled.div`
@@ -24,7 +22,6 @@ const SidebarContainer = styled.div`
   top: 0;
   left: 0;
   overflow-y: auto;
-  transition: all 0.3s ease;
 `;
 
 const SidebarHeader = styled.div`
@@ -72,33 +69,23 @@ const Sidebar = () => {
             path: '/',
         },
         {
-            text: 'OS Corretiva',
+            text: 'Nova OS',
             icon: <BuildIcon />,
             path: '/corretiva/nova',
         },
         {
-            text: 'OS Corretiva - Consulta',
+            text: 'Consulta OS',
             icon: <BuildIcon />,
             path: '/corretiva/consulta',
-        },
-        {
-            text: 'OS Planejada',
-            icon: <CalendarIcon />,
-            path: '/planejada/nova',
-        },
-        {
-            text: 'Mapa de Sensores',
-            icon: <MapIcon />,
-            path: '/mapa-sensores',
-        },
+        }
     ];
 
     return (
         <SidebarContainer>
             <SidebarHeader>
                 <Logo>ManutençãoPRO</Logo>
-                <Typography variant="body2" color="text.secondary" sx={{ color: '#90a4ae' }}>
-                    Sistema de Gestão de Manutenção
+                <Typography variant="body2" sx={{ color: '#90a4ae' }}>
+                    Sistema de Manutenção
                 </Typography>
             </SidebarHeader>
 
