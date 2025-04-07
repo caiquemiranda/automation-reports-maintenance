@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - Sistema de Manutenção</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .settings-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-header i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        select.form-control {
+            height: 40px;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-check input {
+            margin-right: 10px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ddd;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .color-option.selected {
+            border-color: #333;
+        }
+
+        .color-option:nth-child(1) {
+            background-color: #3498db;
+        }
+
+        .color-option:nth-child(2) {
+            background-color: #2ecc71;
+        }
+
+        .color-option:nth-child(3) {
+            background-color: #e74c3c;
+        }
+
+        .color-option:nth-child(4) {
+            background-color: #f39c12;
+        }
+
+        .color-option:nth-child(5) {
+            background-color: #9b59b6;
+        }
+
+        .color-option:nth-child(6) {
+            background-color: #1abc9c;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-title">
+                <h1>Configurações</h1>
+            </div>
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-question-circle" id="help-icon"></i>
+                <i class="fas fa-cog" id="settings-icon"></i>
+                <i class="fas fa-user-circle" id="profile-icon"></i>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="home.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> DASHBOARD</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-file-alt"></i> RAS</a>
+                    <ul class="submenu">
+                        <li><a href="ras.html">Relatório Análise de Solução</a></li>
+                    </ul>
+                </li>
+                <li><a href="cronograma-anual.html"><i class="fas fa-calendar-alt"></i> CRONOGRAMA ANUAL</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-calendar-week"></i> CRONOGRAMA MENSAL</a>
+                    <ul class="submenu">
+                        <li><a href="cronograma-mensal.html">Com Funcionários</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-tools"></i> OS</a>
+                    <ul class="submenu">
+                        <li><a href="os-corretiva.html">Corretiva</a></li>
+                        <li><a href="os-planejada.html">Planejada</a></li>
+                        <li><a href="os-preventiva.html">Preventiva</a></li>
+                    </ul>
+                </li>
+                <li><a href="report-mensal.html"><i class="fas fa-file-export"></i> REPORT MENSAL</a></li>
+                <li><a href="report-diario.html"><i class="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
+                    <ul class="submenu">
+                        <li><a href="dispositivos.html">Mapa de Dispositivos</a></li>
+                    </ul>
+                </li>
+                <li><a href="analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-database"></i> DADOS</a>
+                    <ul class="submenu">
+                        <li><a href="dados-equipamentos.html">Equipamentos</a></li>
+                        <li><a href="dados-funcionarios.html">Funcionários</a></li>
+                        <li><a href="dados-relatorios.html">Relatórios</a></li>
+                        <li><a href="dados-exportacao.html">Exportação</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content">
+                <div class="settings-container">
+                    <h2>Configurações do Sistema</h2>
+                    <p>Personalize a aparência e o comportamento do sistema de acordo com suas preferências.</p>
+
+                    <!-- Configurações de Aparência -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-palette"></i> Aparência
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="theme">Tema</label>
+                                <select id="theme" class="form-control">
+                                    <option value="light">Claro</option>
+                                    <option value="dark">Escuro</option>
+                                    <option value="auto">Automático (Baseado no sistema)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="color-scheme">Esquema de Cores</label>
+                                <div class="color-picker">
+                                    <div class="color-option selected" data-color="#3498db"></div>
+                                    <div class="color-option" data-color="#2ecc71"></div>
+                                    <div class="color-option" data-color="#e74c3c"></div>
+                                    <div class="color-option" data-color="#f39c12"></div>
+                                    <div class="color-option" data-color="#9b59b6"></div>
+                                    <div class="color-option" data-color="#1abc9c"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="font-size">Tamanho da Fonte</label>
+                                <select id="font-size" class="form-control">
+                                    <option value="small">Pequeno</option>
+                                    <option value="medium" selected>Médio</option>
+                                    <option value="large">Grande</option>
+                                </select>
+                            </div>
+
+                            <div class="actions">
+                                <button class="btn btn-primary">Salvar Alterações</button>
+                                <button class="btn btn-secondary">Restaurar Padrão</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configurações de Notificações -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-bell"></i> Notificações
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="notification-browser" checked>
+                                    <label for="notification-browser">Notificações no navegador</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="notification-sound" checked>
+                                    <label for="notification-sound">Sons de notificação</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="notification-email" checked>
+                                    <label for="notification-email">Notificações por email</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="notification-frequency">Frequência de Notificações</label>
+                                <select id="notification-frequency" class="form-control">
+                                    <option value="realtime">Tempo real</option>
+                                    <option value="hourly">A cada hora</option>
+                                    <option value="daily">Diariamente</option>
+                                </select>
+                            </div>
+
+                            <div class="actions">
+                                <button class="btn btn-primary">Salvar Alterações</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configurações de Privacidade -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-shield-alt"></i> Privacidade e Segurança
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="two-factor" checked>
+                                    <label for="two-factor">Autenticação de dois fatores</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="session-timeout" checked>
+                                    <label for="session-timeout">Encerrar sessão após inatividade</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="activity-log" checked>
+                                    <label for="activity-log">Registrar atividades</label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="timeout-duration">Tempo para encerramento de sessão</label>
+                                <select id="timeout-duration" class="form-control">
+                                    <option value="5">5 minutos</option>
+                                    <option value="15" selected>15 minutos</option>
+                                    <option value="30">30 minutos</option>
+                                    <option value="60">1 hora</option>
+                                </select>
+                            </div>
+
+                            <div class="actions">
+                                <button class="btn btn-primary">Salvar Alterações</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configurações Avançadas -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-sliders-h"></i> Configurações Avançadas
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="data-cache">Cache de Dados</label>
+                                <select id="data-cache" class="form-control">
+                                    <option value="none">Desativado</option>
+                                    <option value="low">Baixo (1 hora)</option>
+                                    <option value="medium" selected>Médio (4 horas)</option>
+                                    <option value="high">Alto (12 horas)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="data-export">Formato de Exportação Padrão</label>
+                                <select id="data-export" class="form-control">
+                                    <option value="csv" selected>CSV</option>
+                                    <option value="excel">Excel</option>
+                                    <option value="pdf">PDF</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" id="debug-mode">
+                                    <label for="debug-mode">Modo de depuração</label>
+                                </div>
+                            </div>
+
+                            <div class="actions">
+                                <button class="btn btn-primary">Salvar Alterações</button>
+                                <button class="btn btn-danger">Limpar Cache</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Seleção de esquema de cores
+            const colorOptions = document.querySelectorAll('.color-option');
+
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function () {
+                    // Remover seleção anterior
+                    colorOptions.forEach(opt => opt.classList.remove('selected'));
+
+                    // Adicionar seleção ao item clicado
+                    this.classList.add('selected');
+
+                    // Aqui você adicionaria lógica para mudar a cor do tema
+                    const selectedColor = this.getAttribute('data-color');
+                    console.log('Cor selecionada:', selectedColor);
+
+                    // Exemplo de mudança na cor da top-bar (simulação)
+                    document.querySelector('.top-bar').style.backgroundColor = selectedColor;
+                });
+            });
+
+            // Salvar configurações
+            const saveButtons = document.querySelectorAll('.btn-primary');
+
+            saveButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    alert('Configurações salvas com sucesso!');
+                });
+            });
+
+            // Restaurar padrão
+            const resetButton = document.querySelector('.btn-secondary');
+
+            if (resetButton) {
+                resetButton.addEventListener('click', function () {
+                    if (confirm('Tem certeza que deseja restaurar as configurações padrão?')) {
+                        // Resetar seleção de cores
+                        colorOptions.forEach(opt => opt.classList.remove('selected'));
+                        colorOptions[0].classList.add('selected');
+
+                        // Resetar selects
+                        document.getElementById('theme').value = 'light';
+                        document.getElementById('font-size').value = 'medium';
+
+                        // Resetar top-bar (simulação)
+                        document.querySelector('.top-bar').style.backgroundColor = '#3498db';
+
+                        alert('Configurações restauradas para o padrão!');
+                    }
+                });
+            }
+
+            // Limpar cache
+            const clearCacheButton = document.querySelector('.btn-danger');
+
+            if (clearCacheButton) {
+                clearCacheButton.addEventListener('click', function () {
+                    if (confirm('Tem certeza que deseja limpar todo o cache? Esta ação pode deixar o sistema mais lento temporariamente.')) {
+                        // Simulação de limpeza de cache
+                        setTimeout(() => {
+                            alert('Cache limpo com sucesso!');
+                        }, 1000);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

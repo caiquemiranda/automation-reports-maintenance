@@ -263,7 +263,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Inicializar todos os gráficos na página inicial
+    // Configurar ícones da top-bar para navegação direta
+    configureTopIcons();
+
+    // Inicializar tabs se houver
+    initTabs();
+
+    // Inicializar gráficos se houver
     initCharts();
 });
 
@@ -276,6 +282,80 @@ function initCharts() {
     const chartCanvases = document.querySelectorAll('canvas[id$="Chart"]');
     if (chartCanvases.length === 0) return;
 
-    // O resto da inicialização dos gráficos será específico para cada página
-    // e já está incluído no código HTML específico de cada página
+    // A inicialização específica de cada gráfico é feita em seu respectivo HTML
+}
+
+// Configurar ícones da top-bar para navegação direta
+function configureTopIcons() {
+    // Ícone de perfil deve abrir a página de perfil
+    const profileIcon = document.getElementById('profile-icon');
+    if (profileIcon) {
+        profileIcon.addEventListener('click', function () {
+            window.location.href = getRelativePath('profile.html');
+        });
+    }
+
+    // Ícone de configurações deve abrir a página de configurações
+    const settingsIcon = document.getElementById('settings-icon');
+    if (settingsIcon) {
+        settingsIcon.addEventListener('click', function () {
+            window.location.href = getRelativePath('settings.html');
+        });
+    }
+
+    // Ícone de ajuda deve abrir a página de ajuda
+    const helpIcon = document.getElementById('help-icon');
+    if (helpIcon) {
+        helpIcon.addEventListener('click', function () {
+            window.location.href = getRelativePath('help.html');
+        });
+    }
+}
+
+// Função para obter caminho relativo correto dependendo de onde estamos
+function getRelativePath(page) {
+    // Verifica se estamos na raiz ou em uma subpasta
+    const path = window.location.pathname;
+    if (path.includes('/pages/')) {
+        return page; // Já estamos na pasta pages
+    } else {
+        return 'pages/' + page; // Estamos na raiz, precisamos incluir a pasta
+    }
+}
+
+// Inicializar abas
+function initTabs() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabContainer = button.closest('.tab-container');
+            const tabId = button.getAttribute('data-tab');
+
+            // Remover classe active de todos os botões e conteúdos
+            tabContainer.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            tabContainer.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Adicionar classe active ao botão clicado e conteúdo correspondente
+            button.classList.add('active');
+            const content = tabContainer.querySelector(`.tab-content[data-tab="${tabId}"]`);
+            if (content) {
+                content.classList.add('active');
+            }
+        });
+    });
+
+    // Ativar primeira aba por padrão
+    const tabContainers = document.querySelectorAll('.tab-container');
+    tabContainers.forEach(container => {
+        const firstButton = container.querySelector('.tab-button');
+        if (firstButton) {
+            firstButton.click();
+        }
+    });
 } 
