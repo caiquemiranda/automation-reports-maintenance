@@ -520,9 +520,9 @@ const ConsultaOSCorretiva = () => {
                                         <Divider component="li" />
                                         <ListItem>
                                             <ListItemText
-                                                primary="Junta Metálica 3/4\""
-                                            secondary="Código: JM-34 - Quantidade: 2" 
-                      />
+                                                primary={'Junta Metálica 3/4"'}
+                                                secondary="Código: JM-34 - Quantidade: 2"
+                                            />
                                         </ListItem>
                                     </List>
                                 </Box>

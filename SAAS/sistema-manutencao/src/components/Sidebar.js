@@ -104,6 +104,34 @@ const Sidebar = () => {
         return location.pathname === path;
     };
 
+    const menuItems = [
+        {
+            text: 'Dashboard',
+            icon: <DashboardIcon />,
+            path: '/',
+        },
+        {
+            text: 'OS Corretiva',
+            icon: <BuildIcon />,
+            children: [
+                { text: 'Nova OS', path: '/corretiva/nova' },
+                { text: 'Consulta', path: '/corretiva/consulta' },
+            ],
+        },
+        {
+            text: 'OS Planejada',
+            icon: <CalendarIcon />,
+            children: [
+                { text: 'Nova OS', path: '/planejada/nova' },
+            ],
+        },
+        {
+            text: 'Mapa de Sensores',
+            icon: <MapIcon />,
+            path: '/mapa-sensores',
+        },
+    ];
+
     return (
         <SidebarContainer>
             <SidebarHeader>
@@ -114,168 +142,20 @@ const Sidebar = () => {
             </SidebarHeader>
 
             <SidebarMenu component="nav">
-                <MenuItem
-                    button
-                    component={Link}
-                    to="/"
-                    active={isActive('/') ? 1 : 0}
-                >
-                    <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                        <DashboardIcon />
-                    </ListItemIcon>
-                    <MenuItemText primary="Dashboard" />
-                </MenuItem>
-
-                {/* OS Corretiva */}
-                <MenuItem button onClick={handleClickCorretiva}>
-                    <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                        <BuildIcon />
-                    </ListItemIcon>
-                    <MenuItemText primary="OS Corretiva" />
-                    {openCorretiva ? <ExpandLess /> : <ExpandMore />}
-                </MenuItem>
-                <Collapse in={openCorretiva} timeout="auto" unmountOnExit>
-                    <NestedList component="div" disablePadding>
-                        <NestedItem
-                            button
-                            component={Link}
-                            to="/corretiva/nova"
-                            active={isActive('/corretiva/nova') ? 1 : 0}
-                        >
-                            <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                                <FileIcon />
-                            </ListItemIcon>
-                            <MenuItemText primary="Nova" />
-                        </NestedItem>
-                        <NestedItem
-                            button
-                            component={Link}
-                            to="/corretiva/consulta"
-                            active={isActive('/corretiva/consulta') ? 1 : 0}
-                        >
-                            <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                                <FindIcon />
-                            </ListItemIcon>
-                            <MenuItemText primary="Consulta" />
-                        </NestedItem>
-                        <NestedItem
-                            button
-                            component={Link}
-                            to="/corretiva/pendentes"
-                            active={isActive('/corretiva/pendentes') ? 1 : 0}
-                        >
-                            <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                                <PendingIcon />
-                            </ListItemIcon>
-                            <MenuItemText primary="Pendentes" />
-                        </NestedItem>
-                    </NestedList>
-                </Collapse>
-
-                {/* OS Planejada */}
-                <MenuItem button onClick={handleClickPlanejada}>
-                    <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                        <CalendarIcon />
-                    </ListItemIcon>
-                    <MenuItemText primary="OS Planejada" />
-                    {openPlanejada ? <ExpandLess /> : <ExpandMore />}
-                </MenuItem>
-                <Collapse in={openPlanejada} timeout="auto" unmountOnExit>
-                    <NestedList component="div" disablePadding>
-                        <NestedItem
-                            button
-                            component={Link}
-                            to="/planejada/nova"
-                            active={isActive('/planejada/nova') ? 1 : 0}
-                        >
-                            <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                                <FileIcon />
-                            </ListItemIcon>
-                            <MenuItemText primary="Nova" />
-                        </NestedItem>
-                        <NestedItem
-                            button
-                            component={Link}
-                            to="/planejada/consulta"
-                            active={isActive('/planejada/consulta') ? 1 : 0}
-                        >
-                            <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                                <FindIcon />
-                            </ListItemIcon>
-                            <MenuItemText primary="Consulta" />
-                        </NestedItem>
-                        <NestedItem
-                            button
-                            component={Link}
-                            to="/planejada/calendario"
-                            active={isActive('/planejada/calendario') ? 1 : 0}
-                        >
-                            <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                                <CalendarIcon />
-                            </ListItemIcon>
-                            <MenuItemText primary="Calendário" />
-                        </NestedItem>
-                    </NestedList>
-                </Collapse>
-
-                {/* Relatórios */}
-                <MenuItem button onClick={handleClickRelatorios}>
-                    <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                        <ReportIcon />
-                    </ListItemIcon>
-                    <MenuItemText primary="Relatórios" />
-                    {openRelatorios ? <ExpandLess /> : <ExpandMore />}
-                </MenuItem>
-                <Collapse in={openRelatorios} timeout="auto" unmountOnExit>
-                    <NestedList component="div" disablePadding>
-                        <NestedItem
-                            button
-                            component={Link}
-                            to="/relatorios/mensal"
-                            active={isActive('/relatorios/mensal') ? 1 : 0}
-                        >
-                            <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                                <ReportIcon />
-                            </ListItemIcon>
-                            <MenuItemText primary="Mensal" />
-                        </NestedItem>
-                        <NestedItem
-                            button
-                            component={Link}
-                            to="/relatorios/tecnico"
-                            active={isActive('/relatorios/tecnico') ? 1 : 0}
-                        >
-                            <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                                <PersonIcon />
-                            </ListItemIcon>
-                            <MenuItemText primary="Por Técnico" />
-                        </NestedItem>
-                        <NestedItem
-                            button
-                            component={Link}
-                            to="/relatorios/equipamento"
-                            active={isActive('/relatorios/equipamento') ? 1 : 0}
-                        >
-                            <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                                <DevicesIcon />
-                            </ListItemIcon>
-                            <MenuItemText primary="Por Equipamento" />
-                        </NestedItem>
-                    </NestedList>
-                </Collapse>
-
-                {/* Mapa dos Sensores */}
-                <MenuItem
-                    button
-                    component={Link}
-                    to="/mapa-sensores"
-                    active={isActive('/mapa-sensores') ? 1 : 0}
-                >
-                    <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
-                        <MapIcon />
-                    </ListItemIcon>
-                    <MenuItemText primary="Ache o Ponto" />
-                </MenuItem>
+                {menuItems.map((item, index) => (
+                    <MenuItem
+                        key={index}
+                        button
+                        component={Link}
+                        to={item.path}
+                        active={isActive(item.path) ? 1 : 0}
+                    >
+                        <ListItemIcon sx={{ color: '#fff', minWidth: '40px' }}>
+                            {item.icon}
+                        </ListItemIcon>
+                        <MenuItemText primary={item.text} />
+                    </MenuItem>
+                ))}
             </SidebarMenu>
         </SidebarContainer>
     );
