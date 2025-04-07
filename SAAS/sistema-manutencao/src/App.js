@@ -17,6 +17,8 @@ import CalendarioOSPlanejada from './pages/planejada/Calendario';
 import RelatorioMensal from './pages/relatorios/RelatorioMensal';
 import RelatorioTecnico from './pages/relatorios/RelatorioTecnico';
 import RelatorioEquipamento from './pages/relatorios/RelatorioEquipamento';
+// Mapa de Sensores
+import MapaSensores from './pages/MapaSensores';
 
 function App() {
   return (
@@ -24,21 +26,24 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          
+
           {/* Rotas OS Corretiva */}
           <Route path="/corretiva/nova" element={<NovaOSCorretiva />} />
           <Route path="/corretiva/consulta" element={<ConsultaOSCorretiva />} />
           <Route path="/corretiva/pendentes" element={<OSPendentesCorretiva />} />
-          
+
           {/* Rotas OS Planejada */}
           <Route path="/planejada/nova" element={<NovaOSPlanejada />} />
           <Route path="/planejada/consulta" element={<ConsultaOSPlanejada />} />
           <Route path="/planejada/calendario" element={<CalendarioOSPlanejada />} />
-          
+
           {/* Rotas Relatórios */}
           <Route path="/relatorios/mensal" element={<RelatorioMensal />} />
           <Route path="/relatorios/tecnico" element={<RelatorioTecnico />} />
           <Route path="/relatorios/equipamento" element={<RelatorioEquipamento />} />
+
+          {/* Mapa de Sensores */}
+          <Route path="/mapa-sensores" element={<MapaSensores />} />
         </Routes>
       </Layout>
     </Router>
