@@ -13,13 +13,14 @@
     <div class="container">
         <!-- Top Bar -->
         <div class="top-bar">
-            <div class="top-icons">
-                <i class="fas fa-bars" id="sidebar-toggle"></i>
-                <i class="fas fa-home"></i>
-                <i class="fas fa-cog"></i>
-            </div>
             <div class="top-title">
                 <h1>Sistema de Manutenção</h1>
+            </div>
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-question-circle" id="help-icon"></i>
+                <i class="fas fa-cog" id="settings-icon"></i>
+                <i class="fas fa-user-circle" id="profile-icon"></i>
             </div>
         </div>
 
@@ -59,6 +60,15 @@
                     </ul>
                 </li>
                 <li><a href="pages/analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-database"></i> DADOS</a>
+                    <ul class="submenu">
+                        <li><a href="pages/dados-equipamentos.html">Equipamentos</a></li>
+                        <li><a href="pages/dados-funcionarios.html">Funcionários</a></li>
+                        <li><a href="pages/dados-relatorios.html">Relatórios</a></li>
+                        <li><a href="pages/dados-exportacao.html">Exportação</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
 

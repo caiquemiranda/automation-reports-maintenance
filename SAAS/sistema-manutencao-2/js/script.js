@@ -4,10 +4,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const sidebar = document.querySelector('.sidebar');
     const mainContent = document.querySelector('.main-content');
 
-    sidebarToggle.addEventListener('click', function () {
-        sidebar.classList.toggle('active');
-        mainContent.classList.toggle('active');
-    });
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function () {
+            sidebar.classList.toggle('sidebar-collapsed');
+            mainContent.classList.toggle('main-content-expanded');
+        });
+    }
 
     // Toggle dos Submenus
     const submenuItems = document.querySelectorAll('.has-submenu');
@@ -15,8 +17,12 @@ document.addEventListener('DOMContentLoaded', function () {
     submenuItems.forEach(item => {
         const link = item.querySelector('a');
         link.addEventListener('click', function (e) {
-            e.preventDefault();
-            item.classList.toggle('active');
+            if (e.target.tagName === 'A' || e.target.parentElement.tagName === 'A') {
+                if (e.target.parentElement.classList.contains('has-submenu') || e.target.classList.contains('has-submenu')) {
+                    e.preventDefault();
+                    this.classList.toggle('active');
+                }
+            }
         });
     });
 
@@ -28,5 +34,60 @@ document.addEventListener('DOMContentLoaded', function () {
                 mainContent.classList.remove('active');
             }
         }
+    });
+
+    // Dropdown para perfil, configurações e ajuda
+    const profileIcon = document.getElementById('profile-icon');
+    const settingsIcon = document.getElementById('settings-icon');
+    const helpIcon = document.getElementById('help-icon');
+
+    if (profileIcon) {
+        profileIcon.addEventListener('click', function () {
+            window.location.href = 'profile.html';
+        });
+    }
+
+    if (settingsIcon) {
+        settingsIcon.addEventListener('click', function () {
+            window.location.href = 'settings.html';
+        });
+    }
+
+    if (helpIcon) {
+        helpIcon.addEventListener('click', function () {
+            window.location.href = 'help.html';
+        });
+    }
+
+    // Exportação de dados
+    const exportButtons = document.querySelectorAll('.btn-export');
+
+    exportButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const format = this.getAttribute('data-format');
+            const dataType = this.getAttribute('data-type');
+
+            alert(`Exportando dados de ${dataType} no formato ${format}...`);
+            // Aqui seria implementada a lógica real de exportação
+        });
+    });
+
+    // Filtros de dados
+    const filterButtons = document.querySelectorAll('.btn-filter');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const filterInputs = document.querySelectorAll('.filter-input');
+            let filterParams = {};
+
+            filterInputs.forEach(input => {
+                if (input.value) {
+                    filterParams[input.getAttribute('name')] = input.value;
+                }
+            });
+
+            // Aqui seria implementada a lógica real de filtragem com os parâmetros
+            console.log('Filtros aplicados:', filterParams);
+        });
     });
 }); 
