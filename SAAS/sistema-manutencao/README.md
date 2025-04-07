@@ -1,70 +1,118 @@
-# Getting Started with Create React App
+# Sistema de Gestão de Manutenção Industrial - ManutençãoPRO
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Um sistema completo para gerenciamento de ordens de serviço de manutenção industrial, com suporte a ordens corretivas e planejadas, registro de atividades técnicas e geração de relatórios.
 
-## Available Scripts
+## Características
 
-In the project directory, you can run:
+- Dashboard com visão geral das manutenções
+- Gestão de Ordens de Serviço Corretivas
+- Gestão de Ordens de Serviço Planejadas
+- Calendário de manutenções
+- Relatórios (mensal, por técnico, por equipamento)
+- Mapa de sensores e equipamentos
 
-### `npm start`
+## Tecnologias Utilizadas
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React.js
+- Material UI
+- Styled Components
+- React Router
+- Date-fns
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Requisitos
 
-### `npm test`
+- Node.js (v14 ou superior)
+- npm (v6 ou superior)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Instalação
 
-### `npm run build`
+1. Clone o repositório:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+git clone [URL_DO_REPOSITÓRIO]
+cd sistema-manutencao
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Instale as dependências:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm install
+```
 
-### `npm run eject`
+3. Instale as bibliotecas necessárias:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm install @mui/material @mui/icons-material @emotion/react @emotion/styled
+npm install styled-components
+npm install react-router-dom
+npm install date-fns @mui/x-date-pickers
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Executando o Projeto
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Para iniciar o servidor de desenvolvimento:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+npm start
+```
 
-## Learn More
+O aplicativo estará disponível em [http://localhost:3000](http://localhost:3000).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Estrutura do Projeto
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+src/
+├── components/       # Componentes reutilizáveis
+│   ├── Layout.js     # Layout principal com Sidebar e Header
+│   ├── Sidebar.js    # Menu lateral de navegação
+│   └── ...
+├── pages/            # Páginas do sistema
+│   ├── Dashboard.js  # Página inicial
+│   ├── corretiva/    # Páginas de OS Corretiva
+│   ├── planejada/    # Páginas de OS Planejada
+│   └── relatorios/   # Páginas de Relatórios
+├── App.js            # Configuração de rotas
+└── index.js          # Ponto de entrada
+```
 
-### Code Splitting
+## Fluxo de Trabalho
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### OS Corretiva
 
-### Analyzing the Bundle Size
+1. Acesse "OS Corretiva" > "Nova"
+2. Preencha as informações do equipamento, problema e prioridade
+3. Selecione o técnico responsável
+4. Adicione materiais necessários
+5. Após a execução, registre o diagnóstico, ação tomada e peças utilizadas
+6. Anexe fotos ou documentos relevantes
+7. Finalize com a assinatura digital
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### OS Planejada
 
-### Making a Progressive Web App
+1. Acesse "OS Planejada" > "Nova"
+2. Selecione o equipamento, tipo de manutenção e periodicidade
+3. Defina a data programada
+4. Configure o checklist de atividades
+5. Adicione os materiais previstos
+6. Consulte o histórico de manutenções anteriores
+7. Salve a ordem de serviço
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Consultas e Relatórios
 
-### Advanced Configuration
+- Utilize a seção "OS Corretiva" > "Consulta" para visualizar e filtrar ordens corretivas
+- Acesse "OS Planejada" > "Calendário" para ver o cronograma de manutenções
+- Gere relatórios através do menu "Relatórios", com opções por período, técnico ou equipamento
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Contribuição
 
-### Deployment
+Para contribuir com o projeto:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. Crie um fork do repositório
+2. Crie um branch para sua feature (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+4. Push para o branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request
 
-### `npm run build` fails to minify
+## Licença
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Este projeto está licenciado sob a licença MIT - veja o arquivo LICENSE para mais detalhes.
