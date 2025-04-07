@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Diário de Falhas - Sistema de Manutenção</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/forms.css">
+    <link rel="stylesheet" href="../css/tables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-home"></i>
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="top-title">
+                <h1>Report Diário de Falhas</h1>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="home.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> DASHBOARD</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-file-alt"></i> RAS</a>
+                    <ul class="submenu">
+                        <li><a href="ras.html">Relatório Análise de Solução</a></li>
+                    </ul>
+                </li>
+                <li><a href="cronograma-anual.html"><i class="fas fa-calendar-alt"></i> CRONOGRAMA ANUAL</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-calendar-week"></i> CRONOGRAMA MENSAL</a>
+                    <ul class="submenu">
+                        <li><a href="cronograma-mensal.html">Com Funcionários</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-tools"></i> OS</a>
+                    <ul class="submenu">
+                        <li><a href="os-corretiva.html">Corretiva</a></li>
+                        <li><a href="os-planejada.html">Planejada</a></li>
+                        <li><a href="os-preventiva.html">Preventiva</a></li>
+                    </ul>
+                </li>
+                <li><a href="report-mensal.html"><i class="fas fa-file-export"></i> REPORT MENSAL</a></li>
+                <li><a href="report-diario.html"><i class="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
+                    <ul class="submenu">
+                        <li><a href="dispositivos.html">Mapa de Dispositivos</a></li>
+                    </ul>
+                </li>
+                <li><a href="analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content">
+                <h2>Report Diário de Falhas</h2>
+
+                <div class="form-container">
+                    <form id="reportDiarioForm">
+                        <div class="form-group">
+                            <label for="dataReport">Data do Report:</label>
+                            <input type="date" id="dataReport" name="dataReport" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="equipamento">Equipamento:</label>
+                            <input type="text" id="equipamento" name="equipamento" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="setor">Setor:</label>
+                            <input type="text" id="setor" name="setor" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipoFalha">Tipo de Falha:</label>
+                            <select id="tipoFalha" name="tipoFalha" required>
+                                <option value="">Selecione...</option>
+                                <option value="eletrica">Elétrica</option>
+                                <option value="mecanica">Mecânica</option>
+                                <option value="hidraulica">Hidráulica</option>
+                                <option value="pneumatica">Pneumática</option>
+                                <option value="software">Software</option>
+                                <option value="outra">Outra</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="descricaoFalha">Descrição da Falha:</label>
+                            <textarea id="descricaoFalha" name="descricaoFalha" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="tempoParada">Tempo de Parada (horas):</label>
+                            <input type="number" id="tempoParada" name="tempoParada" min="0" step="0.5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="impactoProducao">Impacto na Produção:</label>
+                            <select id="impactoProducao" name="impactoProducao" required>
+                                <option value="">Selecione...</option>
+                                <option value="baixo">Baixo</option>
+                                <option value="medio">Médio</option>
+                                <option value="alto">Alto</option>
+                                <option value="critico">Crítico</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="acaoImediata">Ação Imediata Tomada:</label>
+                            <textarea id="acaoImediata" name="acaoImediata" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="tecnicoResponsavel">Técnico Responsável:</label>
+                            <input type="text" id="tecnicoResponsavel" name="tecnicoResponsavel" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="numeroOS">Número da OS Relacionada:</label>
+                            <input type="text" id="numeroOS" name="numeroOS">
+                        </div>
+                        <button type="submit" class="btn-submit">Registrar Falha</button>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <h3>Falhas Recentes</h3>
+                    <div class="table-filters">
+                        <div class="filter-group">
+                            <label for="filterDataInicio">Data Início:</label>
+                            <input type="date" id="filterDataInicio">
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterDataFim">Data Fim:</label>
+                            <input type="date" id="filterDataFim">
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterTipoFalha">Tipo de Falha:</label>
+                            <select id="filterTipoFalha">
+                                <option value="">Todos</option>
+                                <option value="eletrica">Elétrica</option>
+                                <option value="mecanica">Mecânica</option>
+                                <option value="hidraulica">Hidráulica</option>
+                                <option value="pneumatica">Pneumática</option>
+                                <option value="software">Software</option>
+                                <option value="outra">Outra</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filterImpacto">Impacto:</label>
+                            <select id="filterImpacto">
+                                <option value="">Todos</option>
+                                <option value="baixo">Baixo</option>
+                                <option value="medio">Médio</option>
+                                <option value="alto">Alto</option>
+                                <option value="critico">Crítico</option>
+                            </select>
+                        </div>
+                        <button class="btn-filter">Filtrar</button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Equipamento</th>
+                                <th>Tipo de Falha</th>
+                                <th>Tempo de Parada</th>
+                                <th>Impacto</th>
+                                <th>OS</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>15/02/2024</td>
+                                <td>Compressor de Ar</td>
+                                <td>Mecânica</td>
+                                <td>2.5 h</td>
+                                <td><span class="badge badge-medium">Médio</span></td>
+                                <td>OS-2024-010</td>
+                                <td>
+                                    <button class="btn-action"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action"><i class="fas fa-file-export"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>16/02/2024</td>
+                                <td>CLP Linha de Produção</td>
+                                <td>Elétrica</td>
+                                <td>4 h</td>
+                                <td><span class="badge badge-high">Alto</span></td>
+                                <td>OS-2024-011</td>
+                                <td>
+                                    <button class="btn-action"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action"><i class="fas fa-file-export"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>17/02/2024</td>
+                                <td>Esteira Transportadora</td>
+                                <td>Mecânica</td>
+                                <td>1 h</td>
+                                <td><span class="badge badge-low">Baixo</span></td>
+                                <td>OS-2024-012</td>
+                                <td>
+                                    <button class="btn-action"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action"><i class="fas fa-file-export"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>18/02/2024</td>
+                                <td>Sistema Supervisório</td>
+                                <td>Software</td>
+                                <td>0.5 h</td>
+                                <td><span class="badge badge-low">Baixo</span></td>
+                                <td>OS-2024-013</td>
+                                <td>
+                                    <button class="btn-action"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action"><i class="fas fa-file-export"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>19/02/2024</td>
+                                <td>Válvula Proporcional</td>
+                                <td>Hidráulica</td>
+                                <td>6 h</td>
+                                <td><span class="badge badge-progress">Crítico</span></td>
+                                <td>OS-2024-014</td>
+                                <td>
+                                    <button class="btn-action"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-action"><i class="fas fa-file-export"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="pagination">
+                        <button class="btn-page active">1</button>
+                        <button class="btn-page">2</button>
+                        <button class="btn-page">3</button>
+                        <button class="btn-page">></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Preenche a data atual no campo de data do formulário
+            const hoje = new Date();
+            const dataFormatada = hoje.toISOString().split('T')[0];
+            document.getElementById('dataReport').value = dataFormatada;
+
+            // Configuração do formulário
+            document.getElementById('reportDiarioForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                alert('Falha registrada com sucesso!');
+                this.reset();
+                document.getElementById('dataReport').value = dataFormatada;
+            });
+
+            // Configuração dos filtros
+            document.querySelector('.btn-filter').addEventListener('click', function () {
+                const dataInicio = document.getElementById('filterDataInicio').value;
+                const dataFim = document.getElementById('filterDataFim').value;
+                const tipoFalha = document.getElementById('filterTipoFalha').value;
+                const impacto = document.getElementById('filterImpacto').value;
+
+                alert(`Filtro aplicado: Data Início: ${dataInicio}, Data Fim: ${dataFim}, Tipo: ${tipoFalha}, Impacto: ${impacto}`);
+            });
+        });
+    </script>
+</body>
+
+</html>

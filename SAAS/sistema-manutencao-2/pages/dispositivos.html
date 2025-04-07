@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Dispositivos - Sistema de Manutenção</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/tables.css">
+    <link rel="stylesheet" href="../css/map.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        .tab-container {
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: #f1f1f1;
+            border-radius: 5px 5px 0 0;
+            overflow: hidden;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border: none;
+            transition: 0.3s;
+            font-size: 16px;
+            flex: 1;
+            text-align: center;
+        }
+
+        .tab:hover {
+            background-color: #ddd;
+        }
+
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            animation: fadeEffect 1s;
+        }
+
+        @keyframes fadeEffect {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .device-details {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .device-history {
+            margin-top: 15px;
+        }
+
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-date {
+            font-weight: bold;
+            color: #3498db;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-home"></i>
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="top-title">
+                <h1>Mapa de Dispositivos</h1>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="home.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> DASHBOARD</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-file-alt"></i> RAS</a>
+                    <ul class="submenu">
+                        <li><a href="ras.html">Relatório Análise de Solução</a></li>
+                    </ul>
+                </li>
+                <li><a href="cronograma-anual.html"><i class="fas fa-calendar-alt"></i> CRONOGRAMA ANUAL</a></li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-calendar-week"></i> CRONOGRAMA MENSAL</a>
+                    <ul class="submenu">
+                        <li><a href="cronograma-mensal.html">Com Funcionários</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-tools"></i> OS</a>
+                    <ul class="submenu">
+                        <li><a href="os-corretiva.html">Corretiva</a></li>
+                        <li><a href="os-planejada.html">Planejada</a></li>
+                        <li><a href="os-preventiva.html">Preventiva</a></li>
+                    </ul>
+                </li>
+                <li><a href="report-mensal.html"><i class="fas fa-file-export"></i> REPORT MENSAL</a></li>
+                <li><a href="report-diario.html"><i class="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a>
+                </li>
+                <li class="has-submenu">
+                    <a href="#"><i class="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
+                    <ul class="submenu">
+                        <li><a href="dispositivos.html">Mapa de Dispositivos</a></li>
+                    </ul>
+                </li>
+                <li><a href="analise-dados.html"><i class="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content">
+                <h2>Mapa de Dispositivos</h2>
+
+                <div class="tab-container">
+                    <div class="tabs">
+                        <button class="tab active" onclick="openTab(event, 'localizacao')">Localização</button>
+                        <button class="tab" onclick="openTab(event, 'historico')">Histórico</button>
+                    </div>
+
+                    <div id="localizacao" class="tab-content" style="display: block;">
+                        <div class="map-container">
+                            <div id="map"></div>
+                        </div>
+
+                        <div class="table-container">
+                            <h3>Lista de Dispositivos</h3>
+                            <div class="table-filters">
+                                <div class="filter-group">
+                                    <label for="filterTipo">Tipo:</label>
+                                    <select id="filterTipo" onchange="filterDevices()">
+                                        <option value="">Todos</option>
+                                        <option value="sensor">Sensor</option>
+                                        <option value="controlador">Controlador</option>
+                                        <option value="atuador">Atuador</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label for="filterStatus">Status:</label>
+                                    <select id="filterStatus" onchange="filterDevices()">
+                                        <option value="">Todos</option>
+                                        <option value="ativo">Ativo</option>
+                                        <option value="inativo">Inativo</option>
+                                        <option value="manutencao">Em Manutenção</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <table class="data-table" id="dispositivos-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nome</th>
+                                        <th>Tipo</th>
+                                        <th>Localização</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-tipo="sensor" data-status="ativo" data-id="D001" data-lat="-23.550520"
+                                        data-lng="-46.633308">
+                                        <td>D001</td>
+                                        <td>Sensor de Temperatura</td>
+                                        <td>Sensor</td>
+                                        <td>Sala de Máquinas</td>
+                                        <td><span class="badge badge-completed">Ativo</span></td>
+                                        <td>
+                                            <button class="btn-action" onclick="mostrarDispositivo('D001')"><i
+                                                    class="fas fa-map-marker-alt"></i></button>
+                                            <button class="btn-action" onclick="mostrarDetalhes('D001')"><i
+                                                    class="fas fa-info-circle"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr data-tipo="controlador" data-status="manutencao" data-id="D002"
+                                        data-lat="-23.551520" data-lng="-46.634308">
+                                        <td>D002</td>
+                                        <td>Controlador de Pressão</td>
+                                        <td>Controlador</td>
+                                        <td>Linha de Produção</td>
+                                        <td><span class="badge badge-waiting">Em Manutenção</span></td>
+                                        <td>
+                                            <button class="btn-action" onclick="mostrarDispositivo('D002')"><i
+                                                    class="fas fa-map-marker-alt"></i></button>
+                                            <button class="btn-action" onclick="mostrarDetalhes('D002')"><i
+                                                    class="fas fa-info-circle"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr data-tipo="atuador" data-status="ativo" data-id="D003" data-lat="-23.552520"
+                                        data-lng="-46.635308">
+                                        <td>D003</td>
+                                        <td>Atuador Hidráulico</td>
+                                        <td>Atuador</td>
+                                        <td>Linha de Montagem</td>
+                                        <td><span class="badge badge-completed">Ativo</span></td>
+                                        <td>
+                                            <button class="btn-action" onclick="mostrarDispositivo('D003')"><i
+                                                    class="fas fa-map-marker-alt"></i></button>
+                                            <button class="btn-action" onclick="mostrarDetalhes('D003')"><i
+                                                    class="fas fa-info-circle"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr data-tipo="sensor" data-status="inativo" data-id="D004" data-lat="-23.553520"
+                                        data-lng="-46.636308">
+                                        <td>D004</td>
+                                        <td>Sensor de Vibração</td>
+                                        <td>Sensor</td>
+                                        <td>Motor Principal</td>
+                                        <td><span class="badge badge-high">Inativo</span></td>
+                                        <td>
+                                            <button class="btn-action" onclick="mostrarDispositivo('D004')"><i
+                                                    class="fas fa-map-marker-alt"></i></button>
+                                            <button class="btn-action" onclick="mostrarDetalhes('D004')"><i
+                                                    class="fas fa-info-circle"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="historico" class="tab-content">
+                        <div class="table-container">
+                            <h3>Histórico de Dispositivos</h3>
+                            <div class="table-filters">
+                                <div class="filter-group">
+                                    <label for="filterDispositivo">Dispositivo:</label>
+                                    <select id="filterDispositivo" onchange="filterHistorico()">
+                                        <option value="">Todos</option>
+                                        <option value="D001">D001 - Sensor de Temperatura</option>
+                                        <option value="D002">D002 - Controlador de Pressão</option>
+                                        <option value="D003">D003 - Atuador Hidráulico</option>
+                                        <option value="D004">D004 - Sensor de Vibração</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label for="filterTipoEvento">Tipo de Evento:</label>
+                                    <select id="filterTipoEvento" onchange="filterHistorico()">
+                                        <option value="">Todos</option>
+                                        <option value="manutencao">Manutenção</option>
+                                        <option value="calibracao">Calibração</option>
+                                        <option value="falha">Falha</option>
+                                        <option value="substituicao">Substituição</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <table class="data-table" id="historico-table">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Dispositivo</th>
+                                        <th>Evento</th>
+                                        <th>Descrição</th>
+                                        <th>Técnico</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-dispositivo="D001" data-evento="calibracao">
+                                        <td>15/01/2024</td>
+                                        <td>D001 - Sensor de Temperatura</td>
+                                        <td>Calibração</td>
+                                        <td>Calibração semestral programada</td>
+                                        <td>João Silva</td>
+                                        <td>
+                                            <button class="btn-action"><i class="fas fa-file-alt"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr data-dispositivo="D002" data-evento="manutencao">
+                                        <td>20/01/2024</td>
+                                        <td>D002 - Controlador de Pressão</td>
+                                        <td>Manutenção</td>
+                                        <td>Substituição de válvula de controle</td>
+                                        <td>Maria Santos</td>
+                                        <td>
+                                            <button class="btn-action"><i class="fas fa-file-alt"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr data-dispositivo="D003" data-evento="falha">
+                                        <td>05/02/2024</td>
+                                        <td>D003 - Atuador Hidráulico</td>
+                                        <td>Falha</td>
+                                        <td>Vazamento de óleo identificado</td>
+                                        <td>Carlos Pereira</td>
+                                        <td>
+                                            <button class="btn-action"><i class="fas fa-file-alt"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr data-dispositivo="D004" data-evento="substituicao">
+                                        <td>10/02/2024</td>
+                                        <td>D004 - Sensor de Vibração</td>
+                                        <td>Substituição</td>
+                                        <td>Substituição de sensor com defeito</td>
+                                        <td>Ana Oliveira</td>
+                                        <td>
+                                            <button class="btn-action"><i class="fas fa-file-alt"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr data-dispositivo="D002" data-evento="manutencao">
+                                        <td>15/02/2024</td>
+                                        <td>D002 - Controlador de Pressão</td>
+                                        <td>Manutenção</td>
+                                        <td>Ajuste de parâmetros de controle</td>
+                                        <td>Pedro Souza</td>
+                                        <td>
+                                            <button class="btn-action"><i class="fas fa-file-alt"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalhes do Dispositivo (aparece quando clica em um dispositivo) -->
+                <div id="device-details" class="device-details">
+                    <h3 id="device-title">Detalhes do Dispositivo</h3>
+                    <div class="device-info">
+                        <p><strong>ID:</strong> <span id="device-id"></span></p>
+                        <p><strong>Nome:</strong> <span id="device-name"></span></p>
+                        <p><strong>Tipo:</strong> <span id="device-type"></span></p>
+                        <p><strong>Localização:</strong> <span id="device-location"></span></p>
+                        <p><strong>Status:</strong> <span id="device-status"></span></p>
+                        <p><strong>Data de Instalação:</strong> <span id="device-install-date"></span></p>
+                        <p><strong>Última Manutenção:</strong> <span id="device-last-maintenance"></span></p>
+                    </div>
+
+                    <h4>Histórico Recente</h4>
+                    <div id="device-history" class="device-history">
+                        <!-- O histórico será preenchido dinamicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/script.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Configuração das abas
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Inicialização do mapa
+        let map;
+        let markers = {};
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Inicializa o mapa
+            map = L.map('map').setView([-23.550520, -46.633308], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Adiciona marcadores para cada dispositivo
+            const dispositivos = document.querySelectorAll('#dispositivos-table tbody tr');
+            dispositivos.forEach(dispositivo => {
+                const id = dispositivo.getAttribute('data-id');
+                const lat = parseFloat(dispositivo.getAttribute('data-lat'));
+                const lng = parseFloat(dispositivo.getAttribute('data-lng'));
+                const nome = dispositivo.querySelector('td:nth-child(2)').textContent;
+
+                const marker = L.marker([lat, lng]).addTo(map);
+                marker.bindPopup(`<b>${nome}</b><br>ID: ${id}`);
+
+                marker.on('click', function () {
+                    mostrarDetalhes(id);
+                });
+
+                markers[id] = marker;
+            });
+        });
+
+        // Filtragem de dispositivos
+        function filterDevices() {
+            const tipoFiltro = document.getElementById('filterTipo').value;
+            const statusFiltro = document.getElementById('filterStatus').value;
+
+            const rows = document.querySelectorAll('#dispositivos-table tbody tr');
+
+            rows.forEach(row => {
+                const tipo = row.getAttribute('data-tipo');
+                const status = row.getAttribute('data-status');
+
+                let mostrar = true;
+
+                if (tipoFiltro && tipo !== tipoFiltro) {
+                    mostrar = false;
+                }
+
+                if (statusFiltro && status !== statusFiltro) {
+                    mostrar = false;
+                }
+
+                row.style.display = mostrar ? '' : 'none';
+            });
+        }
+
+        // Filtragem de histórico
+        function filterHistorico() {
+            const dispositivoFiltro = document.getElementById('filterDispositivo').value;
+            const tipoEventoFiltro = document.getElementById('filterTipoEvento').value;
+
+            const rows = document.querySelectorAll('#historico-table tbody tr');
+
+            rows.forEach(row => {
+                const dispositivo = row.getAttribute('data-dispositivo');
+                const evento = row.getAttribute('data-evento');
+
+                let mostrar = true;
+
+                if (dispositivoFiltro && dispositivo !== dispositivoFiltro) {
+                    mostrar = false;
+                }
+
+                if (tipoEventoFiltro && evento !== tipoEventoFiltro) {
+                    mostrar = false;
+                }
+
+                row.style.display = mostrar ? '' : 'none';
+            });
+        }
+
+        // Mostra o dispositivo no mapa
+        function mostrarDispositivo(id) {
+            const marker = markers[id];
+            if (marker) {
+                map.setView(marker.getLatLng(), 15);
+                marker.openPopup();
+            }
+        }
+
+        // Mostra detalhes do dispositivo
+        function mostrarDetalhes(id) {
+            const dispositivo = document.querySelector(`#dispositivos-table tbody tr[data-id="${id}"]`);
+
+            if (dispositivo) {
+                const nome = dispositivo.querySelector('td:nth-child(2)').textContent;
+                const tipo = dispositivo.querySelector('td:nth-child(3)').textContent;
+                const localizacao = dispositivo.querySelector('td:nth-child(4)').textContent;
+                const status = dispositivo.querySelector('td:nth-child(5) span').textContent;
+
+                document.getElementById('device-id').textContent = id;
+                document.getElementById('device-name').textContent = nome;
+                document.getElementById('device-type').textContent = tipo;
+                document.getElementById('device-location').textContent = localizacao;
+                document.getElementById('device-status').textContent = status;
+                document.getElementById('device-title').textContent = `Detalhes do Dispositivo: ${nome}`;
+
+                // Informações simuladas
+                document.getElementById('device-install-date').textContent = '01/01/2023';
+                document.getElementById('device-last-maintenance').textContent = '15/01/2024';
+
+                // Preenche o histórico do dispositivo
+                const historicoContainer = document.getElementById('device-history');
+                historicoContainer.innerHTML = '';
+
+                // Busca o histórico relacionado a este dispositivo
+                const historicoItems = document.querySelectorAll(`#historico-table tbody tr[data-dispositivo="${id}"]`);
+
+                if (historicoItems.length > 0) {
+                    historicoItems.forEach(item => {
+                        const data = item.querySelector('td:nth-child(1)').textContent;
+                        const evento = item.querySelector('td:nth-child(3)').textContent;
+                        const descricao = item.querySelector('td:nth-child(4)').textContent;
+                        const tecnico = item.querySelector('td:nth-child(5)').textContent;
+
+                        const historicoItem = document.createElement('div');
+                        historicoItem.className = 'history-item';
+                        historicoItem.innerHTML = `
+                            <p><span class="history-date">${data}</span> - <strong>${evento}</strong></p>
+                            <p>${descricao}</p>
+                            <p>Técnico: ${tecnico}</p>
+                        `;
+
+                        historicoContainer.appendChild(historicoItem);
+                    });
+                } else {
+                    historicoContainer.innerHTML = '<p>Nenhum histórico encontrado para este dispositivo.</p>';
+                }
+
+                document.getElementById('device-details').style.display = 'block';
+
+                // Também mostra o dispositivo no mapa se estiver na aba de localização
+                if (document.querySelector('.tab.active').textContent === 'Localização') {
+                    mostrarDispositivo(id);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
