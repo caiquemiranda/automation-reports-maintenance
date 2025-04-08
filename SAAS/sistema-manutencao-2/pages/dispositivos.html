@@ -87,6 +87,20 @@
             font-weight: bold;
             color: #3498db;
         }
+
+        /* Correção para o mapa não sobrepor a top-bar */
+        .leaflet-container {
+            z-index: 90 !important;
+        }
+
+        .leaflet-top,
+        .leaflet-bottom {
+            z-index: 95 !important;
+        }
+
+        .top-bar {
+            z-index: 100 !important;
+        }
     </style>
 </head>
 
@@ -94,13 +108,14 @@
     <div class="container">
         <!-- Top Bar -->
         <div class="top-bar">
-            <div class="top-icons">
-                <i class="fas fa-bars" id="sidebar-toggle"></i>
-                <i class="fas fa-home"></i>
-                <i class="fas fa-cog"></i>
-            </div>
             <div class="top-title">
                 <h1>Mapa de Dispositivos</h1>
+            </div>
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-question-circle" id="help-icon"></i>
+                <i class="fas fa-cog" id="settings-icon"></i>
+                <i class="fas fa-user-circle" id="profile-icon"></i>
             </div>
         </div>
 

@@ -15,13 +15,14 @@
     <div class="container">
         <!-- Top Bar -->
         <div class="top-bar">
-            <div class="top-icons">
-                <i class="fas fa-bars" id="sidebar-toggle"></i>
-                <i class="fas fa-home"></i>
-                <i class="fas fa-cog"></i>
-            </div>
             <div class="top-title">
                 <h1>Ordens de Serviço Planejada</h1>
+            </div>
+            <div class="top-icons">
+                <i class="fas fa-bars" id="sidebar-toggle"></i>
+                <i class="fas fa-question-circle" id="help-icon"></i>
+                <i class="fas fa-cog" id="settings-icon"></i>
+                <i class="fas fa-user-circle" id="profile-icon"></i>
             </div>
         </div>
 
@@ -49,6 +50,7 @@
                         <li><a href="os-corretiva.html">Corretiva</a></li>
                         <li><a href="os-planejada.html">Planejada</a></li>
                         <li><a href="os-preventiva.html">Preventiva</a></li>
+                        <li><a href="historico-os.html">Histórico</a></li>
                     </ul>
                 </li>
                 <li><a href="report-mensal.html"><i class="fas fa-file-export"></i> REPORT MENSAL</a></li>
@@ -75,101 +77,143 @@
         <div class="main-content">
             <div class="content">
                 <h2>Ordens de Serviço Planejada</h2>
-                <div class="form-container">
-                    <form id="osPlanejadaForm">
-                        <div class="form-group">
-                            <label for="numeroOS">Número da OS:</label>
-                            <input type="text" id="numeroOS" name="numeroOS" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="dataPlanejamento">Data de Planejamento:</label>
-                            <input type="date" id="dataPlanejamento" name="dataPlanejamento" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="equipamento">Equipamento:</label>
-                            <input type="text" id="equipamento" name="equipamento" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="localizacao">Localização:</label>
-                            <input type="text" id="localizacao" name="localizacao" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="descricaoServico">Descrição do Serviço:</label>
-                            <textarea id="descricaoServico" name="descricaoServico" rows="4" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="prioridade">Prioridade:</label>
-                            <select id="prioridade" name="prioridade" required>
-                                <option value="baixa">Baixa</option>
-                                <option value="media">Média</option>
-                                <option value="alta">Alta</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="tecnico">Técnico Responsável:</label>
-                            <input type="text" id="tecnico" name="tecnico" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Status:</label>
-                            <select id="status" name="status" required>
-                                <option value="planejada">Planejada</option>
-                                <option value="em_andamento">Em Andamento</option>
-                                <option value="concluida">Concluída</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn-submit">Salvar OS</button>
-                    </form>
-                </div>
 
-                <div class="table-container">
-                    <h3>OS Planejadas Recentes</h3>
-                    <div class="table-filters">
-                        <div class="filter-group">
-                            <label for="filterStatus">Status:</label>
-                            <select id="filterStatus">
-                                <option value="">Todos</option>
-                                <option value="planejada">Planejada</option>
-                                <option value="em_andamento">Em Andamento</option>
-                                <option value="concluida">Concluída</option>
-                            </select>
+                <!-- Abas para Nova OS e Histórico -->
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" data-tab="nova-os">Nova OS</button>
+                        <button class="tab-button" data-tab="historico">Histórico</button>
+                    </div>
+
+                    <!-- Conteúdo da aba Nova OS -->
+                    <div class="tab-content active" data-tab="nova-os">
+                        <div class="form-container">
+                            <form id="osPlanejadaForm">
+                                <div class="form-group">
+                                    <label for="numeroOS">Número da OS:</label>
+                                    <input type="text" id="numeroOS" name="numeroOS" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dataPlanejamento">Data de Planejamento:</label>
+                                    <input type="date" id="dataPlanejamento" name="dataPlanejamento" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="equipamento">Equipamento:</label>
+                                    <input type="text" id="equipamento" name="equipamento" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="localizacao">Localização:</label>
+                                    <input type="text" id="localizacao" name="localizacao" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="descricaoServico">Descrição do Serviço:</label>
+                                    <textarea id="descricaoServico" name="descricaoServico" rows="4"
+                                        required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prioridade">Prioridade:</label>
+                                    <select id="prioridade" name="prioridade" required>
+                                        <option value="baixa">Baixa</option>
+                                        <option value="media">Média</option>
+                                        <option value="alta">Alta</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tecnico">Técnico Responsável:</label>
+                                    <input type="text" id="tecnico" name="tecnico" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="status">Status:</label>
+                                    <select id="status" name="status" required>
+                                        <option value="planejada">Planejada</option>
+                                        <option value="em_andamento">Em Andamento</option>
+                                        <option value="concluida">Concluída</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-submit">Salvar OS</button>
+                            </form>
                         </div>
                     </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Número</th>
-                                <th>Data</th>
-                                <th>Equipamento</th>
-                                <th>Prioridade</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>OS-2024-003</td>
-                                <td>25/01/2024</td>
-                                <td>Bomba Centrífuga</td>
-                                <td><span class="badge badge-medium">Média</span></td>
-                                <td><span class="badge badge-open">Planejada</span></td>
-                                <td>
-                                    <button class="btn-action"><i class="fas fa-edit"></i></button>
-                                    <button class="btn-action"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>OS-2024-004</td>
-                                <td>30/01/2024</td>
-                                <td>Ventilador Industrial</td>
-                                <td><span class="badge badge-low">Baixa</span></td>
-                                <td><span class="badge badge-progress">Em Andamento</span></td>
-                                <td>
-                                    <button class="btn-action"><i class="fas fa-edit"></i></button>
-                                    <button class="btn-action"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                    <!-- Conteúdo da aba Histórico -->
+                    <div class="tab-content" data-tab="historico">
+                        <h3>Histórico de Ordens de Serviço Planejadas</h3>
+                        <p>Consulte o histórico de ordens de serviço planejadas registradas no sistema.</p>
+
+                        <!-- Filtros de pesquisa -->
+                        <div class="filters">
+                            <div class="filter-row">
+                                <div class="filter-group">
+                                    <label for="filtro-data-inicio">Data Inicial</label>
+                                    <input type="date" id="filtro-data-inicio">
+                                </div>
+                                <div class="filter-group">
+                                    <label for="filtro-data-fim">Data Final</label>
+                                    <input type="date" id="filtro-data-fim">
+                                </div>
+                                <div class="filter-group">
+                                    <label for="filtro-equipamento">Equipamento</label>
+                                    <select id="filtro-equipamento">
+                                        <option value="">Todos</option>
+                                        <option value="E-001">E-001 - Torno CNC</option>
+                                        <option value="E-002">E-002 - Fresadora</option>
+                                        <option value="E-003">E-003 - Furadeira de Bancada</option>
+                                        <option value="E-004">E-004 - Retífica</option>
+                                        <option value="E-005">E-005 - Serra Fita</option>
+                                    </select>
+                                </div>
+                                <div class="filter-group">
+                                    <label for="filtro-status">Status</label>
+                                    <select id="filtro-status">
+                                        <option value="">Todos</option>
+                                        <option value="planejada">Planejada</option>
+                                        <option value="em_andamento">Em Andamento</option>
+                                        <option value="concluida">Concluída</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tabela de histórico -->
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Data</th>
+                                        <th>Equipamento</th>
+                                        <th>Prioridade</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>OS-2024-003</td>
+                                        <td>25/01/2024</td>
+                                        <td>Bomba Centrífuga</td>
+                                        <td><span class="badge badge-medium">Média</span></td>
+                                        <td><span class="badge badge-open">Planejada</span></td>
+                                        <td>
+                                            <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-action"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>OS-2024-004</td>
+                                        <td>30/01/2024</td>
+                                        <td>Ventilador Industrial</td>
+                                        <td><span class="badge badge-low">Baixa</span></td>
+                                        <td><span class="badge badge-progress">Em Andamento</span></td>
+                                        <td>
+                                            <button class="btn-action"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-action"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
