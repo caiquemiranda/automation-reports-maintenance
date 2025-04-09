@@ -1,434 +1,464 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { MapContainer, ImageOverlay, Marker, Tooltip, Popup } from 'react-leaflet';
+import { CRS, LatLngBounds, Icon, divIcon } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import mapaImagem from '../maps/mapa-exemplo.svg';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import 'moment/locale/pt-br';
+import L from 'leaflet';
 
 function Dispositivos() {
-    const [activeTab, setActiveTab] = useState('localizacao');
-    const [selectedDeviceId, setSelectedDeviceId] = useState(null);
-    const [deviceDetails, setDeviceDetails] = useState({
-        id: '',
-        name: '',
-        type: '',
-        location: '',
-        status: '',
-        installDate: '',
-        lastMaintenance: ''
-    });
-    const [filterTipo, setFilterTipo] = useState('');
-    const [filterStatus, setFilterStatus] = useState('');
-    const [filterDispositivo, setFilterDispositivo] = useState('');
-    const [filterTipoEvento, setFilterTipoEvento] = useState('');
-
-    const mapRef = useRef(null);
-    const leafletRef = useRef(null);
-    const markersRef = useRef({});
-
-    const dispositivos = [
+    const [dispositivos, setDispositivos] = useState([
         {
-            id: 'D001',
+            id: 1,
+            nome: 'Motor Principal',
+            tipo: 'Motor',
+            status: 'Em operação',
+            ultimaManutencao: '2023-10-15',
+            coordX: 820, // Coordenada X do dispositivo na imagem
+            coordY: 330, // Coordenada Y do dispositivo na imagem
+            historico: [
+                { data: '2023-10-15', descricao: 'Manutenção preventiva realizada', tecnico: 'João Silva' },
+                { data: '2023-09-01', descricao: 'Troca de óleo', tecnico: 'Carlos Mendes' },
+                { data: '2023-07-20', descricao: 'Reparo no sistema de refrigeração', tecnico: 'Ana Paula' }
+            ]
+        },
+        {
+            id: 2,
             nome: 'Sensor de Temperatura',
-            tipo: 'sensor',
-            status: 'ativo',
-            localizacao: 'Sala de Máquinas',
-            lat: -23.550520,
-            lng: -46.633308,
-            dataInstalacao: '01/01/2023',
-            ultimaManutencao: '15/01/2024'
+            tipo: 'Sensor',
+            status: 'Alerta',
+            ultimaManutencao: '2023-09-20',
+            coordX: 410, // Coordenada X do dispositivo na imagem
+            coordY: 220, // Coordenada Y do dispositivo na imagem
+            historico: [
+                { data: '2023-09-20', descricao: 'Calibração realizada', tecnico: 'Marcos Oliveira' },
+                { data: '2023-08-10', descricao: 'Substituição do sensor', tecnico: 'Pedro Santos' }
+            ]
         },
         {
-            id: 'D002',
-            nome: 'Controlador de Pressão',
-            tipo: 'controlador',
-            status: 'manutencao',
-            localizacao: 'Linha de Produção',
-            lat: -23.551520,
-            lng: -46.634308,
-            dataInstalacao: '05/03/2023',
-            ultimaManutencao: '20/01/2024'
+            id: 3,
+            nome: 'Válvula de Controle',
+            tipo: 'Válvula',
+            status: 'Desativado',
+            ultimaManutencao: '2023-11-05',
+            coordX: 600, // Coordenada X do dispositivo na imagem
+            coordY: 150, // Coordenada Y do dispositivo na imagem
+            historico: [
+                { data: '2023-11-05', descricao: 'Limpeza e manutenção preventiva', tecnico: 'Roberto Alves' },
+                { data: '2023-10-01', descricao: 'Troca de vedação', tecnico: 'Carla Mendes' }
+            ]
         },
         {
-            id: 'D003',
-            nome: 'Atuador Hidráulico',
-            tipo: 'atuador',
-            status: 'ativo',
-            localizacao: 'Linha de Montagem',
-            lat: -23.552520,
-            lng: -46.635308,
-            dataInstalacao: '10/06/2023',
-            ultimaManutencao: '05/02/2024'
-        },
-        {
-            id: 'D004',
-            nome: 'Sensor de Vibração',
-            tipo: 'sensor',
-            status: 'inativo',
-            localizacao: 'Motor Principal',
-            lat: -23.553520,
-            lng: -46.636308,
-            dataInstalacao: '15/08/2023',
-            ultimaManutencao: '10/02/2024'
+            id: 4,
+            nome: 'Painel de Controle',
+            tipo: 'Painel',
+            status: 'Em operação',
+            ultimaManutencao: '2023-10-25',
+            coordX: 200, // Coordenada X do dispositivo na imagem
+            coordY: 450, // Coordenada Y do dispositivo na imagem
+            historico: [
+                { data: '2023-10-25', descricao: 'Atualização de firmware', tecnico: 'Rafael Costa' },
+                { data: '2023-09-15', descricao: 'Verificação de conexões elétricas', tecnico: 'Sandra Duarte' }
+            ]
         }
-    ];
+    ]);
 
-    const historico = [
-        {
-            data: '15/01/2024',
-            dispositivo: 'D001',
-            dispositivoNome: 'Sensor de Temperatura',
-            evento: 'calibracao',
-            descricao: 'Calibração semestral programada',
-            tecnico: 'João Silva'
-        },
-        {
-            data: '20/01/2024',
-            dispositivo: 'D002',
-            dispositivoNome: 'Controlador de Pressão',
-            evento: 'manutencao',
-            descricao: 'Substituição de válvula de controle',
-            tecnico: 'Maria Santos'
-        },
-        {
-            data: '05/02/2024',
-            dispositivo: 'D003',
-            dispositivoNome: 'Atuador Hidráulico',
-            evento: 'falha',
-            descricao: 'Vazamento de óleo identificado',
-            tecnico: 'Carlos Pereira'
-        },
-        {
-            data: '10/02/2024',
-            dispositivo: 'D004',
-            dispositivoNome: 'Sensor de Vibração',
-            evento: 'substituicao',
-            descricao: 'Substituição de sensor com defeito',
-            tecnico: 'Ana Oliveira'
-        },
-        {
-            data: '15/02/2024',
-            dispositivo: 'D002',
-            dispositivoNome: 'Controlador de Pressão',
-            evento: 'manutencao',
-            descricao: 'Ajuste de parâmetros de controle',
-            tecnico: 'Pedro Souza'
-        }
-    ];
+    const [dispositivosFiltrados, setDispositivosFiltrados] = useState([]);
+    const [filtroTipo, setFiltroTipo] = useState('');
+    const [filtroStatus, setFiltroStatus] = useState('');
+    const [tabAtiva, setTabAtiva] = useState('lista');
+    const [dispositivoSelecionado, setDispositivoSelecionado] = useState(null);
+    const [markers, setMarkers] = useState([]);
+    const [pesquisaCoord, setPesquisaCoord] = useState({ x: '', y: '' });
+    const [errorMessage, setErrorMessage] = useState('');
+    const [loaded, setLoaded] = useState(false);
+    const markerRef = useRef({});
+    const mapRef = useRef(null);
+    const [selectedDispositivo, setSelectedDispositivo] = useState(null);
+    const [mapImage, setMapImage] = useState('/SAAS/sistema-manutencao-3/src/maps/map-1.jpeg');
+    const mapBounds = new LatLngBounds([0, 0], [700, 1000]); // Define os limites da imagem [altura, largura]
 
     useEffect(() => {
-        // Inicializar o mapa quando o componente for montado
-        // e limpa-lo quando o componente for desmontado
-        let map = null;
+        setDispositivosFiltrados(dispositivos);
+    }, [dispositivos]);
 
-        // Verifica se a biblioteca Leaflet já foi carregada
-        if (typeof window.L !== 'undefined' && mapRef.current && !leafletRef.current) {
-            // Inicializa o mapa
-            map = window.L.map(mapRef.current).setView([-23.550520, -46.633308], 13);
-
-            window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            // Adiciona marcadores para cada dispositivo
-            dispositivos.forEach(dispositivo => {
-                const marker = window.L.marker([dispositivo.lat, dispositivo.lng]).addTo(map);
-                marker.bindPopup(`<b>${dispositivo.nome}</b><br>ID: ${dispositivo.id}`);
-
-                marker.on('click', function () {
-                    mostrarDetalhes(dispositivo.id);
-                });
-
-                markersRef.current[dispositivo.id] = marker;
-            });
-
-            leafletRef.current = map;
-        }
-
-        // Função de limpeza quando o componente for desmontado
-        return () => {
-            if (leafletRef.current) {
-                leafletRef.current.remove();
-                leafletRef.current = null;
-            }
-        };
-    }, []);
-
-    // Função para carregar o script do Leaflet
     useEffect(() => {
-        if (typeof window.L === 'undefined') {
-            const script = document.createElement('script');
-            script.src = 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.js';
-            script.async = true;
-            document.body.appendChild(script);
-
-            // Quando o script for carregado, inicializa o mapa
-            script.onload = () => {
-                const link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.css';
-                document.head.appendChild(link);
-            };
-
-            return () => {
-                document.body.removeChild(script);
-            };
-        }
+        carregarDispositivos();
     }, []);
 
-    const openTab = (tabName) => {
-        setActiveTab(tabName);
+    const carregarDispositivos = () => {
+        setLoaded(true);
     };
 
-    const filterDevices = () => {
-        return dispositivos.filter(dispositivo => {
-            const tipoMatch = !filterTipo || dispositivo.tipo === filterTipo;
-            const statusMatch = !filterStatus || dispositivo.status === filterStatus;
-            return tipoMatch && statusMatch;
+    const converterCoordenadas = (lat, lng) => {
+        return [lat, lng];
+    };
+
+    function getIconByStatus(status) {
+        let iconUrl = '';
+        let iconColor = '#3388ff';
+
+        // Definir cores baseadas no status
+        switch (status) {
+            case 'Em operação':
+                iconColor = '#28a745'; // verde
+                break;
+            case 'Alerta':
+                iconColor = '#ffc107'; // amarelo
+                break;
+            case 'Desativado':
+                iconColor = '#dc3545'; // vermelho
+                break;
+            case 'Manutenção':
+                iconColor = '#6c757d'; // cinza
+                break;
+            default:
+                iconColor = '#3388ff'; // azul padrão
+        }
+
+        // Criar um ícone personalizado usando divIcon para maior flexibilidade
+        return divIcon({
+            className: 'custom-div-icon',
+            html: `<div style="background-color: ${iconColor}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white;"></div>`,
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
         });
+    }
+
+    const renderMapView = () => {
+        if (!loaded) {
+            return (
+                <div className="text-center mt-5">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Carregando...</span>
+                    </div>
+                </div>
+            );
+        }
+
+        return (
+            <div className="map-container">
+                <MapContainer
+                    center={[350, 500]} // Centro da imagem
+                    zoom={0}
+                    style={{ height: '700px', width: '100%' }}
+                    crs={CRS.Simple} // Importante: usar o CRS.Simple para coordenadas cartesianas
+                    zoomControl={true}
+                    ref={mapRef}
+                    minZoom={-1}
+                    maxZoom={2}
+                >
+                    <ImageOverlay
+                        url={mapImage}
+                        bounds={mapBounds}
+                        opacity={1}
+                        zIndex={10}
+                    />
+
+                    {dispositivosFiltrados.map((dispositivo) => {
+                        const posX = dispositivo.coordX || Math.random() * 900 + 50;
+                        const posY = dispositivo.coordY || Math.random() * 600 + 50;
+                        const posicao = converterCoordenadas(posY, posX);
+
+                        return (
+                            <Marker
+                                key={dispositivo.id}
+                                position={posicao}
+                                icon={getIconByStatus(dispositivo.status)}
+                                ref={(ref) => {
+                                    if (ref) {
+                                        markerRef.current[dispositivo.id] = ref;
+                                    }
+                                }}
+                                eventHandlers={{
+                                    click: () => {
+                                        setSelectedDispositivo(dispositivo);
+                                    }
+                                }}
+                            >
+                                <Tooltip direction="top" offset={[0, -35]} opacity={1} permanent>
+                                    <span className="dispositivo-tooltip">{dispositivo.nome}</span>
+                                </Tooltip>
+                            </Marker>
+                        );
+                    })}
+                </MapContainer>
+            </div>
+        );
     };
 
-    const filterHistory = () => {
-        return historico.filter(item => {
-            const dispositivoMatch = !filterDispositivo || item.dispositivo === filterDispositivo;
-            const eventoMatch = !filterTipoEvento || item.evento === filterTipoEvento;
-            return dispositivoMatch && eventoMatch;
-        });
-    };
+    const handleRowClick = (dispositivo) => {
+        setSelectedDispositivo(dispositivo);
+        if (markerRef.current[dispositivo.id] && mapRef.current) {
+            const marker = markerRef.current[dispositivo.id];
+            const map = mapRef.current;
 
-    const mostrarDispositivo = (id) => {
-        const marker = markersRef.current[id];
-        if (marker && leafletRef.current) {
-            leafletRef.current.setView(marker.getLatLng(), 15);
+            const posicao = marker.getLatLng();
+
+            map.setView(posicao, 1);
+
             marker.openPopup();
         }
     };
 
-    const mostrarDetalhes = (id) => {
-        const dispositivo = dispositivos.find(d => d.id === id);
-        if (dispositivo) {
-            setSelectedDeviceId(id);
-            setDeviceDetails({
-                id: dispositivo.id,
-                name: dispositivo.nome,
-                type: dispositivo.tipo,
-                location: dispositivo.localizacao,
-                status: dispositivo.status,
-                installDate: dispositivo.dataInstalacao,
-                lastMaintenance: dispositivo.ultimaManutencao
+    const aplicarFiltros = () => {
+        let dispositivosFiltrados = [...dispositivos];
+
+        if (filtroTipo) {
+            dispositivosFiltrados = dispositivosFiltrados.filter(dispositivo => dispositivo.tipo === filtroTipo);
+        }
+
+        if (filtroStatus) {
+            dispositivosFiltrados = dispositivosFiltrados.filter(dispositivo => dispositivo.status === filtroStatus);
+        }
+
+        setDispositivosFiltrados(dispositivosFiltrados);
+    };
+
+    const mostrarDispositivo = (dispositivo) => {
+        setDispositivoSelecionado(dispositivo);
+        setTabAtiva('detalhes');
+
+        if (mapRef.current) {
+            mapRef.current.setView([dispositivo.coordY, dispositivo.coordX], 1);
+            markers.forEach(marker => {
+                const markerLatLng = marker.getLatLng();
+                if (markerLatLng.lat === dispositivo.coordY && markerLatLng.lng === dispositivo.coordX) {
+                    marker.openPopup();
+                }
             });
         }
     };
 
-    // Função para obter o histórico de um dispositivo específico
-    const getDeviceHistory = (id) => {
-        return historico.filter(item => item.dispositivo === id);
-    };
+    const pesquisarPorCoordenadas = () => {
+        setErrorMessage('');
 
-    // Função para renderizar o badge de status
-    const renderStatusBadge = (status) => {
-        let badgeClass = 'badge ';
-        let statusText = '';
+        const x = parseInt(pesquisaCoord.x);
+        const y = parseInt(pesquisaCoord.y);
 
-        switch (status) {
-            case 'ativo':
-                badgeClass += 'badge-completed';
-                statusText = 'Ativo';
-                break;
-            case 'inativo':
-                badgeClass += 'badge-high';
-                statusText = 'Inativo';
-                break;
-            case 'manutencao':
-                badgeClass += 'badge-waiting';
-                statusText = 'Em Manutenção';
-                break;
-            default:
-                badgeClass += 'badge-low';
-                statusText = status;
+        if (isNaN(x) || isNaN(y)) {
+            setErrorMessage('Coordenadas inválidas. Por favor, insira números válidos.');
+            return;
         }
 
-        return <span className={badgeClass}>{statusText}</span>;
+        if (x < 0 || x > 1000 || y < 0 || y > 700) {
+            setErrorMessage('Coordenadas fora dos limites do mapa (X: 0-1000, Y: 0-700).');
+            return;
+        }
+
+        const dispositivoProximo = dispositivos.find(dispositivo => {
+            const distancia = Math.sqrt(
+                Math.pow(dispositivo.coordX - x, 2) +
+                Math.pow(dispositivo.coordY - y, 2)
+            );
+            return distancia < 50;
+        });
+
+        if (dispositivoProximo) {
+            mostrarDispositivo(dispositivoProximo);
+        } else {
+            if (mapRef.current) {
+                mapRef.current.setView([y, x], 1);
+            }
+            setErrorMessage('Nenhum dispositivo encontrado nessas coordenadas.');
+        }
     };
 
     return (
-        <div>
+        <div className="content">
             <h2>Mapa de Dispositivos</h2>
 
             <div className="tab-container">
                 <div className="tabs">
                     <button
-                        className={`tab ${activeTab === 'localizacao' ? 'active' : ''}`}
-                        onClick={() => openTab('localizacao')}
+                        className={`tab ${tabAtiva === 'mapa' ? 'active' : ''}`}
+                        onClick={() => setTabAtiva('mapa')}
                     >
-                        Localização
+                        Mapa
                     </button>
                     <button
-                        className={`tab ${activeTab === 'historico' ? 'active' : ''}`}
-                        onClick={() => openTab('historico')}
+                        className={`tab ${tabAtiva === 'lista' ? 'active' : ''}`}
+                        onClick={() => setTabAtiva('lista')}
                     >
-                        Histórico
+                        Lista
                     </button>
+                    {dispositivoSelecionado && (
+                        <button
+                            className={`tab ${tabAtiva === 'detalhes' ? 'active' : ''}`}
+                            onClick={() => setTabAtiva('detalhes')}
+                        >
+                            Detalhes
+                        </button>
+                    )}
                 </div>
 
-                <div id="localizacao" className="tab-content" style={{ display: activeTab === 'localizacao' ? 'block' : 'none' }}>
-                    <div className="map-container">
-                        <div id="map" ref={mapRef} style={{ height: '400px', width: '100%', zIndex: 1 }}></div>
-                    </div>
+                <div className="tab-content">
+                    {tabAtiva === 'mapa' && (
+                        <>
+                            <div className="form-container">
+                                <div className="form-group" style={{ display: 'flex', gap: '10px', alignItems: 'flex-end' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <label>Coordenada X:</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            max="1000"
+                                            value={pesquisaCoord.x}
+                                            onChange={(e) => setPesquisaCoord({ ...pesquisaCoord, x: e.target.value })}
+                                            placeholder="0-1000"
+                                        />
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                        <label>Coordenada Y:</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            max="700"
+                                            value={pesquisaCoord.y}
+                                            onChange={(e) => setPesquisaCoord({ ...pesquisaCoord, y: e.target.value })}
+                                            placeholder="0-700"
+                                        />
+                                    </div>
+                                    <button
+                                        className="btn-submit"
+                                        onClick={pesquisarPorCoordenadas}
+                                        style={{ marginBottom: '1px' }}
+                                    >
+                                        Pesquisar
+                                    </button>
+                                </div>
+                                {errorMessage && <p style={{ color: 'red', marginTop: '5px' }}>{errorMessage}</p>}
+                            </div>
+                            {renderMapView()}
+                            <p className="map-info">
+                                O mapa mostra a localização de todos os dispositivos na planta. Clique em um dispositivo para ver detalhes.
+                            </p>
+                        </>
+                    )}
 
-                    <div className="table-container">
-                        <h3>Lista de Dispositivos</h3>
-                        <div className="table-filters">
-                            <div className="filter-group">
-                                <label htmlFor="filterTipo">Tipo:</label>
-                                <select
-                                    id="filterTipo"
-                                    value={filterTipo}
-                                    onChange={(e) => setFilterTipo(e.target.value)}
-                                >
-                                    <option value="">Todos</option>
-                                    <option value="sensor">Sensor</option>
-                                    <option value="controlador">Controlador</option>
-                                    <option value="atuador">Atuador</option>
-                                </select>
+                    {tabAtiva === 'lista' && (
+                        <>
+                            <div className="table-filters">
+                                <div className="filter-group">
+                                    <label>Filtrar por Tipo:</label>
+                                    <select
+                                        value={filtroTipo}
+                                        onChange={(e) => setFiltroTipo(e.target.value)}
+                                    >
+                                        <option value="">Todos</option>
+                                        <option value="Motor">Motor</option>
+                                        <option value="Sensor">Sensor</option>
+                                        <option value="Válvula">Válvula</option>
+                                        <option value="Painel">Painel</option>
+                                    </select>
+                                </div>
+                                <div className="filter-group">
+                                    <label>Filtrar por Status:</label>
+                                    <select
+                                        value={filtroStatus}
+                                        onChange={(e) => setFiltroStatus(e.target.value)}
+                                    >
+                                        <option value="">Todos</option>
+                                        <option value="Em operação">Em operação</option>
+                                        <option value="Alerta">Alerta</option>
+                                        <option value="Desativado">Desativado</option>
+                                        <option value="Manutenção">Manutenção</option>
+                                    </select>
+                                </div>
+                                <button className="btn-filter" onClick={aplicarFiltros}>
+                                    Aplicar Filtros
+                                </button>
                             </div>
-                            <div className="filter-group">
-                                <label htmlFor="filterStatus">Status:</label>
-                                <select
-                                    id="filterStatus"
-                                    value={filterStatus}
-                                    onChange={(e) => setFilterStatus(e.target.value)}
-                                >
-                                    <option value="">Todos</option>
-                                    <option value="ativo">Ativo</option>
-                                    <option value="inativo">Inativo</option>
-                                    <option value="manutencao">Em Manutenção</option>
-                                </select>
-                            </div>
-                        </div>
-                        <table className="data-table" id="dispositivos-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nome</th>
-                                    <th>Tipo</th>
-                                    <th>Localização</th>
-                                    <th>Status</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filterDevices().map(dispositivo => (
-                                    <tr key={dispositivo.id}>
-                                        <td>{dispositivo.id}</td>
-                                        <td>{dispositivo.nome}</td>
-                                        <td>{dispositivo.tipo.charAt(0).toUpperCase() + dispositivo.tipo.slice(1)}</td>
-                                        <td>{dispositivo.localizacao}</td>
-                                        <td>{renderStatusBadge(dispositivo.status)}</td>
-                                        <td>
-                                            <button className="btn-action" onClick={() => mostrarDispositivo(dispositivo.id)}>
-                                                <i className="fas fa-map-marker-alt"></i>
-                                            </button>
-                                            <button className="btn-action" onClick={() => mostrarDetalhes(dispositivo.id)}>
-                                                <i className="fas fa-info-circle"></i>
-                                            </button>
-                                        </td>
+
+                            <table className="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Tipo</th>
+                                        <th>Status</th>
+                                        <th>Última Manutenção</th>
+                                        <th>Coordenadas</th>
+                                        <th>Ações</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div id="historico" className="tab-content" style={{ display: activeTab === 'historico' ? 'block' : 'none' }}>
-                    <div className="table-container">
-                        <h3>Histórico de Dispositivos</h3>
-                        <div className="table-filters">
-                            <div className="filter-group">
-                                <label htmlFor="filterDispositivo">Dispositivo:</label>
-                                <select
-                                    id="filterDispositivo"
-                                    value={filterDispositivo}
-                                    onChange={(e) => setFilterDispositivo(e.target.value)}
-                                >
-                                    <option value="">Todos</option>
-                                    {dispositivos.map(d => (
-                                        <option key={d.id} value={d.id}>{d.id} - {d.nome}</option>
+                                </thead>
+                                <tbody>
+                                    {dispositivosFiltrados.map((dispositivo) => (
+                                        <tr key={dispositivo.id}>
+                                            <td>{dispositivo.nome}</td>
+                                            <td>{dispositivo.tipo}</td>
+                                            <td>
+                                                <span className={`badge ${dispositivo.status === 'Em operação' ? 'badge-completed' :
+                                                    dispositivo.status === 'Alerta' ? 'badge-medium' :
+                                                        dispositivo.status === 'Desativado' ? 'badge-waiting' :
+                                                            'badge-progress'
+                                                    }`}>
+                                                    {dispositivo.status}
+                                                </span>
+                                            </td>
+                                            <td>{new Date(dispositivo.ultimaManutencao).toLocaleDateString('pt-BR')}</td>
+                                            <td>X: {dispositivo.coordX}, Y: {dispositivo.coordY}</td>
+                                            <td>
+                                                <button
+                                                    className="btn-action"
+                                                    title="Ver detalhes"
+                                                    onClick={() => mostrarDispositivo(dispositivo)}
+                                                >
+                                                    <i className="fas fa-eye"></i>
+                                                </button>
+                                                <button
+                                                    className="btn-action"
+                                                    title="Localizar no mapa"
+                                                    onClick={() => {
+                                                        setTabAtiva('mapa');
+                                                        setTimeout(() => mostrarDispositivo(dispositivo), 100);
+                                                    }}
+                                                >
+                                                    <i className="fas fa-map-marker-alt"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
                                     ))}
-                                </select>
+                                </tbody>
+                            </table>
+                        </>
+                    )}
+
+                    {tabAtiva === 'detalhes' && dispositivoSelecionado && (
+                        <div className="device-details">
+                            <h3>{dispositivoSelecionado.nome}</h3>
+                            <p><strong>Tipo:</strong> {dispositivoSelecionado.tipo}</p>
+                            <p><strong>Status:</strong> {dispositivoSelecionado.status}</p>
+                            <p><strong>Última Manutenção:</strong> {new Date(dispositivoSelecionado.ultimaManutencao).toLocaleDateString('pt-BR')}</p>
+                            <p><strong>Coordenadas:</strong> X: {dispositivoSelecionado.coordX}, Y: {dispositivoSelecionado.coordY}</p>
+
+                            <h4 className="mt-4">Histórico de Manutenção</h4>
+                            <div className="device-history">
+                                {dispositivoSelecionado.historico.map((item, index) => (
+                                    <div className="history-item" key={index}>
+                                        <span className="history-date">{new Date(item.data).toLocaleDateString('pt-BR')}</span>
+                                        <p><strong>Descrição:</strong> {item.descricao}</p>
+                                        <p><strong>Técnico:</strong> {item.tecnico}</p>
+                                    </div>
+                                ))}
                             </div>
-                            <div className="filter-group">
-                                <label htmlFor="filterTipoEvento">Tipo de Evento:</label>
-                                <select
-                                    id="filterTipoEvento"
-                                    value={filterTipoEvento}
-                                    onChange={(e) => setFilterTipoEvento(e.target.value)}
+
+                            <div className="mt-4">
+                                <button
+                                    className="btn-submit"
+                                    onClick={() => {
+                                        setTabAtiva('mapa');
+                                        setTimeout(() => mostrarDispositivo(dispositivoSelecionado), 100);
+                                    }}
                                 >
-                                    <option value="">Todos</option>
-                                    <option value="manutencao">Manutenção</option>
-                                    <option value="calibracao">Calibração</option>
-                                    <option value="falha">Falha</option>
-                                    <option value="substituicao">Substituição</option>
-                                </select>
+                                    Localizar no Mapa
+                                </button>
                             </div>
                         </div>
-                        <table className="data-table" id="historico-table">
-                            <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Dispositivo</th>
-                                    <th>Evento</th>
-                                    <th>Descrição</th>
-                                    <th>Técnico</th>
-                                    <th>Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filterHistory().map((item, index) => (
-                                    <tr key={index}>
-                                        <td>{item.data}</td>
-                                        <td>{item.dispositivo} - {item.dispositivoNome}</td>
-                                        <td>{item.evento.charAt(0).toUpperCase() + item.evento.slice(1)}</td>
-                                        <td>{item.descricao}</td>
-                                        <td>{item.tecnico}</td>
-                                        <td>
-                                            <button className="btn-action">
-                                                <i className="fas fa-file-alt"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                    )}
                 </div>
             </div>
-
-            {/* Detalhes do Dispositivo */}
-            {selectedDeviceId && (
-                <div id="device-details" className="device-details" style={{ display: 'block' }}>
-                    <h3 id="device-title">Detalhes do Dispositivo: {deviceDetails.name}</h3>
-                    <div className="device-info">
-                        <p><strong>ID:</strong> {deviceDetails.id}</p>
-                        <p><strong>Nome:</strong> {deviceDetails.name}</p>
-                        <p><strong>Tipo:</strong> {deviceDetails.type.charAt(0).toUpperCase() + deviceDetails.type.slice(1)}</p>
-                        <p><strong>Localização:</strong> {deviceDetails.location}</p>
-                        <p><strong>Status:</strong> {deviceDetails.status.charAt(0).toUpperCase() + deviceDetails.status.slice(1)}</p>
-                        <p><strong>Data de Instalação:</strong> {deviceDetails.installDate}</p>
-                        <p><strong>Última Manutenção:</strong> {deviceDetails.lastMaintenance}</p>
-                    </div>
-
-                    <h4>Histórico Recente</h4>
-                    <div id="device-history" className="device-history">
-                        {getDeviceHistory(selectedDeviceId).length > 0 ? (
-                            getDeviceHistory(selectedDeviceId).map((item, index) => (
-                                <div key={index} className="history-item">
-                                    <p><span className="history-date">{item.data}</span> - <strong>{item.evento.charAt(0).toUpperCase() + item.evento.slice(1)}</strong></p>
-                                    <p>{item.descricao}</p>
-                                    <p>Técnico: {item.tecnico}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p>Nenhum histórico encontrado para este dispositivo.</p>
-                        )}
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

@@ -28,14 +28,32 @@ npm start
 
 - `src/components/`: Componentes reutilizáveis como Sidebar e TopBar
 - `src/pages/`: Páginas da aplicação
+- `src/maps/`: Imagens de mapas e plantas usadas no sistema
 - `src/App.js`: Componente principal
 - `src/App.css`: Estilos da aplicação
+
+## Mapa de Dispositivos
+
+O sistema utiliza a biblioteca Leaflet para mostrar os dispositivos em um mapa de planta. Diferente de mapas geográficos tradicionais, este usa uma imagem como base, onde os dispositivos são posicionados usando coordenadas X e Y dentro da imagem.
+
+### Como usar o mapa:
+
+1. Adicione suas imagens de plantas na pasta `src/maps/`
+2. Configure os dispositivos com coordenadas X e Y na imagem
+3. Clique nos ícones para ver detalhes ou localizar dispositivos específicos
+
+### Como adicionar um novo dispositivo:
+
+1. Adicione um novo objeto ao array de dispositivos no arquivo `Dispositivos.js`
+2. Defina as coordenadas X e Y onde o dispositivo deve aparecer na imagem
+3. O dispositivo automaticamente aparecerá no mapa e na tabela de dispositivos
 
 ## Tecnologias Utilizadas
 
 - React
 - CSS
 - Font Awesome
+- Leaflet (para mapas personalizados)
 
 # Getting Started with Create React App
 
