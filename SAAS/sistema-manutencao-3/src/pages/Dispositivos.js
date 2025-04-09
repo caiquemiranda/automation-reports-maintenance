@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, ImageOverlay, Marker, Tooltip, Popup, useMap } from 'react-leaflet';
 import { CRS, LatLngBounds, Icon, divIcon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import mapImagem from '../maps/map-1.png';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import L from 'leaflet';
-import mapaImagem from '../maps/mapa-exemplo.svg';
 
 // Componente para controlar a visualização do mapa
 function MapController({ coordY, coordX, deviceId, markerRefs }) {
@@ -96,7 +96,7 @@ function Dispositivos() {
     const markerRef = useRef({});
     const mapRef = useRef(null);
     const [selectedDispositivo, setSelectedDispositivo] = useState(null);
-    const [mapImage, setMapImage] = useState('/maps/map-1.png');
+    const [mapImage, setMapImage] = useState(mapImagem);
     const mapBounds = new LatLngBounds([0, 0], [700, 1000]); // Define os limites da imagem [altura, largura]
 
     useEffect(() => {
@@ -157,6 +157,9 @@ function Dispositivos() {
             );
         }
 
+        // Imprimir informações sobre o caminho da imagem para depuração
+        console.log("Tentando carregar imagem:", mapImage);
+
         return (
             <div className="map-container">
                 <MapContainer
@@ -174,6 +177,13 @@ function Dispositivos() {
                         bounds={mapBounds}
                         opacity={1}
                         zIndex={10}
+                        // Adicionar tratamento de erro para a imagem
+                        eventHandlers={{
+                            error: (e) => {
+                                console.error("Erro ao carregar imagem:", e);
+                                alert("Não foi possível carregar a imagem do mapa. Verifique o console para mais detalhes.");
+                            }
+                        }}
                     />
 
                     {dispositivosFiltrados.map((dispositivo) => {
