@@ -7,9 +7,10 @@ function ReportDiario() {
         painel: '',
         tipoDispositivo: '',
         tagDispositivo: '',
+        tagPersonalizada: false,
         tipoFalha: '',
-        numeroOS: '',
-        observacoes: ''
+        tipoFalhaPersonalizada: false,
+        numeroOS: ''
     });
 
     const [filtros, setFiltros] = useState({
@@ -38,14 +39,15 @@ function ReportDiario() {
         { value: 'no-answer', label: 'No Answer' },
         { value: 'open-circuit', label: 'Open Circuit' },
         { value: 'short-circuit', label: 'Short Circuit' },
-        { value: 'bad-answer', label: 'Bad Answer' }
+        { value: 'bad-answer', label: 'Bad Answer' },
+        { value: 'outro', label: 'Outro (Especificar)' }
     ];
 
     // Tags de dispositivos baseadas no tipo de dispositivo selecionado
     const [tagsDispositivos, setTagsDispositivos] = useState([]);
 
     // Opções para os números de OS
-    const opcoesOS = ['345.534', '3456.788', '434.555'];
+    const opcoesOS = ['Não Aberta', '345.534', '3456.788', '434.555'];
 
     // Reports salvos para exibição no histórico
     const [reportsSalvos, setReportsSalvos] = useState([
@@ -78,6 +80,8 @@ function ReportDiario() {
         }
     ]);
 
+    // Relatórios do dia atual
+    const [reportsDoDia, setReportsDoDia] = useState([]);
     const [reportsFiltrados, setReportsFiltrados] = useState([]);
     const [fotoPreview, setFotoPreview] = useState(null);
 
@@ -92,7 +96,15 @@ function ReportDiario() {
 
         // Inicia com todos os reports no histórico
         setReportsFiltrados(reportsSalvos);
+
+        // Filtra os reports do dia atual
+        atualizarReportsDoDia(dataFormatada, reportsSalvos);
     }, []);
+
+    const atualizarReportsDoDia = (dataAtual, reports) => {
+        const reportsDia = reports.filter(report => report.data === dataAtual);
+        setReportsDoDia(reportsDia);
+    };
 
     useEffect(() => {
         // Atualiza as tags de dispositivos com base no tipo selecionado
@@ -133,6 +145,27 @@ function ReportDiario() {
             ...prevData,
             [name]: value
         }));
+
+        // Se o campo for tagDispositivo, verifique se é personalizado
+        if (name === 'tagDispositivo' && !tagsDispositivos.includes(value)) {
+            setFormData(prevData => ({
+                ...prevData,
+                tagPersonalizada: true
+            }));
+        }
+
+        // Se o campo for tipoFalha, verifique se é personalizado
+        if (name === 'tipoFalha' && value === 'outro') {
+            setFormData(prevData => ({
+                ...prevData,
+                tipoFalhaPersonalizada: true
+            }));
+        } else if (name === 'tipoFalha') {
+            setFormData(prevData => ({
+                ...prevData,
+                tipoFalhaPersonalizada: false
+            }));
+        }
     };
 
     const handleFilterChange = (e) => {
@@ -163,6 +196,13 @@ function ReportDiario() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        let tipoFalhaFinal = formData.tipoFalha;
+        if (formData.tipoFalha === 'outro' && formData.tipoFalhaPersonalizada) {
+            tipoFalhaFinal = formData.tipoFalhaCustom;
+        } else {
+            tipoFalhaFinal = opcoesFalhas.find(op => op.value === formData.tipoFalha)?.label || formData.tipoFalha;
+        }
+
         // Criar um novo report
         const novoReport = {
             id: reportsSalvos.length + 1,
@@ -170,15 +210,17 @@ function ReportDiario() {
             painel: opcoesPaineis.find(op => op.value === formData.painel)?.label || formData.painel,
             tipoDispositivo: opcoesDispositivos.find(op => op.value === formData.tipoDispositivo)?.label || formData.tipoDispositivo,
             tagDispositivo: formData.tagDispositivo,
-            tipoFalha: opcoesFalhas.find(op => op.value === formData.tipoFalha)?.label || formData.tipoFalha,
-            numeroOS: formData.numeroOS,
-            observacoes: formData.observacoes
+            tipoFalha: tipoFalhaFinal,
+            numeroOS: formData.numeroOS === 'Não Aberta' ? 'Não Aberta' : formData.numeroOS
         };
 
         // Adicionar ao array de reports
         const novosReports = [...reportsSalvos, novoReport];
         setReportsSalvos(novosReports);
         setReportsFiltrados(novosReports);
+
+        // Atualizar os reports do dia
+        atualizarReportsDoDia(formData.dataReport, novosReports);
 
         alert('Falha registrada com sucesso!');
 
@@ -190,9 +232,11 @@ function ReportDiario() {
             painel: '',
             tipoDispositivo: '',
             tagDispositivo: '',
+            tagPersonalizada: false,
             tipoFalha: '',
-            numeroOS: '',
-            observacoes: ''
+            tipoFalhaPersonalizada: false,
+            tipoFalhaCustom: '',
+            numeroOS: ''
         });
         setFotoPreview(null);
     };
@@ -316,39 +360,56 @@ function ReportDiario() {
 
                     <div className="form-group">
                         <label htmlFor="tagDispositivo">Tag do Dispositivo:</label>
-                        <select
-                            id="tagDispositivo"
-                            name="tagDispositivo"
-                            value={formData.tagDispositivo}
-                            onChange={handleInputChange}
-                            disabled={!formData.tipoDispositivo}
-                            required
-                        >
-                            <option value="">Selecione...</option>
-                            {tagsDispositivos.map(tag => (
-                                <option key={tag} value={tag}>
-                                    {tag}
-                                </option>
-                            ))}
-                        </select>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            <input
+                                type="text"
+                                id="tagDispositivo"
+                                name="tagDispositivo"
+                                list="tagsDisponiveis"
+                                value={formData.tagDispositivo}
+                                onChange={handleInputChange}
+                                placeholder="Selecione ou digite um tag"
+                                style={{ flex: '1' }}
+                                required
+                            />
+                            <datalist id="tagsDisponiveis">
+                                {tagsDispositivos.map(tag => (
+                                    <option key={tag} value={tag} />
+                                ))}
+                            </datalist>
+                        </div>
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="tipoFalha">Tipo de Falha:</label>
-                        <select
-                            id="tipoFalha"
-                            name="tipoFalha"
-                            value={formData.tipoFalha}
-                            onChange={handleInputChange}
-                            required
-                        >
-                            <option value="">Selecione...</option>
-                            {opcoesFalhas.map(opcao => (
-                                <option key={opcao.value} value={opcao.value}>
-                                    {opcao.label}
-                                </option>
-                            ))}
-                        </select>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <select
+                                id="tipoFalha"
+                                name="tipoFalha"
+                                value={formData.tipoFalha}
+                                onChange={handleInputChange}
+                                required
+                            >
+                                <option value="">Selecione...</option>
+                                {opcoesFalhas.map(opcao => (
+                                    <option key={opcao.value} value={opcao.value}>
+                                        {opcao.label}
+                                    </option>
+                                ))}
+                            </select>
+
+                            {formData.tipoFalha === 'outro' && (
+                                <input
+                                    type="text"
+                                    id="tipoFalhaCustom"
+                                    name="tipoFalhaCustom"
+                                    value={formData.tipoFalhaCustom || ''}
+                                    onChange={handleInputChange}
+                                    placeholder="Especifique o tipo de falha"
+                                    required={formData.tipoFalha === 'outro'}
+                                />
+                            )}
+                        </div>
                     </div>
 
                     <div className="form-group">
@@ -358,7 +419,6 @@ function ReportDiario() {
                             name="numeroOS"
                             value={formData.numeroOS}
                             onChange={handleInputChange}
-                            required
                         >
                             <option value="">Selecione...</option>
                             {opcoesOS.map(os => (
@@ -369,35 +429,58 @@ function ReportDiario() {
                         </select>
                     </div>
 
-                    <div className="form-group">
-                        <label htmlFor="observacoes">Observações:</label>
-                        <textarea
-                            id="observacoes"
-                            name="observacoes"
-                            rows="3"
-                            value={formData.observacoes}
-                            onChange={handleInputChange}
-                        ></textarea>
-                    </div>
-
                     <div className="form-actions">
                         <button type="submit" className="btn-submit">Salvar Report</button>
-                        <button type="button" className="btn-reset" onClick={() => {
-                            const dataReportValue = formData.dataReport;
-                            setFormData({
-                                dataReport: dataReportValue,
-                                fotoPainel: null,
-                                painel: '',
-                                tipoDispositivo: '',
-                                tagDispositivo: '',
-                                tipoFalha: '',
-                                numeroOS: '',
-                                observacoes: ''
-                            });
-                            setFotoPreview(null);
-                        }}>Limpar</button>
                     </div>
                 </form>
+            </div>
+
+            {/* Seção para os reports do dia atual */}
+            <div className="table-container" style={{ marginTop: '30px', marginBottom: '30px' }}>
+                <h3>Reports de Hoje</h3>
+                {reportsDoDia.length > 0 ? (
+                    <table className="data-table">
+                        <thead>
+                            <tr>
+                                <th>Painel</th>
+                                <th>Dispositivo</th>
+                                <th>Tag</th>
+                                <th>Tipo de Falha</th>
+                                <th>OS</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {reportsDoDia.map(report => (
+                                <tr key={report.id}>
+                                    <td>{report.painel}</td>
+                                    <td>{report.tipoDispositivo}</td>
+                                    <td>{report.tagDispositivo}</td>
+                                    <td>
+                                        <span className={`badge ${report.tipoFalha === 'No Answer' ? 'badge-high' :
+                                                report.tipoFalha === 'Open Circuit' ? 'badge-medium' :
+                                                    report.tipoFalha === 'Short Circuit' ? 'badge-waiting' :
+                                                        'badge-low'
+                                            }`}>
+                                            {report.tipoFalha}
+                                        </span>
+                                    </td>
+                                    <td>{report.numeroOS}</td>
+                                    <td>
+                                        <button className="btn-action" onClick={() => verDetalhes(report.id)}>
+                                            <i className="fas fa-eye"></i>
+                                        </button>
+                                        <button className="btn-action" onClick={() => exportarReport(report.id)}>
+                                            <i className="fas fa-file-export"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <p className="info-text">Nenhum report registrado para hoje.</p>
+                )}
             </div>
 
             <div className="table-container">
