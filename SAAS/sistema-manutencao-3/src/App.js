@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import TopBar from './components/TopBar';
 import Home from './pages/Home';
 import ReportDiario from './pages/ReportDiario';
+import Dispositivos from './pages/Dispositivos';
 
 function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -39,6 +40,8 @@ function App() {
     switch (currentPage) {
       case 'report-diario':
         return <ReportDiario />;
+      case 'dispositivos':
+        return <Dispositivos />;
       case 'home':
       default:
         return <Home />;

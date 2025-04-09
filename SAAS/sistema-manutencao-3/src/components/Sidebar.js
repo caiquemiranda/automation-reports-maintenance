@@ -39,12 +39,7 @@ function Sidebar({ collapsed }) {
                 </li>
                 <li><a href="#/report-mensal"><i className="fas fa-file-export"></i> REPORT MENSAL</a></li>
                 <li><a href="#/report-diario"><i className="fas fa-exclamation-triangle"></i> REPORT DIÁRIO FALHAS</a></li>
-                <li className={`has-submenu ${activeSubmenus['mapa'] ? 'active' : ''}`}>
-                    <a href="#" onClick={() => toggleSubmenu('mapa')}><i className="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a>
-                    <ul className="submenu">
-                        <li><a href="#/dispositivos">Mapa de Dispositivos</a></li>
-                    </ul>
-                </li>
+                <li><a href="#/dispositivos"><i className="fas fa-map-marked-alt"></i> MAPA DISPOSITIVOS</a></li>
                 <li><a href="#/analise-dados"><i className="fas fa-chart-bar"></i> ANÁLISE DE DADOS</a></li>
                 <li className={`has-submenu ${activeSubmenus['dados'] ? 'active' : ''}`}>
                     <a href="#" onClick={() => toggleSubmenu('dados')}><i className="fas fa-database"></i> DADOS</a>

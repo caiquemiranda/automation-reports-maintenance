@@ -508,6 +508,16 @@ body {
   color: #9c27b0;
 }
 
+.badge-completed {
+  background-color: #e8f5e9;
+  color: #4caf50;
+}
+
+.badge-waiting {
+  background-color: #e8eaf6;
+  color: #5c6bc0;
+}
+
 .btn-action {
   background: none;
   border: none;
@@ -539,6 +549,99 @@ body {
   background-color: #3498db;
   color: white;
   border-color: #3498db;
+}
+
+/* Dispositivos page styles */
+.map-container {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tab-container {
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  background-color: #f1f1f1;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #f1f1f1;
+  border: none;
+  transition: 0.3s;
+  font-size: 16px;
+  flex: 1;
+  text-align: center;
+}
+
+.tab:hover {
+  background-color: #ddd;
+}
+
+.tab.active {
+  background-color: #3498db;
+  color: white;
+}
+
+.tab-content {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  animation: fadeEffect 1s;
+}
+
+@keyframes fadeEffect {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.device-details {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.device-history {
+  margin-top: 15px;
+}
+
+.history-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-date {
+  font-weight: bold;
+  color: #3498db;
+}
+
+/* Leaflet map fix */
+.leaflet-container {
+  z-index: 1;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 5;
 }
 
 /* Responsive Design */
@@ -578,5 +681,9 @@ body {
   .data-table th,
   .data-table td {
     padding: 8px;
+  }
+
+  .tabs {
+    flex-direction: column;
   }
 }
