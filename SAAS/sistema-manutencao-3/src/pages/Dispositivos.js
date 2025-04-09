@@ -19,11 +19,59 @@ function MapController({ coordY, coordX, deviceId, markerRefs }) {
             // Se temos um id de dispositivo e referências de marcadores, abrimos o popup
             if (deviceId && markerRefs.current && markerRefs.current[deviceId]) {
                 markerRefs.current[deviceId].openPopup();
+
+                // Mostrar o tooltip apenas para o dispositivo selecionado
+                if (markerRefs.current[deviceId]._tooltip) {
+                    markerRefs.current[deviceId]._tooltip.setOpacity(1);
+                }
             }
         }
     }, [map, coordY, coordX, deviceId, markerRefs]);
 
     return null;
+}
+
+// Componente para mostrar as coordenadas do mouse
+function MouseCoordinates({ mapRef, mapBounds }) {
+    const [coords, setCoords] = useState({ x: 0, y: 0 });
+    const map = useMap();
+
+    useEffect(() => {
+        if (!map) return;
+
+        const updateCoords = (e) => {
+            // Converter as coordenadas do mapa para coordenadas da imagem
+            const point = e.latlng;
+
+            // Converter de coordenadas do mapa para pixels na imagem
+            const y = Math.round(point.lat);
+            const x = Math.round(point.lng);
+
+            setCoords({ x, y });
+        };
+
+        map.on('mousemove', updateCoords);
+
+        return () => {
+            map.off('mousemove', updateCoords);
+        };
+    }, [map]);
+
+    return (
+        <div className="mouse-coordinates" style={{
+            position: 'absolute',
+            bottom: '10px',
+            left: '10px',
+            background: 'rgba(255, 255, 255, 0.7)',
+            padding: '5px 10px',
+            borderRadius: '4px',
+            zIndex: 1000,
+            fontSize: '12px',
+            fontFamily: 'monospace'
+        }}>
+            X: {coords.x}, Y: {coords.y}
+        </div>
+    );
 }
 
 function Dispositivos() {
@@ -191,6 +239,9 @@ function Dispositivos() {
                         const posY = dispositivo.coordY || Math.random() * 600 + 50;
                         const posicao = converterCoordenadas(posY, posX);
 
+                        // Verificar se este dispositivo é o selecionado
+                        const isSelected = selectedDeviceId === dispositivo.id;
+
                         return (
                             <Marker
                                 key={dispositivo.id}
@@ -204,12 +255,46 @@ function Dispositivos() {
                                 eventHandlers={{
                                     click: () => {
                                         setSelectedDispositivo(dispositivo);
+                                        // Mostrar detalhes ao clicar
+                                        mostrarDetalhes(dispositivo);
                                     }
                                 }}
                             >
-                                <Tooltip direction="top" offset={[0, -35]} opacity={1} permanent>
-                                    <span className="dispositivo-tooltip">{dispositivo.nome}</span>
+                                {/* Tooltip não permanente, aparece apenas quando passa o mouse ou quando selecionado */}
+                                <Tooltip
+                                    direction="top"
+                                    offset={[0, -20]}
+                                    opacity={isSelected ? 1 : 0.7}
+                                    permanent={isSelected}
+                                >
+                                    <span className="dispositivo-tooltip">
+                                        {dispositivo.nome} ({dispositivo.tipo})
+                                    </span>
                                 </Tooltip>
+
+                                {/* Popup com informações mais detalhadas ao clicar */}
+                                <Popup>
+                                    <div>
+                                        <h4>{dispositivo.nome}</h4>
+                                        <p><strong>Tipo:</strong> {dispositivo.tipo}</p>
+                                        <p><strong>Status:</strong> {dispositivo.status}</p>
+                                        <p><strong>Última Manutenção:</strong> {new Date(dispositivo.ultimaManutencao).toLocaleDateString('pt-BR')}</p>
+                                        <button
+                                            className="btn-details"
+                                            onClick={() => mostrarDetalhes(dispositivo)}
+                                            style={{
+                                                padding: '5px 10px',
+                                                backgroundColor: '#3498db',
+                                                color: 'white',
+                                                border: 'none',
+                                                borderRadius: '3px',
+                                                cursor: 'pointer'
+                                            }}
+                                        >
+                                            Ver Detalhes
+                                        </button>
+                                    </div>
+                                </Popup>
                             </Marker>
                         );
                     })}
@@ -223,6 +308,9 @@ function Dispositivos() {
                             markerRefs={markerRef}
                         />
                     )}
+
+                    {/* Componente para mostrar as coordenadas do mouse */}
+                    <MouseCoordinates mapRef={mapRef} mapBounds={mapBounds} />
                 </MapContainer>
             </div>
         );
