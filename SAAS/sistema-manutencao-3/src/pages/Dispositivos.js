@@ -78,55 +78,82 @@ function Dispositivos() {
     const [dispositivos, setDispositivos] = useState([
         {
             id: 1,
-            nome: 'Motor Principal',
-            tipo: 'Motor',
+            nome: 'N2-L23-DF-003',
+            tipo: 'Sensor de Fumaça',
             status: 'Em operação',
-            ultimaManutencao: '2023-10-15',
-            coordX: 820, // Coordenada X do dispositivo na imagem
-            coordY: 330, // Coordenada Y do dispositivo na imagem
+            ultimaManutencao: '2024-10-14',
+            coordX: 371,
+            coordY: 386,
             historico: [
-                { data: '2023-10-15', descricao: 'Manutenção preventiva realizada', tecnico: 'João Silva' },
-                { data: '2023-09-01', descricao: 'Troca de óleo', tecnico: 'Carlos Mendes' },
-                { data: '2023-07-20', descricao: 'Reparo no sistema de refrigeração', tecnico: 'Ana Paula' }
+                { data: '2024-10-14', descricao: 'Manutenção preventiva realizada', tecnico: 'João Silva' },
+                { data: '2024-05-02', descricao: 'Verificação de sensibilidade', tecnico: 'Carlos Mendes' },
+                { data: '2023-11-20', descricao: 'Limpeza do sensor', tecnico: 'Ana Paula' }
             ]
         },
         {
             id: 2,
-            nome: 'Sensor de Temperatura',
-            tipo: 'Sensor',
-            status: 'Alerta',
-            ultimaManutencao: '2023-09-20',
-            coordX: 410, // Coordenada X do dispositivo na imagem
-            coordY: 220, // Coordenada Y do dispositivo na imagem
+            nome: 'N2-L23-DF-006',
+            tipo: 'Sensor de Fumaça',
+            status: 'Em operação',
+            ultimaManutencao: '2024-10-14',
+            coordX: 379,
+            coordY: 519,
             historico: [
-                { data: '2023-09-20', descricao: 'Calibração realizada', tecnico: 'Marcos Oliveira' },
-                { data: '2023-08-10', descricao: 'Substituição do sensor', tecnico: 'Pedro Santos' }
+                { data: '2024-10-14', descricao: 'Manutenção preventiva realizada', tecnico: 'Marcos Oliveira' },
+                { data: '2024-04-15', descricao: 'Substituição da bateria', tecnico: 'Pedro Santos' }
             ]
         },
         {
             id: 3,
-            nome: 'Válvula de Controle',
-            tipo: 'Válvula',
-            status: 'Desativado',
-            ultimaManutencao: '2023-11-05',
-            coordX: 600, // Coordenada X do dispositivo na imagem
-            coordY: 150, // Coordenada Y do dispositivo na imagem
+            nome: 'N2-L23-AM-006',
+            tipo: 'Acionador Manual',
+            status: 'Alerta',
+            ultimaManutencao: '2024-10-14',
+            coordX: 343,
+            coordY: 140,
             historico: [
-                { data: '2023-11-05', descricao: 'Limpeza e manutenção preventiva', tecnico: 'Roberto Alves' },
-                { data: '2023-10-01', descricao: 'Troca de vedação', tecnico: 'Carla Mendes' }
+                { data: '2024-10-14', descricao: 'Verificação de comunicação', tecnico: 'Roberto Alves' },
+                { data: '2024-10-14', descricao: 'Identificado erro de comunicação (Trouble No Answer)', tecnico: 'Roberto Alves' },
+                { data: '2024-03-18', descricao: 'Manutenção preventiva', tecnico: 'Carla Mendes' }
             ]
         },
         {
             id: 4,
-            nome: 'Painel de Controle',
-            tipo: 'Painel',
+            nome: 'N2-L23-DF-034',
+            tipo: 'Modulo de Monitoramento',
             status: 'Em operação',
-            ultimaManutencao: '2023-10-25',
-            coordX: 200, // Coordenada X do dispositivo na imagem
-            coordY: 450, // Coordenada Y do dispositivo na imagem
+            ultimaManutencao: '2024-10-14',
+            coordX: 481,
+            coordY: 35,
             historico: [
-                { data: '2023-10-25', descricao: 'Atualização de firmware', tecnico: 'Rafael Costa' },
-                { data: '2023-09-15', descricao: 'Verificação de conexões elétricas', tecnico: 'Sandra Duarte' }
+                { data: '2024-10-14', descricao: 'Atualização de firmware', tecnico: 'Rafael Costa' },
+                { data: '2024-02-25', descricao: 'Verificação das conexões', tecnico: 'Sandra Duarte' }
+            ]
+        },
+        {
+            id: 5,
+            nome: 'N2-L23-DF-056',
+            tipo: 'Sensor de Fumaça',
+            status: 'Em operação',
+            ultimaManutencao: '2024-10-14',
+            coordX: 280,
+            coordY: 34,
+            historico: [
+                { data: '2024-10-14', descricao: 'Manutenção preventiva realizada', tecnico: 'Bruno Martins' },
+                { data: '2024-05-10', descricao: 'Calibração do sensor', tecnico: 'Mariana Sousa' }
+            ]
+        },
+        {
+            id: 6,
+            nome: 'N2-L23-DF-134',
+            tipo: 'Sensor de Fumaça',
+            status: 'Em operação',
+            ultimaManutencao: '2024-10-14',
+            coordX: 343,
+            coordY: 108,
+            historico: [
+                { data: '2024-10-14', descricao: 'Manutenção preventiva realizada', tecnico: 'Fernanda Lima' },
+                { data: '2024-06-03', descricao: 'Limpeza do sensor', tecnico: 'Gabriel Moraes' }
             ]
         }
     ]);
@@ -208,6 +235,14 @@ function Dispositivos() {
         // Imprimir informações sobre o caminho da imagem para depuração
         console.log("Tentando carregar imagem:", mapImage);
 
+        // Criar um ícone vermelho para o dispositivo selecionado
+        const selectedIcon = divIcon({
+            className: 'custom-div-icon',
+            html: `<div style="background-color: #dc3545; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white;"></div>`,
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
+        });
+
         return (
             <div className="map-container">
                 <MapContainer
@@ -234,19 +269,20 @@ function Dispositivos() {
                         }}
                     />
 
-                    {dispositivosFiltrados.map((dispositivo) => {
+                    {/* Mostrar apenas o dispositivo selecionado */}
+                    {selectedDeviceId && dispositivosFiltrados.map((dispositivo) => {
+                        // Apenas renderizar o dispositivo selecionado
+                        if (dispositivo.id !== selectedDeviceId) return null;
+
                         const posX = dispositivo.coordX || Math.random() * 900 + 50;
                         const posY = dispositivo.coordY || Math.random() * 600 + 50;
                         const posicao = converterCoordenadas(posY, posX);
-
-                        // Verificar se este dispositivo é o selecionado
-                        const isSelected = selectedDeviceId === dispositivo.id;
 
                         return (
                             <Marker
                                 key={dispositivo.id}
                                 position={posicao}
-                                icon={getIconByStatus(dispositivo.status)}
+                                icon={selectedIcon} // Sempre usar o ícone vermelho para o selecionado
                                 ref={(ref) => {
                                     if (ref) {
                                         markerRef.current[dispositivo.id] = ref;
@@ -255,17 +291,16 @@ function Dispositivos() {
                                 eventHandlers={{
                                     click: () => {
                                         setSelectedDispositivo(dispositivo);
-                                        // Mostrar detalhes ao clicar
                                         mostrarDetalhes(dispositivo);
                                     }
                                 }}
                             >
-                                {/* Tooltip não permanente, aparece apenas quando passa o mouse ou quando selecionado */}
+                                {/* Tooltip sempre permanente para o dispositivo selecionado */}
                                 <Tooltip
                                     direction="top"
                                     offset={[0, -20]}
-                                    opacity={isSelected ? 1 : 0.7}
-                                    permanent={isSelected}
+                                    opacity={1}
+                                    permanent={true}
                                 >
                                     <span className="dispositivo-tooltip">
                                         {dispositivo.nome} ({dispositivo.tipo})
@@ -463,7 +498,7 @@ function Dispositivos() {
                             </div>
                             {renderMapView()}
                             <p className="map-info">
-                                O mapa mostra a localização de todos os dispositivos na planta. Clique em um dispositivo para ver detalhes.
+                                O mapa mostra a localização dos dispositivos de monitoramento. Apenas o dispositivo selecionado é exibido. Utilize a lista ou a busca por coordenadas para localizar um dispositivo específico.
                             </p>
                         </>
                     )}
@@ -478,10 +513,9 @@ function Dispositivos() {
                                         onChange={(e) => setFiltroTipo(e.target.value)}
                                     >
                                         <option value="">Todos</option>
-                                        <option value="Motor">Motor</option>
-                                        <option value="Sensor">Sensor</option>
-                                        <option value="Válvula">Válvula</option>
-                                        <option value="Painel">Painel</option>
+                                        <option value="Sensor de Fumaça">Sensor de Fumaça</option>
+                                        <option value="Acionador Manual">Acionador Manual</option>
+                                        <option value="Modulo de Monitoramento">Módulo de Monitoramento</option>
                                     </select>
                                 </div>
                                 <div className="filter-group">
@@ -491,10 +525,10 @@ function Dispositivos() {
                                         onChange={(e) => setFiltroStatus(e.target.value)}
                                     >
                                         <option value="">Todos</option>
-                                        <option value="Em operação">Em operação</option>
-                                        <option value="Alerta">Alerta</option>
+                                        <option value="Em operação">Normal</option>
+                                        <option value="Alerta">Trouble No Answer</option>
                                         <option value="Desativado">Desativado</option>
-                                        <option value="Manutenção">Manutenção</option>
+                                        <option value="Manutenção">Em Manutenção</option>
                                     </select>
                                 </div>
                                 <button className="btn-filter" onClick={aplicarFiltros}>
