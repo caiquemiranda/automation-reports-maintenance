@@ -1,12 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MapContainer, ImageOverlay, Marker, Tooltip, Popup } from 'react-leaflet';
+import { MapContainer, ImageOverlay, Marker, Tooltip, Popup, useMap } from 'react-leaflet';
 import { CRS, LatLngBounds, Icon, divIcon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import mapaImagem from '../maps/mapa-exemplo.svg';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 import L from 'leaflet';
+import mapaImagem from '../maps/mapa-exemplo.svg';
+
+// Componente para controlar a visualização do mapa
+function MapController({ coordY, coordX, deviceId, markerRefs }) {
+    const map = useMap();
+
+    useEffect(() => {
+        if (coordY && coordX) {
+            map.flyTo([coordY, coordX], 1);
+
+            // Se temos um id de dispositivo e referências de marcadores, abrimos o popup
+            if (deviceId && markerRefs.current && markerRefs.current[deviceId]) {
+                markerRefs.current[deviceId].openPopup();
+            }
+        }
+    }, [map, coordY, coordX, deviceId, markerRefs]);
+
+    return null;
+}
 
 function Dispositivos() {
     const [dispositivos, setDispositivos] = useState([
@@ -70,14 +88,15 @@ function Dispositivos() {
     const [filtroStatus, setFiltroStatus] = useState('');
     const [tabAtiva, setTabAtiva] = useState('lista');
     const [dispositivoSelecionado, setDispositivoSelecionado] = useState(null);
-    const [markers, setMarkers] = useState([]);
+    const [mapCenter, setMapCenter] = useState(null);
+    const [selectedDeviceId, setSelectedDeviceId] = useState(null);
     const [pesquisaCoord, setPesquisaCoord] = useState({ x: '', y: '' });
     const [errorMessage, setErrorMessage] = useState('');
     const [loaded, setLoaded] = useState(false);
     const markerRef = useRef({});
     const mapRef = useRef(null);
     const [selectedDispositivo, setSelectedDispositivo] = useState(null);
-    const [mapImage, setMapImage] = useState('/SAAS/sistema-manutencao-3/src/maps/map-1.jpeg');
+    const [mapImage, setMapImage] = useState('/maps/map-1.png');
     const mapBounds = new LatLngBounds([0, 0], [700, 1000]); // Define os limites da imagem [altura, largura]
 
     useEffect(() => {
@@ -184,6 +203,16 @@ function Dispositivos() {
                             </Marker>
                         );
                     })}
+
+                    {/* Controlador do mapa para centralizar nas coordenadas quando necessário */}
+                    {mapCenter && (
+                        <MapController
+                            coordY={mapCenter[0]}
+                            coordX={mapCenter[1]}
+                            deviceId={selectedDeviceId}
+                            markerRefs={markerRef}
+                        />
+                    )}
                 </MapContainer>
             </div>
         );
@@ -217,19 +246,22 @@ function Dispositivos() {
         setDispositivosFiltrados(dispositivosFiltrados);
     };
 
-    const mostrarDispositivo = (dispositivo) => {
+    // Função para apenas mostrar os detalhes do dispositivo
+    const mostrarDetalhes = (dispositivo) => {
         setDispositivoSelecionado(dispositivo);
         setTabAtiva('detalhes');
+    };
 
-        if (mapRef.current) {
-            mapRef.current.setView([dispositivo.coordY, dispositivo.coordX], 1);
-            markers.forEach(marker => {
-                const markerLatLng = marker.getLatLng();
-                if (markerLatLng.lat === dispositivo.coordY && markerLatLng.lng === dispositivo.coordX) {
-                    marker.openPopup();
-                }
-            });
-        }
+    // Função para mostrar o dispositivo no mapa
+    const localizarNoMapa = (dispositivo) => {
+        setDispositivoSelecionado(dispositivo);
+
+        // Armazenar as coordenadas e o ID do dispositivo para o MapController
+        setMapCenter([dispositivo.coordY, dispositivo.coordX]);
+        setSelectedDeviceId(dispositivo.id);
+
+        // Mudar para a aba do mapa
+        setTabAtiva('mapa');
     };
 
     const pesquisarPorCoordenadas = () => {
@@ -257,7 +289,7 @@ function Dispositivos() {
         });
 
         if (dispositivoProximo) {
-            mostrarDispositivo(dispositivoProximo);
+            localizarNoMapa(dispositivoProximo);
         } else {
             if (mapRef.current) {
                 mapRef.current.setView([y, x], 1);
@@ -403,17 +435,14 @@ function Dispositivos() {
                                                 <button
                                                     className="btn-action"
                                                     title="Ver detalhes"
-                                                    onClick={() => mostrarDispositivo(dispositivo)}
+                                                    onClick={() => mostrarDetalhes(dispositivo)}
                                                 >
                                                     <i className="fas fa-eye"></i>
                                                 </button>
                                                 <button
                                                     className="btn-action"
                                                     title="Localizar no mapa"
-                                                    onClick={() => {
-                                                        setTabAtiva('mapa');
-                                                        setTimeout(() => mostrarDispositivo(dispositivo), 100);
-                                                    }}
+                                                    onClick={() => localizarNoMapa(dispositivo)}
                                                 >
                                                     <i className="fas fa-map-marker-alt"></i>
                                                 </button>
@@ -447,10 +476,7 @@ function Dispositivos() {
                             <div className="mt-4">
                                 <button
                                     className="btn-submit"
-                                    onClick={() => {
-                                        setTabAtiva('mapa');
-                                        setTimeout(() => mostrarDispositivo(dispositivoSelecionado), 100);
-                                    }}
+                                    onClick={() => localizarNoMapa(dispositivoSelecionado)}
                                 >
                                     Localizar no Mapa
                                 </button>
