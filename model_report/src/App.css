@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f0f0;
 }
 
 .App-logo {
@@ -35,4 +40,37 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.a4-sheet {
+  width: 210mm;
+  height: 297mm;
+  background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  border: 1px solid #ccc;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+}
+
+.insert-topic-btn {
+  width: 100%;
+  max-width: 400px;
+  height: 40px;
+  margin: 0 auto 24px auto;
+  display: block;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  letter-spacing: 1px;
+}
+
+.insert-topic-btn:hover {
+  background-color: #125ea2;
 }
