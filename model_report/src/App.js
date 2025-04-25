@@ -7,6 +7,7 @@ function App() {
   const [showEditor, setShowEditor] = useState(false);
   const [editorIndex, setEditorIndex] = useState(null);
   const [contents, setContents] = useState([]);
+  const [isPreview, setIsPreview] = useState(false);
 
   const handleInsertClick = () => {
     setShowOptions((prev) => !prev);
@@ -30,11 +31,25 @@ function App() {
     setEditorIndex(null);
   };
 
+  const handlePreviewToggle = () => {
+    setIsPreview(!isPreview);
+  };
+
   return (
     <div className="App">
+      <div className="sidebar">
+        <button 
+          onClick={handlePreviewToggle} 
+          className={`preview-btn ${isPreview ? 'active' : ''}`}
+        >
+          {isPreview ? 'Editar documento' : 'Preview do documento'}
+        </button>
+      </div>
       <div className="a4-sheet">
-        <button className="insert-topic-btn" onClick={handleInsertClick}>inserir tópico</button>
-        {showOptions && (
+        {!isPreview && (
+          <button className="insert-topic-btn" onClick={handleInsertClick}>inserir tópico</button>
+        )}
+        {showOptions && !isPreview && (
           <div className="insert-options">
             <button onClick={() => handleTextClick(null)}> Textos </button>
             {/* Outras opções */}
@@ -46,7 +61,7 @@ function App() {
             <button disabled> Lista </button>
           </div>
         )}
-        {showEditor && (
+        {showEditor && !isPreview && (
           <SummernoteEditor
             onSave={handleSaveText}
             onClose={() => setShowEditor(false)}
@@ -55,9 +70,23 @@ function App() {
         <div className="report-content">
           {contents.map((block, idx) => (
             <div key={idx} className="report-block">
-              <button className="add-btn" onClick={() => handleTextClick(idx)}>Adicionar acima</button>
+              {!isPreview && (
+                <button 
+                  className="insert-topic-btn insert-above" 
+                  onClick={() => handleTextClick(idx)}
+                >
+                  inserir tópico
+                </button>
+              )}
               <div dangerouslySetInnerHTML={{ __html: block.html }} />
-              <button className="add-btn" onClick={() => handleTextClick(idx + 1)}>Adicionar abaixo</button>
+              {!isPreview && (
+                <button 
+                  className="insert-topic-btn insert-below" 
+                  onClick={() => handleTextClick(idx + 1)}
+                >
+                  inserir tópico
+                </button>
+              )}
             </div>
           ))}
         </div>
