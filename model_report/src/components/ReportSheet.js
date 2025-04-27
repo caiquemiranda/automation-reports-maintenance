@@ -1,7 +1,7 @@
 import React from 'react';
 import InsertOptions from './InsertOptions';
 import ReportContent from './ReportContent';
-import SummernoteEditor from '../SummernoteEditor';
+import SummernoteEditor from './SummernoteEditor';
 import '../styles/ReportSheet.css';
 
 const ReportSheet = ({
