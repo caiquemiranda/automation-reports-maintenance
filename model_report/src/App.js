@@ -157,6 +157,9 @@ function App() {
           handleRemoveContent={handleRemoveContent}
           handleSaveText={handleSaveText}
           setShowEditor={setShowEditor}
+          setShowOptions={setShowOptions}
+          setEditorIndex={setEditorIndex}
+          setCurrentEditContent={setCurrentEditContent}
         />
       </div>
 
