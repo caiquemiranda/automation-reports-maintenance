@@ -1,0 +1,29 @@
+.report-content {
+  margin-top: 24px;
+}
+
+.report-block {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  padding: 16px;
+  position: relative;
+}
+
+.report-block > div {
+  text-align: left;
+}
+
+.empty-report {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  text-align: center;
+  color: #78909c;
+  font-style: italic;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin-top: 24px;
+} 
