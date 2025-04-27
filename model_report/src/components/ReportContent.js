@@ -3,6 +3,46 @@ import '../styles/ReportContent.css';
 import InsertOptions from './InsertOptions';
 import SummernoteEditor from './SummernoteEditor';
 
+// Componentes placeholder para outros tipos
+const ImageInsert = ({ onSave, onClose }) => (
+    <div className="editor-modal">
+        <p>Insira a URL da imagem:</p>
+        <input type="text" id="img-url" placeholder="https://..." style={{ width: '100%', marginBottom: 8 }} />
+        <div style={{ textAlign: 'right' }}>
+            <button className="btn btn-primary" onClick={() => {
+                const url = document.getElementById('img-url').value;
+                if (url) onSave(`<img src='${url}' alt='' style='max-width:100%' />`);
+            }} style={{ marginRight: 8 }}>Salvar</button>
+            <button className="btn btn-secondary" onClick={onClose}>Cancelar</button>
+        </div>
+    </div>
+);
+
+const TableInsert = ({ onSave, onClose }) => (
+    <div className="editor-modal">
+        <p>Insira uma tabela simples (3x2):</p>
+        <div style={{ textAlign: 'right' }}>
+            <button className="btn btn-primary" onClick={() => onSave('<table border="1" style="width:100%"><tr><th>Coluna 1</th><th>Coluna 2</th><th>Coluna 3</th></tr><tr><td></td><td></td><td></td></tr></table>')} style={{ marginRight: 8 }}>Salvar</button>
+            <button className="btn btn-secondary" onClick={onClose}>Cancelar</button>
+        </div>
+    </div>
+);
+
+const ListInsert = ({ onSave, onClose }) => (
+    <div className="editor-modal">
+        <p>Insira uma lista:</p>
+        <textarea id="list-items" rows={4} style={{ width: '100%', marginBottom: 8 }} placeholder="Item 1\nItem 2\nItem 3" />
+        <div style={{ textAlign: 'right' }}>
+            <button className="btn btn-primary" onClick={() => {
+                const value = document.getElementById('list-items').value;
+                const html = `<ul>${value.split('\n').map(item => `<li>${item}</li>`).join('')}</ul>`;
+                onSave(html);
+            }} style={{ marginRight: 8 }}>Salvar</button>
+            <button className="btn btn-secondary" onClick={onClose}>Cancelar</button>
+        </div>
+    </div>
+);
+
 const ReportContent = ({
     contents,
     isPreview,
@@ -17,7 +57,9 @@ const ReportContent = ({
     setShowEditor,
     setShowOptions,
     setEditorIndex,
-    setCurrentEditContent
+    setCurrentEditContent,
+    insertType,
+    setInsertType
 }) => {
     // Renderiza o menu de opções inline
     const renderInsertOptions = (idx) =>
@@ -28,23 +70,69 @@ const ReportContent = ({
                     setShowEditor(true);
                     setEditorIndex(idx);
                     setCurrentEditContent('');
+                    setInsertType(type);
                 }}
             />
         ) : null;
 
-    // Renderiza o editor inline
-    const renderEditor = (idx) =>
-        showEditor && editorIndex === idx ? (
-            <SummernoteEditor
-                initialContent={currentEditContent}
-                onSave={handleSaveText}
-                onClose={() => {
-                    setShowEditor(false);
-                    setEditorIndex(null);
-                    setCurrentEditContent('');
-                }}
-            />
-        ) : null;
+    // Renderiza o editor correto inline
+    const renderEditor = (idx) => {
+        if (!(showEditor && editorIndex === idx)) return null;
+        if (insertType === 'text') {
+            return (
+                <SummernoteEditor
+                    initialContent={currentEditContent}
+                    onSave={handleSaveText}
+                    onClose={() => {
+                        setShowEditor(false);
+                        setEditorIndex(null);
+                        setCurrentEditContent('');
+                        setInsertType('');
+                    }}
+                />
+            );
+        }
+        if (insertType === 'image-left' || insertType === 'image-right' || insertType === 'image-below' || insertType === 'image-above') {
+            return (
+                <ImageInsert
+                    onSave={handleSaveText}
+                    onClose={() => {
+                        setShowEditor(false);
+                        setEditorIndex(null);
+                        setCurrentEditContent('');
+                        setInsertType('');
+                    }}
+                />
+            );
+        }
+        if (insertType === 'table') {
+            return (
+                <TableInsert
+                    onSave={handleSaveText}
+                    onClose={() => {
+                        setShowEditor(false);
+                        setEditorIndex(null);
+                        setCurrentEditContent('');
+                        setInsertType('');
+                    }}
+                />
+            );
+        }
+        if (insertType === 'list') {
+            return (
+                <ListInsert
+                    onSave={handleSaveText}
+                    onClose={() => {
+                        setShowEditor(false);
+                        setEditorIndex(null);
+                        setCurrentEditContent('');
+                        setInsertType('');
+                    }}
+                />
+            );
+        }
+        return null;
+    };
 
     if (contents.length === 0 && !isPreview) {
         return (
@@ -68,6 +156,7 @@ const ReportContent = ({
                                     setShowOptions(true);
                                     setEditorIndex(idx);
                                     setShowEditor(false);
+                                    setInsertType('');
                                 }}
                             >
                                 inserir tópico
@@ -101,6 +190,7 @@ const ReportContent = ({
                                     setShowOptions(true);
                                     setEditorIndex(idx + 1);
                                     setShowEditor(false);
+                                    setInsertType('');
                                 }}
                             >
                                 inserir tópico
