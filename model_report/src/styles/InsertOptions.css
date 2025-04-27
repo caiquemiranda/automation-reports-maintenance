@@ -1,0 +1,31 @@
+.insert-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 800px;
+    margin: 0 auto 24px auto;
+    padding: 16px 0;
+}
+
+.insert-options button {
+    height: 32px;
+    font-size: 1rem;
+    border: 1px solid #1976d2;
+    background: #fff;
+    color: #1976d2;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.insert-options button:hover:not([disabled]) {
+    background: #1976d2;
+    color: #fff;
+}
+
+.insert-options button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #b0bec5;
+    color: #90a4ae;
+}
