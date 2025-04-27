@@ -17,18 +17,18 @@ const Sidebar = ({ onPreviewToggle, isPreview }) => {
           {expanded ? '◀' : '▶'}
         </button>
       </div>
-      
+
       {expanded && (
         <>
           <div className="sidebar-sections">
-            <div 
+            <div
               className={`sidebar-section ${activeSection === 'report' ? 'active' : ''}`}
               onClick={() => setActiveSection('report')}
             >
               <span className="sidebar-icon">📄</span>
               <span className="sidebar-text">Relatório</span>
             </div>
-            <div 
+            <div
               className={`sidebar-section ${activeSection === 'data' ? 'active' : ''}`}
               onClick={() => setActiveSection('data')}
             >
@@ -47,25 +47,12 @@ const Sidebar = ({ onPreviewToggle, isPreview }) => {
                   {isPreview ? 'Editar documento' : 'Preview do documento'}
                 </button>
                 <div className="sidebar-separator"></div>
-                <p className="sidebar-label">Configurações</p>
-                <div className="sidebar-option">
-                  <label>Tamanho:</label>
-                  <select defaultValue="a4">
-                    <option value="a4">A4</option>
-                    <option value="letter">Carta</option>
-                    <option value="legal">Ofício</option>
-                  </select>
-                </div>
-                <div className="sidebar-option">
-                  <label>Orientação:</label>
-                  <select defaultValue="portrait">
-                    <option value="portrait">Retrato</option>
-                    <option value="landscape">Paisagem</option>
-                  </select>
-                </div>
+                <p className="sidebar-label">Ações</p>
+                <button className="action-btn">Salvar relatório</button>
+                <button className="action-btn">Exportar como PDF</button>
               </div>
             )}
-            
+
             {activeSection === 'data' && (
               <div className="section-content">
                 <p className="sidebar-label">Fontes de Dados</p>
