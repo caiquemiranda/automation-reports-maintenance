@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/ReportContent.css';
 
-const ReportContent = ({ contents, isPreview, handleTextClick }) => {
+const ReportContent = ({ contents, isPreview, handleTextClick, handleEditContent, handleRemoveContent }) => {
     if (contents.length === 0 && !isPreview) {
         return (
             <div className="empty-report">
@@ -11,9 +11,9 @@ const ReportContent = ({ contents, isPreview, handleTextClick }) => {
     }
 
     return (
-        <div className="report-content">
+        <div className={`report-content ${isPreview ? 'preview-mode' : ''}`}>
             {contents.map((block, idx) => (
-                <div key={idx} className="report-block">
+                <div key={idx} className={`report-block ${isPreview ? 'preview-mode' : ''}`}>
                     {!isPreview && (
                         <button
                             className="insert-topic-btn insert-above"
@@ -22,7 +22,26 @@ const ReportContent = ({ contents, isPreview, handleTextClick }) => {
                             inserir tópico
                         </button>
                     )}
-                    <div dangerouslySetInnerHTML={{ __html: block.html }} />
+                    
+                    <div className="block-content" dangerouslySetInnerHTML={{ __html: block.html }} />
+                    
+                    {!isPreview && (
+                        <div className="block-actions">
+                            <button 
+                                className="edit-btn"
+                                onClick={() => handleEditContent(idx, block.html)}
+                            >
+                                Editar
+                            </button>
+                            <button 
+                                className="remove-btn"
+                                onClick={() => handleRemoveContent(idx)}
+                            >
+                                Remover
+                            </button>
+                        </div>
+                    )}
+                    
                     {!isPreview && (
                         <button
                             className="insert-topic-btn insert-below"
