@@ -95,4 +95,9 @@ export const generatePdf = (title, contentElement) => {
   };
 };
 
-export default { generatePdf }; 
+// Criar o objeto de serviço e atribuir a uma variável antes de exportar
+const PdfService = {
+  generatePdf
+};
+
+export default PdfService; 
