@@ -178,7 +178,7 @@ function App() {
         onSaveReport={handleOpenSaveModal}
         onLoadReport={handleLoadReport}
         onDeleteReport={handleDeleteReport}
-        onTemplatesClick={() => {}}
+        onTemplatesClick={() => { }}
         activeSection={activeSection}
         onSectionChange={setActiveSection}
       />
