@@ -102,6 +102,12 @@ const ReportContent = ({
         showOptions && editorIndex === idx ? (
             <InsertOptions
                 handleTextClick={(type) => {
+                    if (type !== 'text') {
+                        // Apenas texto está habilitado
+                        alert('Por enquanto, apenas a inserção de texto está disponível.');
+                        setShowOptions(false);
+                        return;
+                    }
                     setShowOptions(false);
                     setShowEditor(true);
                     setEditorIndex(idx);
@@ -111,63 +117,21 @@ const ReportContent = ({
             />
         ) : null;
 
-    // Renderiza o editor correto inline
+    // Renderiza o editor inline apenas para texto
     const renderEditor = (idx) => {
-        if (!(showEditor && editorIndex === idx)) return null;
-        if (insertType === 'text') {
-            return (
-                <SummernoteEditor
-                    initialContent={currentEditContent}
-                    onSave={handleSaveText}
-                    onClose={() => {
-                        setShowEditor(false);
-                        setEditorIndex(null);
-                        setCurrentEditContent('');
-                        setInsertType('');
-                    }}
-                />
-            );
-        }
-        if (insertType === 'image-left' || insertType === 'image-right' || insertType === 'image-below' || insertType === 'image-above') {
-            return (
-                <ImageInsert
-                    onSave={handleSaveText}
-                    onClose={() => {
-                        setShowEditor(false);
-                        setEditorIndex(null);
-                        setCurrentEditContent('');
-                        setInsertType('');
-                    }}
-                />
-            );
-        }
-        if (insertType === 'table') {
-            return (
-                <TableInsert
-                    onSave={handleSaveText}
-                    onClose={() => {
-                        setShowEditor(false);
-                        setEditorIndex(null);
-                        setCurrentEditContent('');
-                        setInsertType('');
-                    }}
-                />
-            );
-        }
-        if (insertType === 'list') {
-            return (
-                <ListInsert
-                    onSave={handleSaveText}
-                    onClose={() => {
-                        setShowEditor(false);
-                        setEditorIndex(null);
-                        setCurrentEditContent('');
-                        setInsertType('');
-                    }}
-                />
-            );
-        }
-        return null;
+        if (!(showEditor && editorIndex === idx && insertType === 'text')) return null;
+        return (
+            <SummernoteEditor
+                initialContent={currentEditContent}
+                onSave={handleSaveText}
+                onClose={() => {
+                    setShowEditor(false);
+                    setEditorIndex(null);
+                    setCurrentEditContent('');
+                    setInsertType('');
+                }}
+            />
+        );
     };
 
     if (contents.length === 0 && !isPreview) {
