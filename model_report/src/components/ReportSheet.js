@@ -16,7 +16,10 @@ const ReportSheet = ({
     handleSaveText,
     setShowEditor,
     editorIndex,
-    currentEditContent
+    currentEditContent,
+    setShowOptions,
+    setEditorIndex,
+    setCurrentEditContent
 }) => {
     return (
         <div className="report-sheet-container">
@@ -45,6 +48,15 @@ const ReportSheet = ({
                     handleTextClick={handleTextClick}
                     handleEditContent={handleEditContent}
                     handleRemoveContent={handleRemoveContent}
+                    showEditor={showEditor}
+                    showOptions={showOptions}
+                    editorIndex={editorIndex}
+                    currentEditContent={currentEditContent}
+                    handleSaveText={handleSaveText}
+                    setShowEditor={setShowEditor}
+                    setShowOptions={setShowOptions}
+                    setEditorIndex={setEditorIndex}
+                    setCurrentEditContent={setCurrentEditContent}
                 />
             </div>
         </div>

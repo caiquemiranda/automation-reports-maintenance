@@ -4,14 +4,13 @@ import '../styles/InsertOptions.css';
 const InsertOptions = ({ handleTextClick }) => {
     return (
         <div className="insert-options">
-            <button onClick={() => handleTextClick(null)}> Textos </button>
-            {/* Outras opções */}
-            <button disabled> Tabela </button>
-            <button disabled> Foto com legenda lateral esquerda </button>
-            <button disabled> Foto com legenda na lateral direita </button>
-            <button disabled> Foto com legenda na lateral abaixo </button>
-            <button disabled> Foto com legenda acima </button>
-            <button disabled> Lista </button>
+            <button onClick={() => handleTextClick('text')}> Textos </button>
+            <button onClick={() => handleTextClick('table')}> Tabela </button>
+            <button onClick={() => handleTextClick('image-left')}> Foto com legenda lateral esquerda </button>
+            <button onClick={() => handleTextClick('image-right')}> Foto com legenda na lateral direita </button>
+            <button onClick={() => handleTextClick('image-below')}> Foto com legenda na lateral abaixo </button>
+            <button onClick={() => handleTextClick('image-above')}> Foto com legenda acima </button>
+            <button onClick={() => handleTextClick('list')}> Lista </button>
         </div>
     );
 };
