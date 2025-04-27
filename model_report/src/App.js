@@ -143,7 +143,7 @@ function App() {
         onDeleteReport={handleDeleteReport}
       />
 
-      <div ref={reportSheetRef}>
+      <div className="report-sheet-wrapper" ref={reportSheetRef}>
         <ReportSheet
           isPreview={isPreview}
           showOptions={showOptions}
