@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InsertOptions from './InsertOptions';
 import ReportContent from './ReportContent';
 import SummernoteEditor from './SummernoteEditor';
@@ -21,6 +21,7 @@ const ReportSheet = ({
     editorIndex,
     currentEditContent
 }) => {
+    const [insertType, setInsertType] = useState('');
     return (
         <div className="report-sheet-container">
             <div className="a4-sheet">
@@ -57,6 +58,8 @@ const ReportSheet = ({
                     setShowOptions={setShowOptions}
                     setEditorIndex={setEditorIndex}
                     setCurrentEditContent={setCurrentEditContent}
+                    insertType={insertType}
+                    setInsertType={setInsertType}
                 />
             </div>
         </div>
