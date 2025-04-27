@@ -9,6 +9,7 @@ function App() {
   const [editorIndex, setEditorIndex] = useState(null);
   const [contents, setContents] = useState([]);
   const [isPreview, setIsPreview] = useState(false);
+  const [currentEditContent, setCurrentEditContent] = useState('');
 
   const handleInsertClick = () => {
     setShowOptions((prev) => !prev);
@@ -18,18 +19,40 @@ function App() {
     setShowEditor(true);
     setEditorIndex(index);
     setShowOptions(false);
+    setCurrentEditContent('');
+  };
+
+  const handleEditContent = (index, html) => {
+    setShowEditor(true);
+    setEditorIndex(index);
+    setShowOptions(false);
+    setCurrentEditContent(html);
+  };
+
+  const handleRemoveContent = (index) => {
+    const newContents = [...contents];
+    newContents.splice(index, 1);
+    setContents(newContents);
   };
 
   const handleSaveText = (html) => {
-    if (editorIndex === null) {
+    if (currentEditContent) {
+      // Editar conteúdo existente
+      const newContents = [...contents];
+      newContents[editorIndex] = { type: 'text', html };
+      setContents(newContents);
+    } else if (editorIndex === null) {
+      // Adicionar ao final
       setContents([...contents, { type: 'text', html }]);
     } else {
+      // Inserir no meio
       const newContents = [...contents];
       newContents.splice(editorIndex, 0, { type: 'text', html });
       setContents(newContents);
     }
     setShowEditor(false);
     setEditorIndex(null);
+    setCurrentEditContent('');
   };
 
   const handlePreviewToggle = () => {
@@ -49,8 +72,11 @@ function App() {
         showEditor={showEditor}
         contents={contents}
         editorIndex={editorIndex}
+        currentEditContent={currentEditContent}
         handleInsertClick={handleInsertClick}
         handleTextClick={handleTextClick}
+        handleEditContent={handleEditContent}
+        handleRemoveContent={handleRemoveContent}
         handleSaveText={handleSaveText}
         setShowEditor={setShowEditor}
       />
