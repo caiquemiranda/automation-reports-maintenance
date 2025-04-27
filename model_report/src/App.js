@@ -4,6 +4,9 @@ import ReportSheet from './components/ReportSheet';
 import SaveReportModal from './components/SaveReportModal';
 import StorageService from './services/StorageService';
 import PdfService from './services/PdfService';
+import TemplateList from './components/TemplateList';
+import TemplateModal from './components/TemplateModal';
+import TemplateService from './services/TemplateService';
 import './styles/App.css';
 
 function App() {
@@ -20,9 +23,53 @@ function App() {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   });
+  const [showTemplates, setShowTemplates] = useState(false);
+  const [templates, setTemplates] = useState(TemplateService.getAllTemplates());
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [editingTemplate, setEditingTemplate] = useState(null);
 
   const reportSheetRef = useRef(null);
 
+  // Funções para modelos
+  const refreshTemplates = () => setTemplates(TemplateService.getAllTemplates());
+
+  const handleTemplatesClick = () => {
+    setShowTemplates(true);
+  };
+
+  const handleInsertTemplate = (templateId) => {
+    const tpl = TemplateService.getTemplateById(templateId);
+    if (tpl) {
+      // Insere o conteúdo do modelo como novo bloco de texto
+      setContents([...contents, { type: 'text', html: tpl.content }]);
+      setShowTemplates(false);
+    }
+  };
+
+  const handleEditTemplate = (templateId) => {
+    if (templateId) {
+      const tpl = TemplateService.getTemplateById(templateId);
+      setEditingTemplate(tpl);
+    } else {
+      setEditingTemplate(null);
+    }
+    setShowTemplateModal(true);
+  };
+
+  const handleDeleteTemplate = (templateId) => {
+    if (window.confirm('Tem certeza que deseja excluir este modelo?')) {
+      TemplateService.deleteTemplate(templateId);
+      refreshTemplates();
+    }
+  };
+
+  const handleSaveTemplate = (tpl) => {
+    TemplateService.saveTemplate(tpl);
+    setShowTemplateModal(false);
+    refreshTemplates();
+  };
+
+  // Funções do relatório (mantidas)
   const handleInsertClick = () => {
     setShowOptions((prev) => !prev);
   };
@@ -141,26 +188,36 @@ function App() {
         onSaveReport={handleOpenSaveModal}
         onLoadReport={handleLoadReport}
         onDeleteReport={handleDeleteReport}
+        onTemplatesClick={() => setShowTemplates(true)}
       />
 
       <div className="report-sheet-wrapper" ref={reportSheetRef}>
-        <ReportSheet
-          isPreview={isPreview}
-          showOptions={showOptions}
-          showEditor={showEditor}
-          contents={contents}
-          editorIndex={editorIndex}
-          currentEditContent={currentEditContent}
-          handleInsertClick={handleInsertClick}
-          handleTextClick={handleTextClick}
-          handleEditContent={handleEditContent}
-          handleRemoveContent={handleRemoveContent}
-          handleSaveText={handleSaveText}
-          setShowEditor={setShowEditor}
-          setShowOptions={setShowOptions}
-          setEditorIndex={setEditorIndex}
-          setCurrentEditContent={setCurrentEditContent}
-        />
+        {!showTemplates ? (
+          <ReportSheet
+            isPreview={isPreview}
+            showOptions={showOptions}
+            showEditor={showEditor}
+            contents={contents}
+            editorIndex={editorIndex}
+            currentEditContent={currentEditContent}
+            handleInsertClick={handleInsertClick}
+            handleTextClick={handleTextClick}
+            handleEditContent={handleEditContent}
+            handleRemoveContent={handleRemoveContent}
+            handleSaveText={handleSaveText}
+            setShowEditor={setShowEditor}
+            setShowOptions={setShowOptions}
+            setEditorIndex={setEditorIndex}
+            setCurrentEditContent={setCurrentEditContent}
+          />
+        ) : (
+          <TemplateList
+            templates={templates}
+            onInsert={handleInsertTemplate}
+            onEdit={handleEditTemplate}
+            onDelete={handleDeleteTemplate}
+          />
+        )}
       </div>
 
       {showSaveModal && (
@@ -169,6 +226,15 @@ function App() {
           onClose={() => setShowSaveModal(false)}
           onSave={handleSaveReport}
           reportData={currentReport}
+        />
+      )}
+
+      {showTemplateModal && (
+        <TemplateModal
+          isOpen={showTemplateModal}
+          onClose={() => setShowTemplateModal(false)}
+          onSave={handleSaveTemplate}
+          initialData={editingTemplate}
         />
       )}
     </div>

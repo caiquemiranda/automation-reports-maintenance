@@ -3,7 +3,7 @@ import '../styles/Sidebar.css';
 import ReportHistory from './ReportHistory';
 import StorageService from '../services/StorageService';
 
-const Sidebar = ({ onPreviewToggle, isPreview, onSaveReport, onLoadReport, onDeleteReport }) => {
+const Sidebar = ({ onPreviewToggle, isPreview, onSaveReport, onLoadReport, onDeleteReport, onTemplatesClick }) => {
   const [expanded, setExpanded] = useState(true);
   const [activeSection, setActiveSection] = useState('report');
   const [reports, setReports] = useState([]);
@@ -74,6 +74,16 @@ const Sidebar = ({ onPreviewToggle, isPreview, onSaveReport, onLoadReport, onDel
             >
               <span className="sidebar-icon">📚</span>
               <span className="sidebar-text">Histórico</span>
+            </div>
+            <div
+              className={`sidebar-section ${activeSection === 'templates' ? 'active' : ''}`}
+              onClick={() => {
+                setActiveSection('templates');
+                if (onTemplatesClick) onTemplatesClick();
+              }}
+            >
+              <span className="sidebar-icon">📑</span>
+              <span className="sidebar-text">Modelos de Relatório</span>
             </div>
           </div>
 
