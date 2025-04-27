@@ -15,11 +15,11 @@ const ReportSheet = ({
     handleRemoveContent,
     handleSaveText,
     setShowEditor,
-    editorIndex,
-    currentEditContent,
     setShowOptions,
     setEditorIndex,
-    setCurrentEditContent
+    setCurrentEditContent,
+    editorIndex,
+    currentEditContent
 }) => {
     return (
         <div className="report-sheet-container">
