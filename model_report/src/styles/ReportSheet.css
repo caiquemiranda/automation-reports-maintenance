@@ -1,0 +1,66 @@
+.report-sheet-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-left: 50px;
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar.expanded~.report-sheet-container {
+    margin-left: 250px;
+}
+
+.a4-sheet {
+    width: 210mm;
+    height: 297mm;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+    position: relative;
+}
+
+.insert-topic-btn {
+    width: 100%;
+    max-width: 800px;
+    height: 25px;
+    margin: 0 auto 24px auto;
+    display: block;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    letter-spacing: 1px;
+}
+
+.insert-topic-btn:hover {
+    background-color: #125ea2;
+}
+
+.insert-topic-btn.insert-above,
+.insert-topic-btn.insert-below {
+    width: auto;
+    min-width: 150px;
+    height: 25px;
+    margin: 8px auto;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    border: 1px dashed #1976d2;
+    background-color: transparent;
+    color: #1976d2;
+}
+
+.insert-topic-btn.insert-above:hover,
+.insert-topic-btn.insert-below:hover {
+    opacity: 1;
+    background-color: rgba(25, 118, 210, 0.1);
+}
