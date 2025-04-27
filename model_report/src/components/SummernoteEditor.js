@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 
-function SummernoteEditor({ onSave, onClose }) {
+function SummernoteEditor({ initialContent = '', onSave, onClose }) {
   const editorRef = useRef(null);
 
   useEffect(() => {
@@ -20,12 +20,18 @@ function SummernoteEditor({ onSave, onClose }) {
         ['view', ['undo', 'redo', 'fullscreen', 'codeview']]
       ]
     });
+
+    // Se houver conteúdo inicial, coloca no editor
+    if (initialContent) {
+      window.$(editorRef.current).summernote('code', initialContent);
+    }
+
     const currentRef = editorRef.current;
     return () => {
       // Destroi o Summernote ao desmontar
       window.$(currentRef).summernote('destroy');
     };
-  }, []);
+  }, [initialContent]);
 
   const handleSave = () => {
     const html = window.$(editorRef.current).summernote('code');
