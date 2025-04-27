@@ -1,0 +1,62 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+/* Editor modal */
+.editor-modal {
+    background: #fff;
+    border: 1px solid #1976d2;
+    border-radius: 8px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
+    padding: 24px;
+    margin-bottom: 24px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* WYSIWYG Editor */
+.wysiwyg-editor {
+    min-height: 120px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 12px;
+    background: #fff;
+    outline: none;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+/* Note App/Summernote content styles */
+.note-editor .dropdown-toggle::after {
+    display: none;
+}
+
+.note-editor.note-frame {
+    border: 1px solid #ddd;
+}
+
+.note-editor .note-toolbar {
+    background: #f8f9fa;
+}
+
+.note-btn {
+    background: #f8f9fa;
+    border-color: #ddd;
+}
