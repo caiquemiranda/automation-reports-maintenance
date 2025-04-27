@@ -39,13 +39,13 @@ function SummernoteEditor({ initialContent = '', onSave, onClose }) {
   };
 
   return (
-    <div className="editor-modal">
+    <>
       <div ref={editorRef} />
       <div style={{ marginTop: 16, textAlign: 'right' }}>
         <button className="btn btn-primary" onClick={handleSave} style={{ marginRight: 8 }}>Salvar</button>
         <button className="btn btn-secondary" onClick={onClose}>Cancelar</button>
       </div>
-    </div>
+    </>
   );
 }
 
