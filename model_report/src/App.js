@@ -38,11 +38,11 @@ function App() {
 
   return (
     <div className="app-container">
-      <Sidebar 
+      <Sidebar
         isPreview={isPreview}
         onPreviewToggle={handlePreviewToggle}
       />
-      
+
       <ReportSheet
         isPreview={isPreview}
         showOptions={showOptions}
