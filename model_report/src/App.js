@@ -23,7 +23,7 @@ function App() {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   });
-  const [showTemplates, setShowTemplates] = useState(false);
+  const [activeSection, setActiveSection] = useState('report');
   const [templates, setTemplates] = useState(TemplateService.getAllTemplates());
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [editingTemplate, setEditingTemplate] = useState(null);
@@ -33,16 +33,11 @@ function App() {
   // Funções para modelos
   const refreshTemplates = () => setTemplates(TemplateService.getAllTemplates());
 
-  const handleTemplatesClick = () => {
-    setShowTemplates(true);
-  };
-
   const handleInsertTemplate = (templateId) => {
     const tpl = TemplateService.getTemplateById(templateId);
     if (tpl) {
-      // Insere o conteúdo do modelo como novo bloco de texto
       setContents([...contents, { type: 'text', html: tpl.content }]);
-      setShowTemplates(false);
+      setActiveSection('report');
     }
   };
 
@@ -156,19 +151,14 @@ function App() {
   const handleLoadReport = (reportId) => {
     const report = StorageService.getReportById(reportId);
     if (report) {
-      // Carregar conteúdo do relatório
       setContents(report.contents || []);
-
-      // Atualizar relatório atual
       setCurrentReport(report);
-
-      // Ir para seção de relatório
       setIsPreview(false);
+      setActiveSection('report');
     }
   };
 
   const handleDeleteReport = (reportId) => {
-    // Se o relatório atual for excluído, limpar o estado
     if (currentReport && currentReport.id === reportId) {
       setContents([]);
       setCurrentReport({
@@ -188,11 +178,13 @@ function App() {
         onSaveReport={handleOpenSaveModal}
         onLoadReport={handleLoadReport}
         onDeleteReport={handleDeleteReport}
-        onTemplatesClick={() => setShowTemplates(true)}
+        onTemplatesClick={() => {}}
+        activeSection={activeSection}
+        onSectionChange={setActiveSection}
       />
 
       <div className="report-sheet-wrapper" ref={reportSheetRef}>
-        {!showTemplates ? (
+        {activeSection === 'report' && (
           <ReportSheet
             isPreview={isPreview}
             showOptions={showOptions}
@@ -210,7 +202,8 @@ function App() {
             setEditorIndex={setEditorIndex}
             setCurrentEditContent={setCurrentEditContent}
           />
-        ) : (
+        )}
+        {activeSection === 'templates' && (
           <TemplateList
             templates={templates}
             onInsert={handleInsertTemplate}
@@ -218,6 +211,7 @@ function App() {
             onDelete={handleDeleteTemplate}
           />
         )}
+        {/* Seções futuras: data, history... */}
       </div>
 
       {showSaveModal && (

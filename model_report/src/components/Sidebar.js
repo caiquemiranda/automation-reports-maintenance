@@ -3,9 +3,17 @@ import '../styles/Sidebar.css';
 import ReportHistory from './ReportHistory';
 import StorageService from '../services/StorageService';
 
-const Sidebar = ({ onPreviewToggle, isPreview, onSaveReport, onLoadReport, onDeleteReport, onTemplatesClick }) => {
+const Sidebar = ({
+  onPreviewToggle,
+  isPreview,
+  onSaveReport,
+  onLoadReport,
+  onDeleteReport,
+  onTemplatesClick,
+  activeSection,
+  onSectionChange
+}) => {
   const [expanded, setExpanded] = useState(true);
-  const [activeSection, setActiveSection] = useState('report');
   const [reports, setReports] = useState([]);
 
   // Carregar histórico de relatórios quando o componente for montado
@@ -56,21 +64,21 @@ const Sidebar = ({ onPreviewToggle, isPreview, onSaveReport, onLoadReport, onDel
           <div className="sidebar-sections">
             <div
               className={`sidebar-section ${activeSection === 'report' ? 'active' : ''}`}
-              onClick={() => setActiveSection('report')}
+              onClick={() => onSectionChange('report')}
             >
               <span className="sidebar-icon">📄</span>
               <span className="sidebar-text">Relatório</span>
             </div>
             <div
               className={`sidebar-section ${activeSection === 'data' ? 'active' : ''}`}
-              onClick={() => setActiveSection('data')}
+              onClick={() => onSectionChange('data')}
             >
               <span className="sidebar-icon">📊</span>
               <span className="sidebar-text">Dados</span>
             </div>
             <div
               className={`sidebar-section ${activeSection === 'history' ? 'active' : ''}`}
-              onClick={() => setActiveSection('history')}
+              onClick={() => onSectionChange('history')}
             >
               <span className="sidebar-icon">📚</span>
               <span className="sidebar-text">Histórico</span>
@@ -78,7 +86,7 @@ const Sidebar = ({ onPreviewToggle, isPreview, onSaveReport, onLoadReport, onDel
             <div
               className={`sidebar-section ${activeSection === 'templates' ? 'active' : ''}`}
               onClick={() => {
-                setActiveSection('templates');
+                onSectionChange('templates');
                 if (onTemplatesClick) onTemplatesClick();
               }}
             >
