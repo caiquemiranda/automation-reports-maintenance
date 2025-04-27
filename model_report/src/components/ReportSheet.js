@@ -11,9 +11,12 @@ const ReportSheet = ({
     contents,
     handleInsertClick,
     handleTextClick,
+    handleEditContent,
+    handleRemoveContent,
     handleSaveText,
     setShowEditor,
-    editorIndex
+    editorIndex,
+    currentEditContent
 }) => {
     return (
         <div className="report-sheet-container">
@@ -30,6 +33,7 @@ const ReportSheet = ({
 
                 {showEditor && !isPreview && (
                     <SummernoteEditor
+                        initialContent={currentEditContent}
                         onSave={handleSaveText}
                         onClose={() => setShowEditor(false)}
                     />
@@ -39,6 +43,8 @@ const ReportSheet = ({
                     contents={contents}
                     isPreview={isPreview}
                     handleTextClick={handleTextClick}
+                    handleEditContent={handleEditContent}
+                    handleRemoveContent={handleRemoveContent}
                 />
             </div>
         </div>
