@@ -1,12 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/Sidebar.css';
+import ReportHistory from './ReportHistory';
+import StorageService from '../services/StorageService';
 
-const Sidebar = ({ onPreviewToggle, isPreview }) => {
+const Sidebar = ({ onPreviewToggle, isPreview, onSaveReport, onLoadReport, onDeleteReport }) => {
   const [expanded, setExpanded] = useState(true);
   const [activeSection, setActiveSection] = useState('report');
+  const [reports, setReports] = useState([]);
+
+  // Carregar histórico de relatórios quando o componente for montado
+  useEffect(() => {
+    if (activeSection === 'history') {
+      loadReports();
+    }
+  }, [activeSection]);
 
   const toggleExpand = () => {
     setExpanded(!expanded);
+  };
+
+  const loadReports = () => {
+    const savedReports = StorageService.getAllReports();
+    setReports(savedReports);
+  };
+
+  const handleReportSelect = (reportId) => {
+    if (onLoadReport) {
+      onLoadReport(reportId);
+    }
+  };
+
+  const handleReportDelete = (reportId) => {
+    if (window.confirm('Tem certeza que deseja excluir este relatório?')) {
+      StorageService.deleteReport(reportId);
+      // Recarregar a lista após excluir
+      loadReports();
+
+      if (onDeleteReport) {
+        onDeleteReport(reportId);
+      }
+    }
   };
 
   return (
@@ -35,6 +68,13 @@ const Sidebar = ({ onPreviewToggle, isPreview }) => {
               <span className="sidebar-icon">📊</span>
               <span className="sidebar-text">Dados</span>
             </div>
+            <div
+              className={`sidebar-section ${activeSection === 'history' ? 'active' : ''}`}
+              onClick={() => setActiveSection('history')}
+            >
+              <span className="sidebar-icon">📚</span>
+              <span className="sidebar-text">Histórico</span>
+            </div>
           </div>
 
           <div className="sidebar-content">
@@ -48,7 +88,7 @@ const Sidebar = ({ onPreviewToggle, isPreview }) => {
                 </button>
                 <div className="sidebar-separator"></div>
                 <p className="sidebar-label">Ações</p>
-                <button className="action-btn">Salvar relatório</button>
+                <button className="action-btn" onClick={onSaveReport}>Salvar relatório</button>
                 <button className="action-btn">Exportar como PDF</button>
               </div>
             )}
@@ -62,6 +102,14 @@ const Sidebar = ({ onPreviewToggle, isPreview }) => {
                 <p className="sidebar-label">Datasets</p>
                 <div className="data-item">Sem dados importados</div>
               </div>
+            )}
+
+            {activeSection === 'history' && (
+              <ReportHistory
+                reports={reports}
+                onReportSelect={handleReportSelect}
+                onReportDelete={handleReportDelete}
+              />
             )}
           </div>
         </>
