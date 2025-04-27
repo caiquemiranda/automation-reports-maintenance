@@ -4,19 +4,55 @@ import InsertOptions from './InsertOptions';
 import SummernoteEditor from './SummernoteEditor';
 
 // Componentes placeholder para outros tipos
-const ImageInsert = ({ onSave, onClose }) => (
-    <div className="editor-modal">
-        <p>Insira a URL da imagem:</p>
-        <input type="text" id="img-url" placeholder="https://..." style={{ width: '100%', marginBottom: 8 }} />
-        <div style={{ textAlign: 'right' }}>
-            <button className="btn btn-primary" onClick={() => {
-                const url = document.getElementById('img-url').value;
-                if (url) onSave(`<img src='${url}' alt='' style='max-width:100%' />`);
-            }} style={{ marginRight: 8 }}>Salvar</button>
-            <button className="btn btn-secondary" onClick={onClose}>Cancelar</button>
+const ImageInsert = ({ onSave, onClose }) => {
+    const fileInputRef = React.useRef();
+    const urlInputRef = React.useRef();
+    const [loading, setLoading] = React.useState(false);
+
+    const handleInsert = () => {
+        const url = urlInputRef.current.value.trim();
+        if (url) {
+            onSave(`<img src='${url}' alt='' style='max-width:100%' />`);
+            return;
+        }
+        const file = fileInputRef.current.files[0];
+        if (file) {
+            setLoading(true);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                onSave(`<img src='${e.target.result}' alt='' style='max-width:100%' />`);
+                setLoading(false);
+            };
+            reader.onerror = () => {
+                alert('Erro ao ler o arquivo.');
+                setLoading(false);
+            };
+            reader.readAsDataURL(file);
+            return;
+        }
+        alert('Escolha um arquivo ou informe uma URL.');
+    };
+
+    return (
+        <div className="editor-modal">
+            <p><strong>Inserir Imagem</strong></p>
+            <div style={{ marginBottom: 12 }}>
+                <label>Escolher arquivo:</label><br />
+                <input type="file" accept="image/*" ref={fileInputRef} />
+            </div>
+            <div style={{ marginBottom: 12 }}>
+                <label>URL da imagem:</label><br />
+                <input type="text" ref={urlInputRef} placeholder="https://..." style={{ width: '100%' }} />
+            </div>
+            <div style={{ textAlign: 'right' }}>
+                <button className="btn btn-primary" onClick={handleInsert} disabled={loading} style={{ marginRight: 8 }}>
+                    {loading ? 'Carregando...' : 'Inserir Imagem'}
+                </button>
+                <button className="btn btn-secondary" onClick={onClose} disabled={loading}>Cancelar</button>
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 const TableInsert = ({ onSave, onClose }) => (
     <div className="editor-modal">
