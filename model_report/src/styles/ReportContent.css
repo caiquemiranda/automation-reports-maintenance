@@ -11,8 +11,56 @@
   position: relative;
 }
 
-.report-block > div {
+.report-block>.block-content {
   text-align: left;
+}
+
+/* Estilo para o modo preview */
+.report-content.preview-mode {
+  margin-top: 0;
+}
+
+.report-block.preview-mode {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+.block-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.edit-btn,
+.remove-btn {
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  border: none;
+}
+
+.edit-btn {
+  background-color: #2196f3;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #0d8aee;
+}
+
+.remove-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.remove-btn:hover {
+  background-color: #e53935;
 }
 
 .empty-report {
@@ -26,4 +74,4 @@
   background: #f5f5f5;
   border-radius: 8px;
   margin-top: 24px;
-} 
+}
