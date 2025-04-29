@@ -28,14 +28,13 @@ const ReportContent = ({
             <InsertOptions
                 handleTextClick={(type) => {
                     setShowOptions(false);
+                    setInsertType(type);
                     if (type === 'text') {
                         setShowEditor(true);
                         setEditorIndex(idx);
                         setCurrentEditContent('');
-                        setInsertType(type);
-                    } else {
-                        setInsertType(type);
-                        // O fluxo de lista e outros tipos é tratado no App.js
+                    } else if (type === 'table') {
+                        handleTextClick(type, idx);
                     }
                 }}
             />

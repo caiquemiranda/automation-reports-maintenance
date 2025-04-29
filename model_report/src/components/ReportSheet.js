@@ -26,7 +26,7 @@ const ReportSheet = ({
         <div className="report-sheet-container">
             <div className="a4-sheet">
                 {!isPreview && (
-                    <button className="insert-topic-btn" onClick={handleInsertClick}>
+                    <button className="insert-topic-btn" onClick={() => handleInsertClick(0)}>
                         inserir tópico
                     </button>
                 )}

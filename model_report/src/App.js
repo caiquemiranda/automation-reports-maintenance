@@ -68,8 +68,11 @@ function App() {
   };
 
   // Funções do relatório (mantidas)
-  const handleInsertClick = () => {
-    setShowOptions((prev) => !prev);
+  const handleInsertClick = (index) => {
+    setShowOptions(true);
+    setEditorIndex(index);
+    setShowEditor(false);
+    setCurrentEditContent('');
   };
 
   const handleTextClick = (type = 'text', index = null) => {
