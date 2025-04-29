@@ -9,10 +9,10 @@
     background: #fff;
     font-size: 11pt;
     font-family: Arial, sans-serif;
-    border-top: 2px solid #b4cfeb;
-    /* Borda superior */
-    border-bottom: 2px solid #b4cfeb;
-    /* Borda inferior */
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .list-block-table th,
@@ -23,22 +23,28 @@
 }
 
 .list-block-table th {
-    background: #daeef3;
-    color: #222;
-    font-weight: bold;
-    text-transform: none;
-    font-size: 11pt;
-    font-family: Arial, sans-serif;
-    border-bottom: 2px solid #b4cfeb;
-    /* Borda entre colunas e dados */
+    background-color: #daeef3;
+    border-bottom: 2px solid #000;
+    border-top: none;
+    border-left: none;
+    border-right: none;
 }
 
 .list-block-table tr.even {
-    background: #daeef3;
+    background-color: #daeef3;
 }
 
 .list-block-table tr.odd {
     background: #fff;
+}
+
+.list-block-table th,
+.list-block-table td {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    text-align: center;
 }
 
 .list-block-empty {
@@ -48,6 +54,14 @@
     text-align: center;
 }
 
+.page-break-preview {
+    width: 100%;
+    border-bottom: 2px dashed #bbb;
+    margin: 32px 0;
+    height: 0;
+    position: relative;
+}
+
 @media print {
     * {
         -webkit-print-color-adjust: exact !important;
@@ -55,7 +69,8 @@
         color-adjust: exact !important;
     }
 
-    body, html {
+    body,
+    html {
         background: #fff !important;
     }
 
@@ -78,15 +93,15 @@
         background: #fff !important;
         font-size: 11pt !important;
         font-family: Arial, sans-serif !important;
-        border-top: 2px solid #000 !important;    /* Borda superior preta */
-        border-bottom: 2px solid #000 !important; /* Borda inferior preta */
-        border-radius: 8px !important;            /* Bordas arredondadas */
+        border-top: 2px solid #000 !important;
+        border-bottom: 2px solid #000 !important;
+        border-radius: 8px !important;
         overflow: hidden !important;
     }
 
     .list-block-table th {
         background-color: #daeef3 !important;
-        border-bottom: 2px solid #000 !important; /* Borda entre cabeçalho e dados preta */
+        border-bottom: 2px solid #000 !important;
         border-top: none !important;
         border-left: none !important;
         border-right: none !important;
@@ -125,5 +140,10 @@
         -webkit-border-radius: 8px !important;
         -moz-border-radius: 8px !important;
         overflow: hidden !important;
+    }
+
+    /* Não repetir cabeçalho ao quebrar página */
+    thead {
+        display: table-row-group !important;
     }
 }
