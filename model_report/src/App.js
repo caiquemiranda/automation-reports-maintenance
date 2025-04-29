@@ -195,6 +195,12 @@ function App() {
     setExcelInsertIndex(null);
   };
 
+  // Função para abrir o preview de impressão em nova aba
+  const handleOpenPrintPreview = () => {
+    localStorage.setItem('report_print_preview', JSON.stringify(contents));
+    window.open('/print-preview', '_blank');
+  };
+
   return (
     <div className="app-container">
       <Sidebar
@@ -206,6 +212,7 @@ function App() {
         onTemplatesClick={() => { }}
         activeSection={activeSection}
         onSectionChange={setActiveSection}
+        onExportPdf={handleOpenPrintPreview}
       />
 
       <div className="report-sheet-wrapper" ref={reportSheetRef}>
