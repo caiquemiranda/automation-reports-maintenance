@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import ReportSheet from './ReportSheet';
 import ListBlock from './ListBlock';
 import '../styles/ReportSheet.css';
 import '../styles/ListBlock.css';
@@ -64,13 +63,6 @@ const ReportPrintPreview = () => {
 
   return (
     <div className="report-sheet-container" style={{ background: '#fff' }}>
-      <button
-        className="btn btn-primary btn-print-pdf"
-        style={{ margin: '24px 0 16px 0', display: 'block' }}
-        onClick={() => window.print()}
-      >
-        Exportar PDF
-      </button>
       <div className="a4-sheet" ref={sheetRef}>
         {renderedBlocks}
       </div>
