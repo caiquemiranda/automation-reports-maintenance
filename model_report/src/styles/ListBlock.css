@@ -4,14 +4,13 @@
 }
 
 .list-block-table {
-    width: 100%;
     border-collapse: collapse;
+    width: 100%;
     background: #fff;
     font-size: 11pt;
     font-family: Arial, sans-serif;
     border-top: 2px solid #000;
     border-bottom: 2px solid #000;
-    border-radius: 8px;
     overflow: hidden;
 }
 
@@ -52,6 +51,11 @@
     font-style: italic;
     padding: 16px;
     text-align: center;
+}
+
+.report-block {
+    break-inside: avoid;
+    page-break-inside: avoid;
 }
 
 .page-break-preview {
@@ -95,7 +99,9 @@
         font-family: Arial, sans-serif !important;
         border-top: 2px solid #000 !important;
         border-bottom: 2px solid #000 !important;
-        border-radius: 8px !important;
+        border-radius: 0 !important;
+        -webkit-border-radius: 0 !important;
+        -moz-border-radius: 0 !important;
         overflow: hidden !important;
     }
 
@@ -124,22 +130,9 @@
         text-align: center !important;
     }
 
-    /* Borda inferior nas células do cabeçalho */
-    .list-block-table th {
-        border-bottom: 2px solid #000 !important;
-    }
-
-    /* Remove bordas extras entre colunas */
-    .list-block-table td {
-        border: none !important;
-    }
-
-    /* Bordas arredondadas na tabela */
-    .list-block-table {
-        border-radius: 8px !important;
-        -webkit-border-radius: 8px !important;
-        -moz-border-radius: 8px !important;
-        overflow: hidden !important;
+    .report-block {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
     }
 
     /* Não repetir cabeçalho ao quebrar página */
