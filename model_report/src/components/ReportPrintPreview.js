@@ -19,6 +19,13 @@ const ReportPrintPreview = () => {
 
   return (
     <div className="report-sheet-container" style={{ background: '#fff' }}>
+      <button
+        className="btn btn-primary btn-print-pdf"
+        style={{ margin: '24px 0 16px 0', display: 'block' }}
+        onClick={() => window.print()}
+      >
+        Exportar PDF
+      </button>
       <ReportSheet
         isPreview={isPreview}
         showOptions={false}
