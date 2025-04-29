@@ -7,27 +7,28 @@
     width: 100%;
     border-collapse: collapse;
     background: #fff;
-    font-size: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    font-size: 11pt;
+    font-family: Arial, sans-serif;
 }
 
 .list-block-table th,
 .list-block-table td {
-    border: 1px solid #dbe2ea;
-    padding: 8px 12px;
+    border: 1px solid #b4cfeb;
+    padding: 4px 8px;
     text-align: left;
 }
 
 .list-block-table th {
-    background: #f5f8fa;
+    background: #b4cfeb;
     color: #222;
     font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.98rem;
+    text-transform: none;
+    font-size: 11pt;
+    font-family: Arial, sans-serif;
 }
 
 .list-block-table tr.even {
-    background: #f5f8fa;
+    background: #b4cfeb;
 }
 
 .list-block-table tr.odd {

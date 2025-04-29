@@ -20,7 +20,10 @@
     margin: auto;
     display: flex;
     flex-direction: column;
-    padding: 32px;
+    padding-left: 3cm;
+    padding-right: 3cm;
+    padding-top: 32px;
+    padding-bottom: 32px;
     position: relative;
 }
 
