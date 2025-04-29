@@ -66,3 +66,14 @@
     opacity: 1;
     background-color: rgba(25, 118, 210, 0.1);
 }
+
+@media print {
+  .report-block {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 0 16px 0 !important;
+  }
+}
