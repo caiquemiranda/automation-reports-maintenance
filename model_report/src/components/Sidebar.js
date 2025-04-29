@@ -108,7 +108,6 @@ const Sidebar = ({
                 <div className="sidebar-separator"></div>
                 <p className="sidebar-label">Ações</p>
                 <button className="action-btn" onClick={onSaveReport}>Salvar relatório</button>
-                <button className="action-btn" onClick={onExportPdf}>Exportar como PDF</button>
               </div>
             )}
 

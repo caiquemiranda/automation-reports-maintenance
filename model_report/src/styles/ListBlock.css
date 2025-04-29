@@ -21,9 +21,13 @@
     text-align: center;
 }
 
+.list-block-table thead {
+    border-bottom: 1px solid #bbb;
+}
+
 .list-block-table th {
     background-color: #daeef3;
-    border-bottom: 2px solid #000;
+    border-bottom: none;
     border-top: none;
     border-left: none;
     border-right: none;
@@ -64,10 +68,6 @@
     margin: 32px 0;
     height: 0;
     position: relative;
-}
-
-.list-block-table thead {
-    border-bottom: 2px solid #000;
 }
 
 @media print {

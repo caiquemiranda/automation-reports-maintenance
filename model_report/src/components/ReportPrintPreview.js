@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import ListBlock from './ListBlock';
 import '../styles/ReportSheet.css';
 import '../styles/ListBlock.css';
@@ -9,8 +9,7 @@ const PAGE_HEIGHT_PX = 1122; // Aproximadamente A4 em 96dpi
 
 const ReportPrintPreview = () => {
   const [contents, setContents] = useState([]);
-  const [isPreview, setIsPreview] = useState(true);
-  const sheetRef = useRef();
+  const sheetRef = React.useRef();
   const [breaks, setBreaks] = useState([]);
 
   useEffect(() => {
@@ -19,8 +18,6 @@ const ReportPrintPreview = () => {
     if (data) {
       setContents(JSON.parse(data));
     }
-    const previewFlag = localStorage.getItem('report_print_isPreview');
-    setIsPreview(previewFlag === 'true');
   }, []);
 
   useEffect(() => {
