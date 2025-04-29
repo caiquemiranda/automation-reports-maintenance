@@ -10,7 +10,6 @@ const InsertOptions = ({ handleTextClick }) => {
             <button onClick={() => handleTextClick('image-right')}> Foto com legenda na lateral direita </button>
             <button onClick={() => handleTextClick('image-below')}> Foto com legenda na lateral abaixo </button>
             <button onClick={() => handleTextClick('image-above')}> Foto com legenda acima </button>
-            <button onClick={() => handleTextClick('list')}> Lista </button>
         </div>
     );
 };

@@ -73,7 +73,7 @@ function App() {
   };
 
   const handleTextClick = (type = 'text', index = null) => {
-    if (type === 'list') {
+    if (type === 'table') {
       setExcelInsertIndex(index);
       setShowOptions(false);
       setShowExcelModal(true);
@@ -179,13 +179,13 @@ function App() {
     }
   };
 
-  // Função para inserir lista após upload
-  const handleInsertList = (listData) => {
+  // Função para inserir tabela após upload
+  const handleInsertTable = (tableData) => {
     let newContents = [...contents];
     if (excelInsertIndex === null) {
-      newContents.push({ type: 'list', data: listData });
+      newContents.push({ type: 'table', data: tableData });
     } else {
-      newContents.splice(excelInsertIndex, 0, { type: 'list', data: listData });
+      newContents.splice(excelInsertIndex, 0, { type: 'table', data: tableData });
     }
     setContents(newContents);
     setShowExcelModal(false);
@@ -258,7 +258,7 @@ function App() {
       <ExcelListModal
         isOpen={showExcelModal}
         onClose={() => setShowExcelModal(false)}
-        onInsert={handleInsertList}
+        onInsert={handleInsertTable}
       />
     </div>
   );
