@@ -27,17 +27,16 @@ const ReportContent = ({
         showOptions && editorIndex === idx ? (
             <InsertOptions
                 handleTextClick={(type) => {
-                    if (type !== 'text') {
-                        // Apenas texto está habilitado
-                        alert('Por enquanto, apenas a inserção de texto está disponível.');
-                        setShowOptions(false);
-                        return;
-                    }
                     setShowOptions(false);
-                    setShowEditor(true);
-                    setEditorIndex(idx);
-                    setCurrentEditContent('');
-                    setInsertType(type);
+                    if (type === 'text') {
+                        setShowEditor(true);
+                        setEditorIndex(idx);
+                        setCurrentEditContent('');
+                        setInsertType(type);
+                    } else {
+                        setInsertType(type);
+                        // O fluxo de lista e outros tipos é tratado no App.js
+                    }
                 }}
             />
         ) : null;
