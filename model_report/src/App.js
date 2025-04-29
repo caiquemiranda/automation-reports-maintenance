@@ -198,6 +198,7 @@ function App() {
   // Função para abrir o preview de impressão em nova aba
   const handleOpenPrintPreview = () => {
     localStorage.setItem('report_print_preview', JSON.stringify(contents));
+    localStorage.setItem('report_print_isPreview', 'true');
     window.open('/print-preview', '_blank');
   };
 
