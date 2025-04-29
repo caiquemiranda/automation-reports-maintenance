@@ -7,7 +7,7 @@
  * @param {string} title - Título do relatório
  * @param {Element} contentElement - Elemento DOM contendo o conteúdo do relatório
  */
-export const generatePdf = (title, contentElement) => {
+export const generatePdf = async (title, contentElement) => {
   // Abordagem usando a API de impressão do navegador
   // Este método abre o diálogo de impressão onde o usuário pode escolher salvar como PDF
 
@@ -22,6 +22,23 @@ export const generatePdf = (title, contentElement) => {
   contentClone.style.boxShadow = 'none';
   contentClone.style.border = 'none';
 
+  // Buscar o conteúdo real dos arquivos CSS linkados
+  const cssLinks = Array.from(document.querySelectorAll('link[rel="stylesheet"]'));
+  let cssText = '';
+  for (const link of cssLinks) {
+    try {
+      const resp = await fetch(link.href);
+      if (resp.ok) {
+        cssText += await resp.text() + '\n';
+      }
+    } catch (e) { /* ignora erro */ }
+  }
+  // Também pega estilos inline
+  const styleTags = Array.from(document.querySelectorAll('style'));
+  for (const styleTag of styleTags) {
+    cssText += styleTag.innerHTML + '\n';
+  }
+
   // Criar iframe temporário para impressão
   const printFrame = document.createElement('iframe');
   printFrame.style.position = 'absolute';
@@ -33,18 +50,13 @@ export const generatePdf = (title, contentElement) => {
   const frameDoc = printFrame.contentWindow.document;
   frameDoc.open();
 
-  // Buscar os estilos do projeto
-  const listBlockCss = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
-    .map(el => el.outerHTML)
-    .join('\n');
-
   // Adicionar HTML personalizado
   frameDoc.write(`
     <!DOCTYPE html>
     <html>
       <head>
         <title>${title || 'Relatório'}</title>
-        ${listBlockCss}
+        <style>${cssText}</style>
         <style>
           body { 
             font-family: Arial, sans-serif;
