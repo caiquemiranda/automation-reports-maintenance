@@ -60,11 +60,6 @@ const ReportPrintPreview = () => {
     <div className="report-sheet-container" style={{ background: '#fff' }}>
       <div className="a4-sheet" ref={sheetRef}>
         {renderedBlocks}
-        <div style={{ marginTop: 32, textAlign: 'right' }}>
-          <button className="btn btn-primary" onClick={() => window.print()}>
-            Exportar PDF
-          </button>
-        </div>
       </div>
     </div>
   );
