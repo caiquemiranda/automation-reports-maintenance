@@ -11,7 +11,8 @@ const Sidebar = ({
   onDeleteReport,
   onTemplatesClick,
   activeSection,
-  onSectionChange
+  onSectionChange,
+  onExportPdf
 }) => {
   const [expanded, setExpanded] = useState(true);
   const [reports, setReports] = useState([]);
@@ -107,7 +108,7 @@ const Sidebar = ({
                 <div className="sidebar-separator"></div>
                 <p className="sidebar-label">Ações</p>
                 <button className="action-btn" onClick={onSaveReport}>Salvar relatório</button>
-                <button className="action-btn">Exportar como PDF</button>
+                <button className="action-btn" onClick={onExportPdf}>Exportar como PDF</button>
               </div>
             )}
 
