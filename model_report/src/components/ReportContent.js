@@ -90,11 +90,11 @@ const ReportContent = ({
                         </>
                     )}
                     <div className="block-content">
-                      {block.type === 'list' ? (
-                        <ListBlock data={block.data} />
-                      ) : (
-                        <span dangerouslySetInnerHTML={{ __html: block.html }} />
-                      )}
+                        {block.type === 'table' ? (
+                            <ListBlock data={block.data} />
+                        ) : (
+                            <span dangerouslySetInnerHTML={{ __html: block.html }} />
+                        )}
                     </div>
                     {!isPreview && (
                         <div className="block-actions">
