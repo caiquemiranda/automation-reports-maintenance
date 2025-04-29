@@ -10,10 +10,10 @@
 export const generatePdf = (title, contentElement) => {
   // Abordagem usando a API de impressão do navegador
   // Este método abre o diálogo de impressão onde o usuário pode escolher salvar como PDF
-  
+
   // Clone o elemento para não interferir no original
   const contentClone = contentElement.cloneNode(true);
-  
+
   // Aplicar estilo de impressão
   contentClone.style.width = '210mm';
   contentClone.style.minHeight = '297mm';
@@ -21,7 +21,7 @@ export const generatePdf = (title, contentElement) => {
   contentClone.style.backgroundColor = 'white';
   contentClone.style.boxShadow = 'none';
   contentClone.style.border = 'none';
-  
+
   // Criar iframe temporário para impressão
   const printFrame = document.createElement('iframe');
   printFrame.style.position = 'absolute';
@@ -29,16 +29,22 @@ export const generatePdf = (title, contentElement) => {
   printFrame.style.height = '0';
   printFrame.style.left = '-9999px';
   document.body.appendChild(printFrame);
-  
+
   const frameDoc = printFrame.contentWindow.document;
   frameDoc.open();
-  
+
+  // Buscar os estilos do projeto
+  const listBlockCss = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+    .map(el => el.outerHTML)
+    .join('\n');
+
   // Adicionar HTML personalizado
   frameDoc.write(`
     <!DOCTYPE html>
     <html>
       <head>
         <title>${title || 'Relatório'}</title>
+        ${listBlockCss}
         <style>
           body { 
             font-family: Arial, sans-serif;
@@ -69,26 +75,26 @@ export const generatePdf = (title, contentElement) => {
       </body>
     </html>
   `);
-  
+
   frameDoc.close();
-  
+
   // Aguardar pelo carregamento
   printFrame.onload = () => {
     try {
       // Imprimir
       printFrame.contentWindow.focus();
       printFrame.contentWindow.print();
-      
+
       // Remover frame após impressão
       setTimeout(() => {
         document.body.removeChild(printFrame);
       }, 1000);
     } catch (error) {
       console.error('Erro ao gerar PDF:', error);
-      
+
       // Remover frame se houver erro
       document.body.removeChild(printFrame);
-      
+
       // Exibir mensagem de erro
       alert('Erro ao gerar PDF. Tente novamente.');
     }
