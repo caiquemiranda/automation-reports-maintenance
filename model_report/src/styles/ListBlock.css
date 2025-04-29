@@ -1,0 +1,42 @@
+.list-block-container {
+    margin: 24px 0;
+    overflow-x: auto;
+}
+
+.list-block-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.list-block-table th,
+.list-block-table td {
+    border: 1px solid #dbe2ea;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.list-block-table th {
+    background: #f5f8fa;
+    color: #222;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.98rem;
+}
+
+.list-block-table tr.even {
+    background: #f5f8fa;
+}
+
+.list-block-table tr.odd {
+    background: #fff;
+}
+
+.list-block-empty {
+    color: #888;
+    font-style: italic;
+    padding: 16px;
+    text-align: center;
+}
