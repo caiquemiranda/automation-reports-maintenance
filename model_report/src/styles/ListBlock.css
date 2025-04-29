@@ -66,6 +66,10 @@
     position: relative;
 }
 
+.list-block-table thead {
+    border-bottom: 2px solid #000;
+}
+
 @media print {
     * {
         -webkit-print-color-adjust: exact !important;
