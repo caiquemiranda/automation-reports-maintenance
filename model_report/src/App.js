@@ -7,6 +7,7 @@ import PdfService from './services/PdfService';
 import TemplateList from './components/TemplateList';
 import TemplateModal from './components/TemplateModal';
 import TemplateService from './services/TemplateService';
+import ExcelListModal from './components/ExcelListModal';
 import './styles/App.css';
 
 function App() {
@@ -27,6 +28,8 @@ function App() {
   const [templates, setTemplates] = useState(TemplateService.getAllTemplates());
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [editingTemplate, setEditingTemplate] = useState(null);
+  const [showExcelModal, setShowExcelModal] = useState(false);
+  const [excelInsertIndex, setExcelInsertIndex] = useState(null);
 
   const reportSheetRef = useRef(null);
 
@@ -69,7 +72,13 @@ function App() {
     setShowOptions((prev) => !prev);
   };
 
-  const handleTextClick = (index = null) => {
+  const handleTextClick = (type = 'text', index = null) => {
+    if (type === 'list') {
+      setExcelInsertIndex(index);
+      setShowOptions(false);
+      setShowExcelModal(true);
+      return;
+    }
     setShowEditor(true);
     setEditorIndex(index);
     setShowOptions(false);
@@ -170,6 +179,19 @@ function App() {
     }
   };
 
+  // Função para inserir lista após upload
+  const handleInsertList = (listData) => {
+    let newContents = [...contents];
+    if (excelInsertIndex === null) {
+      newContents.push({ type: 'list', data: listData });
+    } else {
+      newContents.splice(excelInsertIndex, 0, { type: 'list', data: listData });
+    }
+    setContents(newContents);
+    setShowExcelModal(false);
+    setExcelInsertIndex(null);
+  };
+
   return (
     <div className="app-container">
       <Sidebar
@@ -231,6 +253,13 @@ function App() {
           initialData={editingTemplate}
         />
       )}
+
+      {/* Modal para upload de Excel */}
+      <ExcelListModal
+        isOpen={showExcelModal}
+        onClose={() => setShowExcelModal(false)}
+        onInsert={handleInsertList}
+      />
     </div>
   );
 }

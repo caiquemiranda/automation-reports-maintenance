@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/ReportContent.css';
 import InsertOptions from './InsertOptions';
 import SummernoteEditor from './SummernoteEditor';
+import ListBlock from './ListBlock';
 
 const ReportContent = ({
     contents,
@@ -89,7 +90,13 @@ const ReportContent = ({
                             {renderEditor(idx)}
                         </>
                     )}
-                    <div className="block-content" dangerouslySetInnerHTML={{ __html: block.html }} />
+                    <div className="block-content">
+                      {block.type === 'list' ? (
+                        <ListBlock data={block.data} />
+                      ) : (
+                        <span dangerouslySetInnerHTML={{ __html: block.html }} />
+                      )}
+                    </div>
                     {!isPreview && (
                         <div className="block-actions">
                             <button
