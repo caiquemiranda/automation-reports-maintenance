@@ -54,3 +54,16 @@
         grid-template-columns: 1fr;
     }
 }
+
+.os-title-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.os-title-centered h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 0;
+}
