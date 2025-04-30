@@ -24,6 +24,7 @@ function App() {
   const [selectedTech, setSelectedTech] = useState('Carla Fernandes');
   const [materials, setMaterials] = useState([]);
   const [errors, setErrors] = useState({});
+  const [conclusion, setConclusion] = useState('normal');
 
   const validate = () => {
     const newErrors = {};
@@ -40,6 +41,7 @@ function App() {
     if (!acaoCorretiva) newErrors.acaoCorretiva = true;
     if (!selectedTech) newErrors.selectedTech = true;
     if (!materials || materials.length === 0) newErrors.materials = true;
+    if (!conclusion) newErrors.conclusion = true;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -86,7 +88,11 @@ function App() {
             errors={errors}
           />
           <ServiceDetails />
-          <Conclusion />
+          <Conclusion
+            conclusion={conclusion}
+            setConclusion={setConclusion}
+            errors={errors}
+          />
           <TechnicianInfo
             selectedTech={selectedTech}
             setSelectedTech={setSelectedTech}

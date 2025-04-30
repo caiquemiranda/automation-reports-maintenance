@@ -1,25 +1,60 @@
 .conclusion-section {
     background: #fff;
     border-radius: 6px;
-    padding: 18px 24px;
+    padding: 18px 24px 10px 24px;
     margin-bottom: 18px;
     box-shadow: 0 1px 4px #0001;
 }
 
-.conclusion-section strong {
-    display: block;
-    margin-bottom: 8px;
-    color: #1a237e;
-}
-
-.conclusion-buttons {
+.conclusion-header {
     display: flex;
-    gap: 32px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
 }
 
-.conclusion-buttons label {
+.conclusion-header strong {
+    font-size: 1rem;
+    color: #222;
+}
+
+.conclusion-line {
+    flex: 1;
+    height: 2px;
+    background: #2196f3;
+    border-radius: 2px;
+}
+
+.conclusion-options {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 8px;
+}
+
+.conclusion-options label {
     font-size: 1rem;
     display: flex;
     align-items: center;
     gap: 6px;
+    padding: 4px 16px;
+    border-radius: 6px;
+    border: 1.5px solid transparent;
+    transition: border 0.2s, background 0.2s;
+}
+
+.conclusion-options label.selected {
+    border: 1.5px solid #2196f3;
+    background: #f0f7ff;
+}
+
+.conclusion-options input[type="radio"] {
+    accent-color: #2196f3;
+}
+
+.error-msg {
+    color: #e53935;
+    font-size: 0.95rem;
+    margin-top: 4px;
 }
