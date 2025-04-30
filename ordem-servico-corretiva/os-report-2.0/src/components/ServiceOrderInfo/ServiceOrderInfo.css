@@ -1,0 +1,56 @@
+.service-order-info {
+    background: #fff;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 2px 8px #0001;
+    padding: 24px;
+    margin-bottom: 18px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.logo {
+    width: 38px;
+    height: 38px;
+}
+
+.company-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+}
+
+.service-order-info h2 {
+    margin: 10px 0 8px 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px 24px;
+    font-size: 0.98rem;
+}
+
+@media (max-width: 900px) {
+    .info-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
