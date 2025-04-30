@@ -1,20 +1,48 @@
 import React from 'react';
 import './Conclusion.css';
 
-const Conclusion = () => (
+const Conclusion = ({ conclusion, setConclusion, errors }) => (
     <section className="conclusion-section">
-        <strong>Conclusão:</strong>
-        <div className="conclusion-buttons">
-            <label>
-                <input type="radio" name="conclusao" defaultChecked /> Equipamento normal
+        <div className="conclusion-header">
+            <strong>Conclusão:</strong>
+            <div className="conclusion-line" />
+        </div>
+        <div className="conclusion-options">
+            <label className={conclusion === 'normal' ? 'selected' : ''}>
+                <input
+                    type="radio"
+                    name="conclusao"
+                    value="normal"
+                    checked={conclusion === 'normal'}
+                    onChange={() => setConclusion('normal')}
+                    required
+                />
+                Equipamento normal
             </label>
-            <label>
-                <input type="radio" name="conclusao" /> Equipamento parcial
+            <label className={conclusion === 'parcial' ? 'selected' : ''}>
+                <input
+                    type="radio"
+                    name="conclusao"
+                    value="parcial"
+                    checked={conclusion === 'parcial'}
+                    onChange={() => setConclusion('parcial')}
+                />
+                Equipamento parcial
             </label>
-            <label>
-                <input type="radio" name="conclusao" /> Equipamento inoperante
+            <label className={conclusion === 'inoperante' ? 'selected' : ''}>
+                <input
+                    type="radio"
+                    name="conclusao"
+                    value="inoperante"
+                    checked={conclusion === 'inoperante'}
+                    onChange={() => setConclusion('inoperante')}
+                />
+                Equipamento inoperante
             </label>
         </div>
+        {errors && errors.conclusion && (
+            <div className="error-msg">Selecione uma conclusão.</div>
+        )}
     </section>
 );
 
