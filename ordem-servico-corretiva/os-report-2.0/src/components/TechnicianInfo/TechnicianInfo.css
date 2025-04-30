@@ -1,0 +1,16 @@
+.technician-info {
+    background: #f9f9f9;
+    border-radius: 6px;
+    padding: 18px 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 4px #0001;
+}
+
+.info-block {
+    margin-bottom: 12px;
+}
+
+.info-block strong {
+    color: #1a237e;
+    font-size: 1rem;
+}
