@@ -80,3 +80,9 @@ select {
 .material-add button:hover {
     background: #1769aa;
 }
+
+.error-msg {
+    color: #e53935;
+    font-size: 0.95rem;
+    margin-top: 4px;
+}

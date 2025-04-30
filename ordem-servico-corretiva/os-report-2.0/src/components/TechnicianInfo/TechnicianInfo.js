@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './TechnicianInfo.css';
 
 const TECHNICIANS = [
@@ -7,11 +7,20 @@ const TECHNICIANS = [
   'Maria Souza',
   'Pedro Oliveira',
 ];
+const DEFAULT_MATERIALS = [
+  'Acionador simples modelo 2023/234',
+  'Detector de fumaça convencional',
+];
 
-const TechnicianInfo = () => {
-  const [selectedTech, setSelectedTech] = useState(TECHNICIANS[0]);
+const TechnicianInfo = ({ selectedTech, setSelectedTech, materials, setMaterials, errors }) => {
   const [materialInput, setMaterialInput] = useState('');
-  const [materials, setMaterials] = useState([]);
+
+  useEffect(() => {
+    if (materials.length === 0) {
+      setMaterials(DEFAULT_MATERIALS);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const addMaterial = () => {
     if (materialInput.trim()) {
@@ -21,14 +30,17 @@ const TechnicianInfo = () => {
   };
 
   const removeMaterial = (idx) => {
-    setMaterials(materials.filter((_, i) => i !== idx));
+    if (materials.length > 1) {
+      setMaterials(materials.filter((_, i) => i !== idx));
+    }
   };
 
   return (
     <section className="technician-info">
       <div className="info-block">
         <strong>TÉCNICO RESPONSÁVEL:</strong>
-        <select value={selectedTech} onChange={e => setSelectedTech(e.target.value)}>
+        <select value={selectedTech} onChange={e => setSelectedTech(e.target.value)} required className={errors.selectedTech ? 'input-error' : ''}>
+          <option value="">Selecione</option>
           {TECHNICIANS.map(tech => (
             <option key={tech} value={tech}>{tech}</option>
           ))}
@@ -40,7 +52,7 @@ const TechnicianInfo = () => {
           {materials.map((mat, idx) => (
             <div key={idx} className="material-item">
               {mat}
-              <button type="button" className="remove-btn" onClick={() => removeMaterial(idx)}>x</button>
+              <button type="button" className="remove-btn" onClick={() => removeMaterial(idx)} disabled={materials.length === 1}>x</button>
             </div>
           ))}
         </div>
@@ -53,6 +65,7 @@ const TechnicianInfo = () => {
           />
           <button type="button" onClick={addMaterial}>Adicionar</button>
         </div>
+        {errors.materials && <div className="error-msg">Adicione pelo menos um material.</div>}
       </div>
     </section>
   );
