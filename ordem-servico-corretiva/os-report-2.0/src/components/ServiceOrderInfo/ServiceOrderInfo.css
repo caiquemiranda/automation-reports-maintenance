@@ -67,3 +67,38 @@
     font-weight: bold;
     margin: 0;
 }
+
+.radio-group {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
+}
+
+.radio-group label {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.service-edit-block {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 48px;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    padding: 6px 10px;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.input-error {
+    border: 1.5px solid #e53935 !important;
+    background: #fff6f6;
+}
