@@ -13,19 +13,18 @@ const DEFAULT_MATERIALS = [
 ];
 
 const TechnicianInfo = ({ selectedTech, setSelectedTech, materials, setMaterials, errors }) => {
-  const [materialInput, setMaterialInput] = useState('');
+  const [selectedMaterial, setSelectedMaterial] = useState('');
+  const [availableMaterials, setAvailableMaterials] = useState(DEFAULT_MATERIALS);
 
   useEffect(() => {
     if (materials.length === 0) {
-      setMaterials(DEFAULT_MATERIALS);
+      setMaterials([]);
     }
-    // eslint-disable-next-line
   }, []);
 
   const addMaterial = () => {
-    if (materialInput.trim()) {
-      setMaterials([...materials, materialInput.trim()]);
-      setMaterialInput('');
+    if (selectedMaterial) {
+      setMaterials([...materials, selectedMaterial]);
     }
   };
 
@@ -57,13 +56,13 @@ const TechnicianInfo = ({ selectedTech, setSelectedTech, materials, setMaterials
           ))}
         </div>
         <div className="material-add">
-          <input
-            type="text"
-            value={materialInput}
-            onChange={e => setMaterialInput(e.target.value)}
-            placeholder="Adicionar material"
-          />
-          <button type="button" onClick={addMaterial}>Adicionar</button>
+          <select value={selectedMaterial} onChange={e => setSelectedMaterial(e.target.value)}>
+            <option value="">Selecione o material</option>
+            {availableMaterials.map((mat, idx) => (
+              <option key={idx} value={mat}>{mat}</option>
+            ))}
+          </select>
+          <button type="button" onClick={addMaterial} disabled={!selectedMaterial}>Adicionar</button>
         </div>
         {errors.materials && <div className="error-msg">Adicione pelo menos um material.</div>}
       </div>
