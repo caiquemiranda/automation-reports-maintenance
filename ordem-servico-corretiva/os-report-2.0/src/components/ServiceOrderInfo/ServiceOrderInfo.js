@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SummernoteEditor from './SummernoteEditor';
+import SummernoteEditor from '../SummernoteEditor';
 import './ServiceOrderInfo.css';
 
 const ServiceOrderInfo = ({
