@@ -4,11 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-// Garante que o jQuery está disponível globalmente
-import $ from 'jquery';
-window.$ = $;
-window.jQuery = $;
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
