@@ -24,6 +24,8 @@ function App() {
   const [materials, setMaterials] = useState([]);
   const [errors, setErrors] = useState({});
   const [conclusion, setConclusion] = useState('normal');
+  const [activeSection, setActiveSection] = useState('report');
+  const [isPreview, setIsPreview] = useState(false);
 
   const validate = () => {
     const newErrors = {};
@@ -55,7 +57,14 @@ function App() {
 
   return (
     <div className="App">
-      <Sidebar />
+      <Sidebar
+        onSave={handleSave}
+        onEdit={() => setIsPreview(false)}
+        onPreview={() => setIsPreview(p => !p)}
+        isPreview={isPreview}
+        activeSection={activeSection}
+        onSectionChange={setActiveSection}
+      />
       <div className="content-with-sidebar">
         <Header />
         <main className="main-content">
@@ -98,7 +107,6 @@ function App() {
             setMaterials={setMaterials}
             errors={errors}
           />
-          <button className="sidebar-btn" style={{ marginTop: 24 }} onClick={handleSave}>Salvar documento</button>
         </main>
       </div>
     </div>

@@ -14,13 +14,12 @@ const DEFAULT_MATERIALS = [
 
 const TechnicianInfo = ({ selectedTech, setSelectedTech, materials, setMaterials, errors }) => {
   const [selectedMaterial, setSelectedMaterial] = useState('');
-  const [availableMaterials, setAvailableMaterials] = useState(DEFAULT_MATERIALS);
 
   useEffect(() => {
     if (materials.length === 0) {
       setMaterials([]);
     }
-  }, []);
+  }, [materials.length, setMaterials]);
 
   const addMaterial = () => {
     if (selectedMaterial) {
@@ -58,7 +57,7 @@ const TechnicianInfo = ({ selectedTech, setSelectedTech, materials, setMaterials
         <div className="material-add">
           <select value={selectedMaterial} onChange={e => setSelectedMaterial(e.target.value)}>
             <option value="">Selecione o material</option>
-            {availableMaterials.map((mat, idx) => (
+            {DEFAULT_MATERIALS.map((mat, idx) => (
               <option key={idx} value={mat}>{mat}</option>
             ))}
           </select>
