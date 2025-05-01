@@ -1,22 +1,46 @@
 import React, { useState } from 'react';
 import './Sidebar.css';
 
-const Sidebar = () => {
-    const [open, setOpen] = useState(true);
-    return (
-        <aside className={`sidebar${open ? '' : ' collapsed'}`}>
-            <button className="sidebar-toggle" onClick={() => setOpen(o => !o)}>
-                {open ? '⮜' : '⮞'}
-            </button>
-            {open && (
-                <div className="sidebar-btns">
-                    <button className="sidebar-btn">Salvar documento</button>
-                    <button className="sidebar-btn">Editar documento</button>
-                    <button className="sidebar-btn">Preview documento</button>
-                </div>
-            )}
-        </aside>
-    );
+const Sidebar = ({ onSave, onEdit, onPreview, isPreview, activeSection, onSectionChange }) => {
+  const [expanded, setExpanded] = useState(true);
+
+  return (
+    <div className={`sidebar ${expanded ? 'expanded' : 'collapsed'}`}>
+      <div className="sidebar-header">
+        <h3 className={expanded ? '' : 'hidden'}>Opções</h3>
+        <button className="toggle-btn" onClick={() => setExpanded(e => !e)}>
+          {expanded ? '◀' : '▶'}
+        </button>
+      </div>
+      {expanded && (
+        <>
+          <div className="sidebar-sections">
+            <div className={`sidebar-section ${activeSection === 'report' ? 'active' : ''}`}
+              onClick={() => onSectionChange && onSectionChange('report')}>
+              <span className="sidebar-icon">📄</span>
+              <span className="sidebar-text">Relatório</span>
+            </div>
+            <div className={`sidebar-section ${activeSection === 'history' ? 'active' : ''}`}
+              onClick={() => onSectionChange && onSectionChange('history')}>
+              <span className="sidebar-icon">📚</span>
+              <span className="sidebar-text">Histórico</span>
+            </div>
+          </div>
+          <div className="sidebar-content">
+            <div className="section-content">
+              <button className={`preview-btn ${isPreview ? 'active' : ''}`} onClick={onPreview}>
+                {isPreview ? 'Editar documento' : 'Preview do documento'}
+              </button>
+              <div className="sidebar-separator"></div>
+              <p className="sidebar-label">Ações</p>
+              <button className="action-btn" onClick={onSave}>Salvar documento</button>
+              <button className="action-btn" onClick={onEdit}>Editar documento</button>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default Sidebar; 
