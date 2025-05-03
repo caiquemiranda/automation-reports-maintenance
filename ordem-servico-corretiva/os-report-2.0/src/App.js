@@ -107,6 +107,11 @@ function App() {
             setMaterials={setMaterials}
             errors={errors}
           />
+          <div style={{ textAlign: 'right', margin: '24px 0' }}>
+            <button className="action-btn" onClick={handleSave}>
+              Salvar documento
+            </button>
+          </div>
         </main>
       </div>
     </div>
