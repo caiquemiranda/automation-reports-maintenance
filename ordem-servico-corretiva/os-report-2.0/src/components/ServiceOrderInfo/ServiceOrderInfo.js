@@ -21,7 +21,6 @@ const ServiceOrderInfo = ({
     return (
         <section className="service-order-info">
             <div className="logo-section">
-                <img src="/logo192.png" alt="Logo IBSistemas" className="logo" />
                 <div className="company-info">
                     <strong>IBSistemas</strong>
                     <span>Facility Solutions</span>
