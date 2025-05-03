@@ -162,13 +162,18 @@
   .sidebar.expanded {
     width: 180px;
   }
+
   .sidebar.collapsed {
     width: 48px;
   }
 }
 
 /* Remove overlay, fab, mobile, etc */
-.sidebar-overlay, .sidebar-mobile, .sidebar-fab { display: none !important; }
+.sidebar-overlay,
+.sidebar-mobile,
+.sidebar-fab {
+  display: none !important;
+}
 
 .sidebar-collapsed-only-btn {
   display: flex;
@@ -176,13 +181,24 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
+  width: 56px;
   padding: 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
 }
 
 .toggle-btn-center {
-  margin: 0 auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  position: relative;
+  margin: 0;
+  position: static;
+  top: auto;
+  left: auto;
+  transform: none;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
