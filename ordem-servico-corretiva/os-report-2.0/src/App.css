@@ -71,9 +71,30 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: margin-left 0.3s;
+  min-height: 100vh;
+  background: #f0f2f5;
+  z-index: 1;
+}
+@media (max-width: 900px) {
+  .content-with-sidebar {
+    margin-left: 0 !important;
+    width: 100vw !important;
+    position: relative;
+    z-index: 1;
+  }
+  .sidebar {
+    z-index: 1002;
+  }
 }
 @media (max-width: 700px) {
   .content-with-sidebar {
-    margin-left: 0;
+    margin-left: 0 !important;
+    width: 100vw !important;
+    position: relative;
+    z-index: 1;
+  }
+  .sidebar {
+    z-index: 1002;
   }
 }
