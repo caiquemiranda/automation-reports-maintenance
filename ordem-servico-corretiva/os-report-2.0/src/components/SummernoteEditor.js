@@ -4,33 +4,37 @@ function SummernoteEditor({ initialContent = '', onSave, onClose }) {
     const editorRef = useRef(null);
 
     useEffect(() => {
-        // Inicializa o Summernote
-        window.$(editorRef.current).summernote({
-            placeholder: 'Digite seu texto...',
-            tabsize: 2,
-            height: 200,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'italic', 'underline', 'clear']],
-                ['fontname', ['fontname']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['height', ['height']],
-                ['insert', ['link', 'picture']],
-                ['view', ['undo', 'redo', 'fullscreen', 'codeview']]
-            ]
-        });
-
-        // Se houver conteúdo inicial, coloca no editor
-        if (initialContent) {
-            window.$(editorRef.current).summernote('code', initialContent);
+        function tryInit() {
+            if (window.$ && window.$.fn && window.$.fn.summernote) {
+                window.$(editorRef.current).summernote({
+                    placeholder: 'Digite seu texto...',
+                    tabsize: 2,
+                    height: 200,
+                    toolbar: [
+                        ['style', ['style']],
+                        ['font', ['bold', 'italic', 'underline', 'clear']],
+                        ['fontname', ['fontname']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']],
+                        ['insert', ['link', 'picture']],
+                        ['view', ['undo', 'redo', 'fullscreen', 'codeview']]
+                    ]
+                });
+                if (initialContent) {
+                    window.$(editorRef.current).summernote('code', initialContent);
+                }
+            } else {
+                setTimeout(tryInit, 100);
+            }
         }
-
+        tryInit();
         const currentRef = editorRef.current;
         return () => {
-            // Destroi o Summernote ao desmontar
-            window.$(currentRef).summernote('destroy');
+            if (window.$ && window.$.fn && window.$.fn.summernote) {
+                window.$(currentRef).summernote('destroy');
+            }
         };
     }, [initialContent]);
 
