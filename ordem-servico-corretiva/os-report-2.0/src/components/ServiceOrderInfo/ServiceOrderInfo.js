@@ -50,10 +50,10 @@ const ServiceOrderInfo = ({
     servico, setServico,
     observacao, setObservacao,
     acaoCorretiva, setAcaoCorretiva,
+    tagEquipamento, setTagEquipamento,
     errors
 }) => {
     const [editField, setEditField] = useState(null);
-    const [tagEquipamento, setTagEquipamento] = useState(TAG_OPTIONS[0]);
 
     // Handler para atualizar o número da OS e o título simultaneamente
     const handleNumeroOSChange = (e) => {
@@ -102,10 +102,11 @@ const ServiceOrderInfo = ({
                 <div className="form-group">
                     <strong>TAG do Equipamento:</strong>
                     <select
-                        value={tagEquipamento}
+                        value={tagEquipamento || ''}
                         onChange={e => setTagEquipamento(e.target.value)}
                         className={errors.tagEquipamento ? 'input-error' : ''}
                     >
+                        <option value="">Selecione a TAG</option>
                         {TAG_OPTIONS.map(tag => (
                             <option key={tag} value={tag}>{tag}</option>
                         ))}

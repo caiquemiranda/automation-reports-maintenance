@@ -1,88 +1,66 @@
-body {
-  background: #f0f2f5;
-  margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-}
-
-.App {
-  min-height: 100vh;
+.app-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #f0f2f5;
+  min-height: 100vh;
 }
 
 .main-content {
-  width: 100%;
-  max-width: 700px;
-  margin: 32px auto;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px #0002;
-  padding-bottom: 24px;
+  flex: 1;
+  padding: 20px;
+  background-color: #f0f2f5;
 }
 
-@media (max-width: 800px) {
-  .main-content {
-    max-width: 98vw;
-    padding: 0 2vw;
-  }
+.report-container {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.history-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.print-button {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.print-button button {
+  background-color: #3182ce;
   color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.App-link {
-  color: #61dafb;
+.print-button button:hover {
+  background-color: #2b6cb0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Estilos específicos para impressão */
+@media print {
+  .app-container {
+    display: block;
   }
 
-  to {
-    transform: rotate(360deg);
+  .sidebar {
+    display: none;
   }
-}
 
-.content-with-sidebar {
-  margin-left: 220px;
-  width: calc(100vw - 220px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: margin-left 0.3s, width 0.3s;
-  min-height: 100vh;
-  background: #f0f2f5;
-  z-index: 1;
-}
-.sidebar.collapsed ~ .content-with-sidebar {
-  margin-left: 56px;
-  width: calc(100vw - 56px);
-}
-@media (max-width: 700px) {
-  .content-with-sidebar {
-    margin-left: 48px;
-    width: calc(100vw - 48px);
+  .main-content {
+    padding: 0;
+    margin: 0;
+    background-color: white;
+  }
+
+  .print-button {
+    display: none;
   }
 }

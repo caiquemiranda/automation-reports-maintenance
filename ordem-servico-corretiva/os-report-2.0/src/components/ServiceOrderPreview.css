@@ -1,0 +1,167 @@
+.service-order-preview {
+    background-color: white;
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.5;
+}
+
+.preview-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+}
+
+.preview-company {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.preview-company strong {
+    font-size: 22px;
+    color: #1a365d;
+}
+
+.preview-company span {
+    font-size: 14px;
+    color: #4a5568;
+}
+
+.preview-os h2 {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.preview-maintenance-type {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.maintenance-type-box {
+    display: flex;
+    gap: 40px;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.maintenance-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.preview-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.preview-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.preview-label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #4a5568;
+}
+
+.preview-value {
+    border-bottom: 1px solid #ccc;
+    padding: 4px 0;
+    font-size: 15px;
+}
+
+.preview-description-section {
+    margin: 25px 0;
+}
+
+.preview-description-item {
+    margin-bottom: 20px;
+}
+
+.preview-description-item h3 {
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.preview-content {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    min-height: 80px;
+}
+
+.preview-content p {
+    margin: 0 0 8px 0;
+}
+
+.preview-content:empty::after {
+    content: "Não há informações registradas";
+    font-style: italic;
+    color: #718096;
+}
+
+.preview-footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+}
+
+.signature-line {
+    text-align: center;
+}
+
+.signature-line span {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.signature-line p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Estilos para impressão */
+@media print {
+    .service-order-preview {
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    body {
+        background-color: white;
+    }
+}
