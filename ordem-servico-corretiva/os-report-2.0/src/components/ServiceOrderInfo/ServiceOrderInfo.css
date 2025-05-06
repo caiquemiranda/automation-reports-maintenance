@@ -1,104 +1,150 @@
 .service-order-info {
-    background: #fff;
-    border-radius: 0 0 6px 6px;
-    box-shadow: 0 2px 8px #0001;
-    padding: 24px;
-    margin-bottom: 18px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .logo-section {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
-}
-
-.logo {
-    width: 38px;
-    height: 38px;
+    justify-content: center;
+    margin-bottom: 15px;
 }
 
 .company-info {
     display: flex;
     flex-direction: column;
-    font-size: 0.95rem;
-}
-
-.service-order-info h2 {
-    margin: 10px 0 8px 0;
+    align-items: center;
     font-size: 1.2rem;
-    font-weight: bold;
 }
 
-.checkbox-group {
-    display: flex;
-    gap: 24px;
-    margin-bottom: 16px;
+.company-info strong {
+    color: #2c3e50;
+    margin-bottom: 2px;
 }
 
-.info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px 24px;
-    font-size: 0.98rem;
-}
-
-@media (max-width: 900px) {
-    .info-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-@media (max-width: 600px) {
-    .info-grid {
-        grid-template-columns: 1fr;
-    }
+.company-info span {
+    color: #7f8c8d;
+    font-size: 0.9rem;
 }
 
 .os-title-centered {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 8px;
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 .os-title-centered h2 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: bold;
+    color: #34495e;
     margin: 0;
 }
 
-.radio-group {
+.maintenance-radio-group {
     display: flex;
-    gap: 24px;
-    margin-bottom: 16px;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
 }
 
-.radio-group label {
-    font-size: 1rem;
+.maintenance-radio-group label {
     display: flex;
     align-items: center;
-    gap: 6px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.service-edit-block {
-    margin-top: 18px;
+.maintenance-radio-group input {
+    margin-right: 8px;
+}
+
+.info-grid-two-columns {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
-textarea {
-    width: 100%;
-    min-height: 48px;
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group strong {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.form-group input,
+.form-group select {
+    padding: 8px;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    border: 1px solid #bbb;
-    padding: 6px 10px;
-    font-size: 1rem;
-    resize: vertical;
+    width: 100%;
+}
+
+.form-group .static-value {
+    padding: 8px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #555;
 }
 
 .input-error {
-    border: 1.5px solid #e53935 !important;
-    background: #fff6f6;
+    border-color: #e74c3c !important;
+    background-color: #fef2f2;
+}
+
+.service-edit-block {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.service-edit-block>div {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.service-edit-block strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.summernote-preview {
+    min-height: 100px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.summernote-preview:hover {
+    background-color: #f0f0f0;
+}
+
+/* Estilo para indicar que os campos são clicáveis */
+.summernote-preview::after {
+    content: "✏️ Clique para editar";
+    display: block;
+    text-align: right;
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 5px;
+}
+
+/* Quando não há conteúdo */
+.summernote-preview:empty::before {
+    content: "Clique para adicionar conteúdo...";
+    color: #999;
+    font-style: italic;
 }
