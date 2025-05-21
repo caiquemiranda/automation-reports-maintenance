@@ -87,11 +87,11 @@
         grid-template-columns: 1fr;
         gap: 10px;
     }
-    
+
     .column {
-        gap: A8px;
+        gap: 8px;
     }
-    
+
     .form-group {
         gap: 2px;
     }
@@ -103,26 +103,26 @@
         border-bottom: 2px solid #0056b3;
         padding-bottom: 15px;
     }
-    
+
     .details-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 5px;
         page-break-inside: avoid;
     }
-    
+
     .column {
         gap: 4px;
     }
-    
+
     .form-group {
         gap: 1px;
     }
-    
+
     .form-group strong {
         font-size: 0.9rem;
     }
-    
+
     .form-group input,
     .form-group select,
     .static-value {

@@ -54,7 +54,6 @@ const ServiceOrderPreview = ({
 
             {/* Detalhes da OS */}
             <div className="preview-section">
-                <h2>Detalhes da OS</h2>
                 <div className="preview-grid">
                     <div className="preview-column">
                         <div className="preview-item">
@@ -101,8 +100,6 @@ const ServiceOrderPreview = ({
 
             {/* Detalhes da Atividade */}
             <div className="preview-section">
-                <h2>Detalhes da Atividade</h2>
-
                 <div className="preview-rich-text">
                     <h3>Serviço (Motivo de abertura da OS):</h3>
                     <div className="rich-content" dangerouslySetInnerHTML={{ __html: servico || 'Não informado' }} />
@@ -121,14 +118,24 @@ const ServiceOrderPreview = ({
 
             {/* Materiais Utilizados */}
             <div className="preview-section">
-                <h2>Materiais Utilizados</h2>
                 {materials && materials.length > 0 ? (
                     <div className="materials-preview">
-                        {materials.map((material, index) => (
-                            <div key={index} className="material-preview-item">
-                                {material}
-                            </div>
-                        ))}
+                        <table className="materials-table">
+                            <thead>
+                                <tr>
+                                    <th>Material</th>
+                                    <th>Quantidade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {materials.map((material, index) => (
+                                    <tr key={index} className="material-preview-item">
+                                        <td>{material}</td>
+                                        <td className="material-quantity">1</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 ) : (
                     <div className="empty-materials-preview">
@@ -139,7 +146,6 @@ const ServiceOrderPreview = ({
 
             {/* Situação do Equipamento */}
             <div className="preview-section">
-                <h2>Situação do Equipamento</h2>
                 <div className="status-box">
                     {getStatusText()}
                 </div>
@@ -147,7 +153,6 @@ const ServiceOrderPreview = ({
 
             {/* Equipe */}
             <div className="preview-section">
-                <h2>Equipe</h2>
                 <div className="preview-item">
                     <span className="label">Técnico Responsável:</span>
                     <span className="value">{tecnicoResponsavel || 'Não atribuído'}</span>
