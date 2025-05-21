@@ -34,6 +34,29 @@
   padding: 30px 20px;
 }
 
+/* Classe especial para quando está imprimindo */
+.printing-mode {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.printing-mode .document-paper {
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  min-height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.printing-mode .document-paper::after {
+  display: none !important;
+}
+
 /* Responsividade para telas menores */
 @media (max-width: 768px) {
   .document-paper {
@@ -51,7 +74,7 @@
     max-width: 100%;
     overflow: visible;
   }
-  
+
   .document-paper {
     box-shadow: none;
     border-radius: 0;
@@ -63,8 +86,8 @@
     overflow: visible;
     page-break-inside: avoid;
   }
-  
+
   .document-paper::after {
     display: none;
   }
-} 
+}
