@@ -131,6 +131,12 @@
     margin-bottom: 5px;
 }
 
+.empty-team {
+    font-style: italic;
+    color: #777;
+    margin-top: 5px;
+}
+
 .preview-footer {
     display: flex;
     justify-content: space-around;
@@ -155,7 +161,7 @@
     .preview-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .preview-footer {
         flex-direction: column;
         gap: 30px;
@@ -167,5 +173,26 @@
     .preview-container {
         box-shadow: none;
         padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    .preview-section {
+        page-break-inside: avoid;
+    }
+
+    .preview-header,
+    .preview-footer {
+        page-break-inside: avoid;
+    }
+
+    .rich-content {
+        background-color: transparent;
+        border: none;
+    }
+
+    .status-box {
+        background-color: transparent;
+        border: 1px solid #ccc;
     }
 }

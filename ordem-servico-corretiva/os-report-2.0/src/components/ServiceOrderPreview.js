@@ -93,20 +93,20 @@ const ServiceOrderPreview = ({
             {/* Detalhes da Atividade */}
             <div className="preview-section">
                 <h2>Detalhes da Atividade</h2>
-                
+
                 <div className="preview-rich-text">
                     <h3>Serviço (Motivo de abertura da OS):</h3>
-                    <div className="rich-content" dangerouslySetInnerHTML={{ __html: servico }} />
+                    <div className="rich-content" dangerouslySetInnerHTML={{ __html: servico || 'Não informado' }} />
                 </div>
 
                 <div className="preview-rich-text">
                     <h3>Observação (Qual problema):</h3>
-                    <div className="rich-content" dangerouslySetInnerHTML={{ __html: observacao }} />
+                    <div className="rich-content" dangerouslySetInnerHTML={{ __html: observacao || 'Não informado' }} />
                 </div>
 
                 <div className="preview-rich-text">
                     <h3>Ação Corretiva (Como foi desenvolvido a atividade):</h3>
-                    <div className="rich-content" dangerouslySetInnerHTML={{ __html: acaoCorretiva }} />
+                    <div className="rich-content" dangerouslySetInnerHTML={{ __html: acaoCorretiva || 'Não informado' }} />
                 </div>
             </div>
 
@@ -123,10 +123,10 @@ const ServiceOrderPreview = ({
                 <h2>Equipe</h2>
                 <div className="preview-item">
                     <span className="label">Técnico Responsável:</span>
-                    <span className="value">{tecnicoResponsavel}</span>
+                    <span className="value">{tecnicoResponsavel || 'Não atribuído'}</span>
                 </div>
 
-                {equipe.length > 0 && (
+                {equipe && equipe.length > 0 ? (
                     <div className="preview-team">
                         <span className="label">Membros da Equipe:</span>
                         <ul className="team-list-preview">
@@ -135,20 +135,14 @@ const ServiceOrderPreview = ({
                             ))}
                         </ul>
                     </div>
+                ) : (
+                    <div className="preview-team">
+                        <span className="label">Membros da Equipe:</span>
+                        <div className="empty-team">Nenhum membro adicionado à equipe</div>
+                    </div>
                 )}
             </div>
 
-            {/* Rodapé com assinaturas */}
-            <div className="preview-footer">
-                <div className="signature-line">
-                    <span>_______________________</span>
-                    <span className="signature-label">Técnico Responsável</span>
-                </div>
-                <div className="signature-line">
-                    <span>_______________________</span>
-                    <span className="signature-label">Requisitante</span>
-                </div>
-            </div>
         </div>
     );
 };
