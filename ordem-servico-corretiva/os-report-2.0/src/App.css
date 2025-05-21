@@ -93,6 +93,10 @@
     background-color: white;
   }
 
+  .sidebar {
+    display: none !important;
+  }
+
   .main-content {
     padding: 0;
     margin-left: 0 !important;

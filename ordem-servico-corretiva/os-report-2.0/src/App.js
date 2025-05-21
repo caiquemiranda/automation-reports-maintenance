@@ -108,6 +108,90 @@ function App() {
     window.print();
   };
 
+  // Renderizar o conteúdo do documento (compartilhado entre modo edição e preview)
+  const renderDocumentContent = () => {
+    if (isPreview) {
+      return (
+        <>
+          <ServiceOrderPreview
+            manutencao={manutencao}
+            dataSolicitacao={dataSolicitacao}
+            dataExecucao={dataExecucao}
+            tipoEquipamento={tipoEquipamento}
+            localizacao={localizacao}
+            prioridade={prioridade}
+            numeroOS={numeroOS}
+            requisitante={requisitante}
+            centroCusto={centroCusto}
+            servico={servico}
+            observacao={observacao}
+            acaoCorretiva={acaoCorretiva}
+            tagEquipamento={tagEquipamento}
+            status={status}
+            tecnicoResponsavel={tecnicoResponsavel}
+            equipe={equipe}
+          />
+          <div className="print-button">
+            <button onClick={handlePrint}>Imprimir</button>
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <div className="form-container">
+          <Header
+            numeroOS={numeroOS}
+            manutencao={manutencao}
+            setManutencao={setManutencao}
+          />
+
+          <ServiceDetails
+            tagEquipamento={tagEquipamento}
+            setTagEquipamento={setTagEquipamento}
+            tipoEquipamento={tipoEquipamento}
+            setTipoEquipamento={setTipoEquipamento}
+            localizacao={localizacao}
+            setLocalizacao={setLocalizacao}
+            numeroOS={numeroOS}
+            setNumeroOS={setNumeroOS}
+            dataSolicitacao={dataSolicitacao}
+            setDataSolicitacao={setDataSolicitacao}
+            dataExecucao={dataExecucao}
+            setDataExecucao={setDataExecucao}
+            prioridade={prioridade}
+            setPrioridade={setPrioridade}
+            requisitante={requisitante}
+            setRequisitante={setRequisitante}
+            centroCusto={centroCusto}
+            errors={errors}
+          />
+
+          <ActivityDetails
+            servico={servico}
+            setServico={setServico}
+            observacao={observacao}
+            setObservacao={setObservacao}
+            acaoCorretiva={acaoCorretiva}
+            setAcaoCorretiva={setAcaoCorretiva}
+          />
+
+          <EquipmentStatus
+            status={status}
+            setStatus={setStatus}
+          />
+
+          <TechnicianInfo
+            tecnicoResponsavel={tecnicoResponsavel}
+            setTecnicoResponsavel={setTecnicoResponsavel}
+            equipe={equipe}
+            setEquipe={setEquipe}
+            errors={errors}
+          />
+        </div>
+      );
+    }
+  };
+
   return (
     <div className={`app-container ${sidebarExpanded ? 'sidebar-expanded' : 'sidebar-collapsed'}`}>
       <Sidebar
@@ -124,82 +208,7 @@ function App() {
         {activeSection === 'report' && (
           <div className="report-container">
             <DocumentContainer isPreview={isPreview}>
-              {isPreview ? (
-                <>
-                  <ServiceOrderPreview
-                    manutencao={manutencao}
-                    dataSolicitacao={dataSolicitacao}
-                    dataExecucao={dataExecucao}
-                    tipoEquipamento={tipoEquipamento}
-                    localizacao={localizacao}
-                    prioridade={prioridade}
-                    numeroOS={numeroOS}
-                    requisitante={requisitante}
-                    centroCusto={centroCusto}
-                    servico={servico}
-                    observacao={observacao}
-                    acaoCorretiva={acaoCorretiva}
-                    tagEquipamento={tagEquipamento}
-                    status={status}
-                    tecnicoResponsavel={tecnicoResponsavel}
-                    equipe={equipe}
-                  />
-                  <div className="print-button">
-                    <button onClick={handlePrint}>Imprimir</button>
-                  </div>
-                </>
-              ) : (
-                <div className="form-container">
-                  <Header
-                    numeroOS={numeroOS}
-                    manutencao={manutencao}
-                    setManutencao={setManutencao}
-                  />
-
-                  <ServiceDetails
-                    tagEquipamento={tagEquipamento}
-                    setTagEquipamento={setTagEquipamento}
-                    tipoEquipamento={tipoEquipamento}
-                    setTipoEquipamento={setTipoEquipamento}
-                    localizacao={localizacao}
-                    setLocalizacao={setLocalizacao}
-                    numeroOS={numeroOS}
-                    setNumeroOS={setNumeroOS}
-                    dataSolicitacao={dataSolicitacao}
-                    setDataSolicitacao={setDataSolicitacao}
-                    dataExecucao={dataExecucao}
-                    setDataExecucao={setDataExecucao}
-                    prioridade={prioridade}
-                    setPrioridade={setPrioridade}
-                    requisitante={requisitante}
-                    setRequisitante={setRequisitante}
-                    centroCusto={centroCusto}
-                    errors={errors}
-                  />
-
-                  <ActivityDetails
-                    servico={servico}
-                    setServico={setServico}
-                    observacao={observacao}
-                    setObservacao={setObservacao}
-                    acaoCorretiva={acaoCorretiva}
-                    setAcaoCorretiva={setAcaoCorretiva}
-                  />
-
-                  <EquipmentStatus
-                    status={status}
-                    setStatus={setStatus}
-                  />
-
-                  <TechnicianInfo
-                    tecnicoResponsavel={tecnicoResponsavel}
-                    setTecnicoResponsavel={setTecnicoResponsavel}
-                    equipe={equipe}
-                    setEquipe={setEquipe}
-                    errors={errors}
-                  />
-                </div>
-              )}
+              {renderDocumentContent()}
             </DocumentContainer>
           </div>
         )}

@@ -46,6 +46,10 @@
   .document-container {
     padding: 0;
     height: auto;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
   }
   
   .document-paper {
@@ -54,7 +58,10 @@
     width: 100%;
     max-width: 100%;
     min-height: auto;
-    padding: 0;
+    padding: 10px 0;
+    margin: 0;
+    overflow: visible;
+    page-break-inside: avoid;
   }
   
   .document-paper::after {
