@@ -1,63 +1,80 @@
 .app-container {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  background-color: #f8f9fa;
 }
 
 .main-content {
   flex: 1;
   padding: 20px;
-  background-color: #f0f2f5;
+  overflow-y: auto;
 }
 
 .report-container {
-  max-width: 1000px;
-  margin: 0 auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  min-height: calc(100vh - 40px);
 }
 
-.history-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  background: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .print-button {
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
 }
 
 .print-button button {
-  background-color: #3182ce;
+  background-color: #0056b3;
   color: white;
   border: none;
   border-radius: 4px;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .print-button button:hover {
-  background-color: #2b6cb0;
+  background-color: #004494;
+}
+
+.history-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.history-container h2 {
+  color: #0056b3;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 /* Estilos específicos para impressão */
 @media print {
   .app-container {
     display: block;
-  }
-
-  .sidebar {
-    display: none;
+    height: auto;
+    background-color: white;
   }
 
   .main-content {
     padding: 0;
+  }
+
+  .report-container {
+    box-shadow: none;
     margin: 0;
-    background-color: white;
+    min-height: auto;
   }
 
   .print-button {

@@ -10,106 +10,147 @@ const ServiceOrderPreview = ({
     prioridade,
     numeroOS,
     requisitante,
-    centroCusto = 'C007',
+    centroCusto,
     servico,
     observacao,
     acaoCorretiva,
-    tagEquipamento
-
+    tagEquipamento,
+    status,
+    tecnicoResponsavel,
+    equipe
 }) => {
 
     // Formatar datas para exibição
-    const formatDate = (dateString) => {
-        if (!dateString) return '';
-        const date = new Date(dateString);
+    const formatDate = (dateStr) => {
+        if (!dateStr) return '';
+        const date = new Date(dateStr);
         return date.toLocaleDateString('pt-BR');
     }
 
-        ;
-
-    return (<div className="service-order-preview" > <div className="preview-header" > <div className="preview-company" > <strong>IBSistemas</strong> <span>Facility Solutions</span> </div> <div className="preview-os" > <h2>ORDEM DE SERVIÇO Nº {
-        numeroOS
-    }
-
-    </h2> </div> </div> <div className="preview-maintenance-type" > <div className="maintenance-type-box" > <div className={
-        `maintenance-option $ {
-                manutencao==='corretiva' ? 'selected' : ''
-            }
-
-            `
-    }
-
-    > <div className="checkbox" > {
-        manutencao === 'corretiva' ? '✓' : ''
-    }
-
-        </div> <span>MANUTENÇÃO CORRETIVA</span> </div> <div className={
-            `maintenance-option $ {
-                manutencao==='planejada' ? 'selected' : ''
-            }
-
-            `
+    // Mapear status para texto descritivo
+    const getStatusText = () => {
+        switch (status) {
+            case 'normal': return 'Equipamento Normal';
+            case 'parcial': return 'Funcionamento Parcial';
+            case 'fora': return 'Equipamento Fora de Serviço';
+            default: return 'Não definido';
         }
+    }
 
-        > <div className="checkbox" > {
-            manutencao === 'planejada' ? '✓' : ''
-        }
+    return (
+        <div className="preview-container">
+            {/* Cabeçalho */}
+            <div className="preview-header">
+                <div className="company-logo">
+                    <strong>IBSistemas</strong>
+                    <span>Facility Solutions</span>
+                </div>
+                <h1>ORDEM DE SERVIÇO #{numeroOS}</h1>
+                <div className="maintenance-type-preview">
+                    <strong>{manutencao === 'corretiva' ? 'MANUTENÇÃO CORRETIVA' : 'MANUTENÇÃO PLANEJADA'}</strong>
+                </div>
+            </div>
 
-            </div> <span>MANUTENÇÃO PLANEJADA</span> </div> </div> </div> <div className="preview-info-grid" > <div className="preview-info-item" > <span className="preview-label" >TAG do Equipamento:</span> <span className="preview-value" > {
-                tagEquipamento
-            }
+            {/* Detalhes da OS */}
+            <div className="preview-section">
+                <h2>Detalhes da OS</h2>
+                <div className="preview-grid">
+                    <div className="preview-item">
+                        <span className="label">TAG do Equipamento:</span>
+                        <span className="value">{tagEquipamento}</span>
+                    </div>
+                    <div className="preview-item">
+                        <span className="label">Data de Solicitação:</span>
+                        <span className="value">{formatDate(dataSolicitacao)}</span>
+                    </div>
+                    <div className="preview-item">
+                        <span className="label">Tipo de Equipamento:</span>
+                        <span className="value">{tipoEquipamento}</span>
+                    </div>
+                    <div className="preview-item">
+                        <span className="label">Data de Execução:</span>
+                        <span className="value">{formatDate(dataExecucao)}</span>
+                    </div>
+                    <div className="preview-item">
+                        <span className="label">Localização:</span>
+                        <span className="value">{localizacao}</span>
+                    </div>
+                    <div className="preview-item">
+                        <span className="label">Prioridade:</span>
+                        <span className="value">{prioridade}</span>
+                    </div>
+                    <div className="preview-item">
+                        <span className="label">Requisitante:</span>
+                        <span className="value">{requisitante}</span>
+                    </div>
+                    <div className="preview-item">
+                        <span className="label">Centro de custo:</span>
+                        <span className="value">{centroCusto}</span>
+                    </div>
+                </div>
+            </div>
 
-            </span> </div> <div className="preview-info-item" > <span className="preview-label" >Data de Solicitação:</span> <span className="preview-value" > {
-                formatDate(dataSolicitacao)
-            }
+            {/* Detalhes da Atividade */}
+            <div className="preview-section">
+                <h2>Detalhes da Atividade</h2>
+                
+                <div className="preview-rich-text">
+                    <h3>Serviço (Motivo de abertura da OS):</h3>
+                    <div className="rich-content" dangerouslySetInnerHTML={{ __html: servico }} />
+                </div>
 
-            </span> </div> <div className="preview-info-item" > <span className="preview-label" >Tipo de Equipamento:</span> <span className="preview-value" > {
-                tipoEquipamento
-            }
+                <div className="preview-rich-text">
+                    <h3>Observação (Qual problema):</h3>
+                    <div className="rich-content" dangerouslySetInnerHTML={{ __html: observacao }} />
+                </div>
 
-            </span> </div> <div className="preview-info-item" > <span className="preview-label" >Data de Execução:</span> <span className="preview-value" > {
-                formatDate(dataExecucao)
-            }
+                <div className="preview-rich-text">
+                    <h3>Ação Corretiva (Como foi desenvolvido a atividade):</h3>
+                    <div className="rich-content" dangerouslySetInnerHTML={{ __html: acaoCorretiva }} />
+                </div>
+            </div>
 
-            </span> </div> <div className="preview-info-item" > <span className="preview-label" >Localização:</span> <span className="preview-value" > {
-                localizacao
-            }
+            {/* Situação do Equipamento */}
+            <div className="preview-section">
+                <h2>Situação do Equipamento</h2>
+                <div className="status-box">
+                    {getStatusText()}
+                </div>
+            </div>
 
-            </span> </div> <div className="preview-info-item" > <span className="preview-label" >Prioridade:</span> <span className="preview-value" > {
-                prioridade
-            }
+            {/* Equipe */}
+            <div className="preview-section">
+                <h2>Equipe</h2>
+                <div className="preview-item">
+                    <span className="label">Técnico Responsável:</span>
+                    <span className="value">{tecnicoResponsavel}</span>
+                </div>
 
-            </span> </div> <div className="preview-info-item" > <span className="preview-label" >Número da OS:</span> <span className="preview-value" > {
-                numeroOS
-            }
+                {equipe.length > 0 && (
+                    <div className="preview-team">
+                        <span className="label">Membros da Equipe:</span>
+                        <ul className="team-list-preview">
+                            {equipe.map((member, idx) => (
+                                <li key={idx}>{member}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
 
-            </span> </div> <div className="preview-info-item" > <span className="preview-label" >Centro de custo:</span> <span className="preview-value" > {
-                centroCusto
-            }
-
-            </span> </div> <div className="preview-info-item" > <span className="preview-label" >Requisitante:</span> <span className="preview-value" > {
-                requisitante
-            }
-
-            </span> </div> </div> <div className="preview-description-section" > <div className="preview-description-item" > <h3>Serviço</h3> <div className="preview-content" dangerouslySetInnerHTML={
-                {
-                    __html: servico
-                }
-            }
-
-            /> </div> <div className="preview-description-item" > <h3>Observação</h3> <div className="preview-content" dangerouslySetInnerHTML={
-                {
-                    __html: observacao
-                }
-            }
-
-            /> </div> <div className="preview-description-item" > <h3>Ação Corretiva</h3> <div className="preview-content" dangerouslySetInnerHTML={
-                {
-                    __html: acaoCorretiva
-                }
-            }
-
-            /> </div> </div> <div className="preview-footer" > <div className="signature-line" > <span>_______________________________</span> <p>Responsável Técnico</p> </div> <div className="signature-line" > <span>_______________________________</span> <p>Solicitante</p> </div> </div> </div>);
+            {/* Rodapé com assinaturas */}
+            <div className="preview-footer">
+                <div className="signature-line">
+                    <span>_______________________</span>
+                    <span className="signature-label">Técnico Responsável</span>
+                </div>
+                <div className="signature-line">
+                    <span>_______________________</span>
+                    <span className="signature-label">Requisitante</span>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default ServiceOrderPreview;
