@@ -20,32 +20,72 @@
 }
 
 .materials-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    width: 100%;
 }
 
-.material-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #f0f7ff;
+.materials-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.materials-table th,
+.materials-table td {
+    padding: 8px 12px;
+    text-align: left;
     border: 1px solid #cce4ff;
-    border-radius: 4px;
-    padding: 6px 10px;
+}
+
+.materials-table th {
+    background-color: #f0f7ff;
+    font-weight: 600;
+    color: #0056b3;
+}
+
+.material-item td {
+    background-color: #fff;
     font-size: 0.9rem;
 }
 
-.material-item span {
-    flex: 1;
+.quantity-cell {
+    width: 140px;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.quantity-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.quantity-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.quantity-value {
+    min-width: 30px;
+    text-align: center;
+    font-weight: 600;
 }
 
 .remove-btn {
     background-color: transparent;
     border: none;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,6 +117,26 @@
 }
 
 .materials-add select {
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.quantity-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-input label {
+    flex: 0 0 80px;
+    font-weight: 500;
+    color: #555;
+}
+
+.quantity-input input {
+    width: 80px;
     padding: 8px 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -157,6 +217,10 @@
         flex: 2;
     }
 
+    .quantity-input {
+        flex: 1;
+    }
+
     .add-buttons {
         flex: 1;
     }
@@ -176,13 +240,22 @@
         display: none;
     }
 
-    .remove-btn {
+    .remove-btn,
+    .quantity-btn {
         display: none;
     }
 
-    .material-item {
+    .materials-table th,
+    .materials-table td {
+        border: 1px solid #0056b3;
+    }
+
+    .materials-table th {
         background-color: transparent;
-        border: 1px solid #ccc;
+    }
+
+    .material-item td {
+        background-color: transparent;
         padding: 3px 8px;
     }
 
