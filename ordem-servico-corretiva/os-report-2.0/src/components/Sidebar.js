@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Sidebar.css';
 
-const Sidebar = ({ onSave, onEdit, onPreview, isPreview, activeSection, onSectionChange }) => {
+const Sidebar = ({ onSave, onEdit, onPreview, isPreview, activeSection, onSectionChange, onSidebarToggle }) => {
   const [expanded, setExpanded] = useState(true);
+
+  // Notificar o App quando o estado da sidebar muda
+  useEffect(() => {
+    if (onSidebarToggle) {
+      onSidebarToggle(expanded);
+    }
+  }, [expanded, onSidebarToggle]);
+
+  const toggleExpanded = (newState) => {
+    setExpanded(newState);
+  };
 
   if (!expanded) {
     return (
       <div className="sidebar collapsed sidebar-collapsed-only-btn">
-        <button className="toggle-btn toggle-btn-center" onClick={() => setExpanded(true)}>
+        <button className="toggle-btn toggle-btn-center" onClick={() => toggleExpanded(true)}>
           ▶
         </button>
       </div>
@@ -18,7 +29,7 @@ const Sidebar = ({ onSave, onEdit, onPreview, isPreview, activeSection, onSectio
     <div className={`sidebar expanded`}>
       <div className="sidebar-header">
         <h3>Opções</h3>
-        <button className="toggle-btn" onClick={() => setExpanded(false)}>
+        <button className="toggle-btn" onClick={() => toggleExpanded(false)}>
           ◀
         </button>
       </div>
