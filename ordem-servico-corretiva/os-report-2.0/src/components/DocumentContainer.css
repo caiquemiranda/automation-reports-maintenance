@@ -66,7 +66,19 @@
 
 /* Estilos específicos para impressão */
 @media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .document-container,
+  .document-container * {
+    visibility: visible;
+  }
+
   .document-container {
+    position: absolute;
+    left: 0;
+    top: 0;
     padding: 0;
     height: auto;
     display: block;
@@ -81,7 +93,7 @@
     width: 100%;
     max-width: 100%;
     min-height: auto;
-    padding: 10px 0;
+    padding: 10px;
     margin: 0;
     overflow: visible;
     page-break-inside: avoid;
@@ -89,5 +101,47 @@
 
   .document-paper::after {
     display: none;
+  }
+
+  /* Garantir que conteúdo dentro do documento seja impresso */
+  .preview-container,
+  .preview-container * {
+    visibility: visible;
+  }
+
+  /* Esconder elementos de UI não necessários para impressão */
+  .sidebar,
+  .print-button,
+  #root>*:not(.app-container),
+  .app-container>*:not(.main-content),
+  .main-content>*:not(.report-container) {
+    display: none !important;
+  }
+
+  /* Ajustes para estilos de texto na impressão */
+  h1,
+  h2,
+  h3,
+  p,
+  span,
+  div {
+    color: black !important;
+  }
+
+  /* Ajuste para bordas e separadores */
+  .preview-section {
+    border-bottom: 2px solid #0056b3 !important;
+  }
+
+  .preview-item .value {
+    border-bottom: 1px dotted #000 !important;
+  }
+
+  /* Garantir que tabelas sejam impressas corretamente */
+  table,
+  tr,
+  td,
+  th {
+    border-color: #000 !important;
   }
 }

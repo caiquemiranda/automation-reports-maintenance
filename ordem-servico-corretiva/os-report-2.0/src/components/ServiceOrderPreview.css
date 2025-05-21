@@ -233,26 +233,38 @@
         gap: 30px;
         align-items: center;
     }
-    
+
     .preview-item {
         flex-direction: column;
     }
-    
+
     .preview-item .label {
         min-width: 100%;
     }
-    
+
     .preview-item .value {
         padding-left: 0;
     }
 }
 
 @media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .preview-container,
+    .preview-container * {
+        visibility: visible;
+    }
+
     .preview-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
         box-shadow: none;
         padding: 0;
         margin: 0;
-        width: 100%;
     }
 
     .preview-section {
@@ -279,15 +291,23 @@
 
     .preview-item {
         margin-bottom: 3px;
+        display: flex;
+        align-items: baseline;
     }
 
     .preview-item .label {
+        font-weight: bold;
+        color: #000;
+        min-width: 150px;
         margin-bottom: 2px;
         font-size: 0.9rem;
     }
 
     .preview-item .value {
+        color: #000;
+        flex: 1;
         padding: 0 0 0 5px;
+        border-bottom: 1px dotted #000;
     }
 
     .preview-header {
@@ -295,31 +315,73 @@
         border-bottom: 2px solid #0056b3;
     }
 
+    .preview-rich-text h3 {
+        color: #000;
+        font-weight: 600;
+    }
+
     .rich-content {
         background-color: transparent;
-        border: none;
+        border: 1px solid #ccc;
+        padding: 8px;
+        color: #000;
     }
-    
+
+    .materials-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
     .materials-table th,
     .materials-table td {
-        border: 1px solid #0056b3;
+        border: 1px solid #000;
+        padding: 6px 10px;
+        color: #000;
     }
-    
+
     .materials-table th {
         background-color: transparent;
+        font-weight: bold;
+        color: #000;
     }
 
     .material-preview-item td {
         background-color: transparent;
+        color: #000;
+    }
+
+    .material-quantity {
+        text-align: center;
     }
 
     .empty-materials-preview {
         background-color: transparent;
-        border: 1px solid #ccc;
+        border: 1px solid #000;
+        color: #000;
     }
 
     .status-box {
         background-color: transparent;
-        border: 1px solid #0056b3;
+        border: 1px solid #000;
+        color: #000;
+        padding: 8px 12px;
+    }
+
+    .preview-team .label {
+        color: #000;
+        font-weight: bold;
+    }
+
+    .team-list-preview li {
+        color: #000;
+    }
+
+    .empty-team {
+        color: #000;
+    }
+
+    /* Ocultar botões de impressão e outros elementos desnecessários */
+    .print-button {
+        display: none !important;
     }
 }

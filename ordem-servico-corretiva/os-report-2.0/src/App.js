@@ -70,7 +70,7 @@ function App() {
       }
       return material;
     });
-    
+
     // Atualizar apenas se houver diferenças
     if (JSON.stringify(materials) !== JSON.stringify(updatedMaterials)) {
       setMaterials(updatedMaterials);
@@ -123,7 +123,18 @@ function App() {
   };
 
   const handlePrint = () => {
-    window.print();
+    // Adiciona classe para impressão
+    document.body.classList.add('printing');
+
+    // Pequeno atraso para garantir que os estilos sejam aplicados
+    setTimeout(() => {
+      window.print();
+
+      // Remove a classe após a impressão
+      setTimeout(() => {
+        document.body.classList.remove('printing');
+      }, 500);
+    }, 100);
   };
 
   // Renderizar o conteúdo do documento (compartilhado entre modo edição e preview)
