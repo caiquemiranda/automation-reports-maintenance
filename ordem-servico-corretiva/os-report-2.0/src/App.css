@@ -2,20 +2,32 @@
   display: flex;
   height: 100vh;
   background-color: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.sidebar-expanded .main-content {
+  margin-left: 220px;
+  width: calc(100% - 220px);
+}
+
+.sidebar-collapsed .main-content {
+  margin-left: 56px;
+  width: calc(100% - 56px);
 }
 
 .main-content {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+  transition: all 0.3s ease;
 }
 
 .report-container {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  min-height: calc(100vh - 40px);
+  background-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0;
+  min-height: auto;
 }
 
 .form-container {
@@ -50,6 +62,8 @@
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  max-width: 850px;
+  margin: 0 auto;
 }
 
 .history-container h2 {
@@ -57,6 +71,18 @@
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
   margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .sidebar-expanded .main-content {
+    margin-left: 180px;
+    width: calc(100% - 180px);
+  }
+
+  .sidebar-collapsed .main-content {
+    margin-left: 48px;
+    width: calc(100% - 48px);
+  }
 }
 
 /* Estilos específicos para impressão */
@@ -69,12 +95,12 @@
 
   .main-content {
     padding: 0;
+    margin-left: 0 !important;
+    width: 100% !important;
   }
 
   .report-container {
-    box-shadow: none;
     margin: 0;
-    min-height: auto;
   }
 
   .print-button {
