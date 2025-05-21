@@ -121,6 +121,33 @@
     font-style: italic;
 }
 
+/* Estilos para Materiais Utilizados */
+.materials-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.material-preview-item {
+    background-color: #f0f7ff;
+    border: 1px solid #cce4ff;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.empty-materials-preview {
+    font-style: italic;
+    color: #777;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 10px;
+}
+
 .status-box {
     background-color: #e6f7ff;
     border: 1px solid #91d5ff;
@@ -233,6 +260,16 @@
     .rich-content {
         background-color: transparent;
         border: none;
+    }
+
+    .material-preview-item {
+        background-color: transparent;
+        border: 1px solid #0056b3;
+    }
+
+    .empty-materials-preview {
+        background-color: transparent;
+        border: 1px solid #ccc;
     }
 
     .status-box {

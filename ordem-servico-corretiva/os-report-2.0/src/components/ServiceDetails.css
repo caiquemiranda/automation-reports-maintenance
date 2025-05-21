@@ -24,7 +24,7 @@
 }
 
 .service-details {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     padding: 0 15px;
 }
 
@@ -39,29 +39,30 @@
 .details-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 15px;
 }
 
 .column {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 3px;
 }
 
 .form-group strong {
     font-weight: 600;
     color: #555;
+    font-size: 0.95rem;
 }
 
 .form-group input,
 .form-group select {
-    padding: 8px 10px;
+    padding: 6px 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 0.9rem;
@@ -69,7 +70,7 @@
 
 .static-value {
     background-color: #f5f5f5;
-    padding: 8px 10px;
+    padding: 6px 8px;
     border-radius: 4px;
     font-size: 0.9rem;
     color: #555;
@@ -80,9 +81,19 @@
     background-color: #fff8f8;
 }
 
+/* Versão compacta para telas menores */
 @media (max-width: 768px) {
     .details-grid {
         grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .column {
+        gap: A8px;
+    }
+    
+    .form-group {
+        gap: 2px;
     }
 }
 
@@ -96,15 +107,26 @@
     .details-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        gap: 5px;
         page-break-inside: avoid;
     }
     
     .column {
-        gap: 8px;
+        gap: 4px;
     }
     
     .form-group {
-        gap: 2px;
+        gap: 1px;
+    }
+    
+    .form-group strong {
+        font-size: 0.9rem;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .static-value {
+        padding: 3px 6px;
+        font-size: 0.85rem;
     }
 }
