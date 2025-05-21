@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import Sidebar from './components/Sidebar';
-import ServiceOrderInfo from './components/ServiceOrderInfo';
+import Header from './components/Header';
+import ServiceDetails from './components/ServiceDetails';
+import ActivityDetails from './components/ActivityDetails';
+import EquipmentStatus from './components/EquipmentStatus';
+import TechnicianInfo from './components/TechnicianInfo';
 import ServiceOrderPreview from './components/ServiceOrderPreview';
 import './App.css';
 
@@ -23,6 +27,9 @@ function App() {
   const [observacao, setObservacao] = useState('');
   const [acaoCorretiva, setAcaoCorretiva] = useState('');
   const [tagEquipamento, setTagEquipamento] = useState('NL-IQ207-603');
+  const [status, setStatus] = useState('normal');
+  const [tecnicoResponsavel, setTecnicoResponsavel] = useState('');
+  const [equipe, setEquipe] = useState([]);
 
   // Estado para erros de validação
   const [errors, setErrors] = useState({});
@@ -43,6 +50,7 @@ function App() {
     if (!localizacao) formErrors.localizacao = true;
     if (!prioridade) formErrors.prioridade = true;
     if (!requisitante) formErrors.requisitante = true;
+    if (!tecnicoResponsavel) formErrors.tecnicoResponsavel = true;
 
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
@@ -54,7 +62,8 @@ function App() {
     console.log('Salvando dados...', {
       manutencao, dataSolicitacao, dataExecucao, tipoEquipamento,
       localizacao, prioridade, numeroOS, requisitante, centroCusto,
-      servico, observacao, acaoCorretiva, tagEquipamento
+      servico, observacao, acaoCorretiva, tagEquipamento, status,
+      tecnicoResponsavel, equipe
     });
 
     alert('Documento salvo com sucesso!');
@@ -99,38 +108,65 @@ function App() {
                   observacao={observacao}
                   acaoCorretiva={acaoCorretiva}
                   tagEquipamento={tagEquipamento}
+                  status={status}
+                  tecnicoResponsavel={tecnicoResponsavel}
+                  equipe={equipe}
                 />
                 <div className="print-button">
                   <button onClick={handlePrint}>Imprimir</button>
                 </div>
               </>
             ) : (
-              <ServiceOrderInfo
-                manutencao={manutencao}
-                setManutencao={setManutencao}
-                dataSolicitacao={dataSolicitacao}
-                setDataSolicitacao={setDataSolicitacao}
-                dataExecucao={dataExecucao}
-                setDataExecucao={setDataExecucao}
-                tipoEquipamento={tipoEquipamento}
-                setTipoEquipamento={setTipoEquipamento}
-                localizacao={localizacao}
-                setLocalizacao={setLocalizacao}
-                prioridade={prioridade}
-                setPrioridade={setPrioridade}
-                numeroOS={numeroOS}
-                setNumeroOS={setNumeroOS}
-                requisitante={requisitante}
-                setRequisitante={setRequisitante}
-                centroCusto={centroCusto}
-                servico={servico}
-                setServico={setServico}
-                observacao={observacao}
-                setObservacao={setObservacao}
-                acaoCorretiva={acaoCorretiva}
-                setAcaoCorretiva={setAcaoCorretiva}
-                errors={errors}
-              />
+              <div className="form-container">
+                <Header 
+                  numeroOS={numeroOS} 
+                  manutencao={manutencao} 
+                  setManutencao={setManutencao} 
+                />
+
+                <ServiceDetails
+                  tagEquipamento={tagEquipamento}
+                  setTagEquipamento={setTagEquipamento}
+                  tipoEquipamento={tipoEquipamento}
+                  setTipoEquipamento={setTipoEquipamento}
+                  localizacao={localizacao}
+                  setLocalizacao={setLocalizacao}
+                  numeroOS={numeroOS}
+                  setNumeroOS={setNumeroOS}
+                  dataSolicitacao={dataSolicitacao}
+                  setDataSolicitacao={setDataSolicitacao}
+                  dataExecucao={dataExecucao}
+                  setDataExecucao={setDataExecucao}
+                  prioridade={prioridade}
+                  setPrioridade={setPrioridade}
+                  requisitante={requisitante}
+                  setRequisitante={setRequisitante}
+                  centroCusto={centroCusto}
+                  errors={errors}
+                />
+
+                <ActivityDetails
+                  servico={servico}
+                  setServico={setServico}
+                  observacao={observacao}
+                  setObservacao={setObservacao}
+                  acaoCorretiva={acaoCorretiva}
+                  setAcaoCorretiva={setAcaoCorretiva}
+                />
+
+                <EquipmentStatus
+                  status={status}
+                  setStatus={setStatus}
+                />
+
+                <TechnicianInfo
+                  tecnicoResponsavel={tecnicoResponsavel}
+                  setTecnicoResponsavel={setTecnicoResponsavel}
+                  equipe={equipe}
+                  setEquipe={setEquipe}
+                  errors={errors}
+                />
+              </div>
             )}
           </div>
         )}

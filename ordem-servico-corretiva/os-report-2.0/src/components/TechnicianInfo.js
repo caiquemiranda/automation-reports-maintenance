@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './TechnicianInfo.css';
 
 const TECHNICIANS = [
@@ -7,63 +7,89 @@ const TECHNICIANS = [
   'Maria Souza',
   'Pedro Oliveira',
 ];
-const DEFAULT_MATERIALS = [
-  'Acionador simples modelo 2023/234',
-  'Detector de fumaça convencional',
+
+const TEAM_MEMBERS = [
+  'André Santos',
+  'Bruna Lima',
+  'Carlos Mendes',
+  'Débora Alves',
+  'Eduardo Costa',
 ];
 
-const TechnicianInfo = ({ selectedTech, setSelectedTech, materials, setMaterials, errors }) => {
-  const [selectedMaterial, setSelectedMaterial] = useState('');
+const TechnicianInfo = ({
+  tecnicoResponsavel,
+  setTecnicoResponsavel,
+  equipe,
+  setEquipe,
+  errors
+}) => {
+  const [selectedMember, setSelectedMember] = useState('');
 
-  useEffect(() => {
-    if (materials.length === 0) {
-      setMaterials([]);
-    }
-  }, [materials.length, setMaterials]);
-
-  const addMaterial = () => {
-    if (selectedMaterial) {
-      setMaterials([...materials, selectedMaterial]);
+  const addTeamMember = () => {
+    if (selectedMember && !equipe.includes(selectedMember)) {
+      setEquipe([...equipe, selectedMember]);
+      setSelectedMember('');
     }
   };
 
-  const removeMaterial = (idx) => {
-    if (materials.length > 1) {
-      setMaterials(materials.filter((_, i) => i !== idx));
-    }
+  const removeTeamMember = (member) => {
+    setEquipe(equipe.filter(m => m !== member));
   };
 
   return (
     <section className="technician-info">
+      <h3>Equipe</h3>
+
       <div className="info-block">
-        <strong>TÉCNICO RESPONSÁVEL:</strong>
-        <select value={selectedTech} onChange={e => setSelectedTech(e.target.value)} required className={errors.selectedTech ? 'input-error' : ''}>
-          <option value="">Selecione</option>
+        <strong>Técnico Responsável:</strong>
+        <select
+          value={tecnicoResponsavel}
+          onChange={e => setTecnicoResponsavel(e.target.value)}
+          required
+          className={errors?.tecnicoResponsavel ? 'input-error' : ''}
+        >
+          <option value="">Selecione o técnico</option>
           {TECHNICIANS.map(tech => (
             <option key={tech} value={tech}>{tech}</option>
           ))}
         </select>
       </div>
+
       <div className="info-block">
-        <strong>MATERIAL UTILIZADO:</strong>
-        <div className="material-list">
-          {materials.map((mat, idx) => (
-            <div key={idx} className="material-item">
-              {mat}
-              <button type="button" className="remove-btn" onClick={() => removeMaterial(idx)} disabled={materials.length === 1}>x</button>
-            </div>
-          ))}
+        <strong>Equipe:</strong>
+        <div className="team-list">
+          {equipe.length > 0 ? (
+            equipe.map((member, idx) => (
+              <div key={idx} className="team-member">
+                <span>{member}</span>
+                <button type="button" className="remove-btn" onClick={() => removeTeamMember(member)}>
+                  ×
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="empty-team">Nenhum membro adicionado à equipe</div>
+          )}
         </div>
-        <div className="material-add">
-          <select value={selectedMaterial} onChange={e => setSelectedMaterial(e.target.value)}>
-            <option value="">Selecione o material</option>
-            {DEFAULT_MATERIALS.map((mat, idx) => (
-              <option key={idx} value={mat}>{mat}</option>
+
+        <div className="team-add">
+          <select
+            value={selectedMember}
+            onChange={e => setSelectedMember(e.target.value)}
+          >
+            <option value="">Selecione um membro para adicionar</option>
+            {TEAM_MEMBERS.filter(member => !equipe.includes(member)).map((member, idx) => (
+              <option key={idx} value={member}>{member}</option>
             ))}
           </select>
-          <button type="button" onClick={addMaterial} disabled={!selectedMaterial}>Adicionar</button>
+          <button
+            type="button"
+            onClick={addTeamMember}
+            disabled={!selectedMember}
+          >
+            Adicionar
+          </button>
         </div>
-        {errors.materials && <div className="error-msg">Adicione pelo menos um material.</div>}
       </div>
     </section>
   );
