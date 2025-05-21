@@ -61,6 +61,22 @@ function App() {
     }
   }, []);
 
+  // Migração de formato de materiais caso necessário
+  useEffect(() => {
+    // Verificar se os materiais estão no formato antigo (strings) e converterlos para o novo formato (objetos)
+    const updatedMaterials = materials.map(material => {
+      if (typeof material === 'string') {
+        return { name: material, quantity: 1 };
+      }
+      return material;
+    });
+    
+    // Atualizar apenas se houver diferenças
+    if (JSON.stringify(materials) !== JSON.stringify(updatedMaterials)) {
+      setMaterials(updatedMaterials);
+    }
+  }, []);
+
   // Função para alternar entre modo de edição e preview
   const togglePreview = () => {
     setIsPreview(!isPreview);

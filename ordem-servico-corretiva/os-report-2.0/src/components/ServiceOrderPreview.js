@@ -38,6 +38,20 @@ const ServiceOrderPreview = ({
         }
     }
 
+    // Função para obter o nome e quantidade do material
+    const getMaterialInfo = (material) => {
+        if (typeof material === 'object' && material !== null) {
+            return {
+                name: material.name,
+                quantity: material.quantity || 1
+            };
+        }
+        return {
+            name: material,
+            quantity: 1
+        };
+    }
+
     return (
         <div className="preview-container">
             {/* Cabeçalho */}
@@ -128,12 +142,15 @@ const ServiceOrderPreview = ({
                                 </tr>
                             </thead>
                             <tbody>
-                                {materials.map((material, index) => (
-                                    <tr key={index} className="material-preview-item">
-                                        <td>{material}</td>
-                                        <td className="material-quantity">1</td>
-                                    </tr>
-                                ))}
+                                {materials.map((material, index) => {
+                                    const { name, quantity } = getMaterialInfo(material);
+                                    return (
+                                        <tr key={index} className="material-preview-item">
+                                            <td>{name}</td>
+                                            <td className="material-quantity">{quantity}</td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                     </div>
