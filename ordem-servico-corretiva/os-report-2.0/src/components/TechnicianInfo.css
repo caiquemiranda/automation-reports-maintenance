@@ -3,6 +3,8 @@
     background-color: #fff;
     border-radius: 8px;
     margin-bottom: 20px;
+    border-bottom: 2px solid #0056b3;
+    padding-bottom: 15px;
 }
 
 .technician-info h3 {
@@ -124,6 +126,7 @@
     .technician-info {
         page-break-inside: avoid;
         padding: 10px 0;
+        border-bottom: 2px solid #0056b3;
     }
 
     .team-list {
