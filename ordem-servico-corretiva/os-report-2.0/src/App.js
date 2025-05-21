@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Sidebar from './components/Sidebar/Sidebar';
-import ServiceOrderInfo from './components/ServiceOrderInfo/ServiceOrderInfo';
+import Sidebar from './components/Sidebar';
+import ServiceOrderInfo from './components/ServiceOrderInfo';
 import ServiceOrderPreview from './components/ServiceOrderPreview';
 import './App.css';
 
