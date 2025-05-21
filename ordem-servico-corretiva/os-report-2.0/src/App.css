@@ -73,6 +73,11 @@
   margin-bottom: 20px;
 }
 
+/* Classe adicionada ao body durante a impressão */
+body.printing {
+  background-color: white;
+}
+
 @media (max-width: 768px) {
   .sidebar-expanded .main-content {
     margin-left: 180px;
@@ -87,6 +92,37 @@
 
 /* Estilos específicos para impressão */
 @media print {
+  @page {
+    size: A4;
+    margin: 0.5cm;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .document-paper,
+  .document-paper *,
+  .preview-container,
+  .preview-container * {
+    visibility: visible;
+  }
+
   .app-container {
     display: block;
     height: auto;
@@ -99,15 +135,72 @@
 
   .main-content {
     padding: 0;
-    margin-left: 0 !important;
+    margin: 0 !important;
     width: 100% !important;
+    overflow: visible;
   }
 
   .report-container {
     margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  .document-container {
+    padding: 0;
+    width: 100%;
+  }
+
+  .document-paper {
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
   }
 
   .print-button {
-    display: none;
+    display: none !important;
+  }
+
+  /* Garantir que todos os elementos do preview mantenham seus estilos */
+  .preview-section {
+    border-bottom: 2px solid #0056b3 !important;
+    padding-bottom: 15px !important;
+    margin-bottom: 15px !important;
+  }
+
+  .preview-item {
+    display: flex !important;
+    align-items: baseline !important;
+    margin-bottom: 5px !important;
+  }
+
+  .preview-item .label {
+    min-width: 150px !important;
+    font-weight: bold !important;
+    color: #000 !important;
+  }
+
+  .preview-item .value {
+    flex: 1 !important;
+    padding-left: 8px !important;
+    border-bottom: 1px dotted #000 !important;
+    color: #000 !important;
+  }
+
+  .materials-table th,
+  .materials-table td {
+    border: 1px solid #000 !important;
+    padding: 6px 10px !important;
+  }
+
+  /* Esconder elementos de UI */
+  .sidebar,
+  button:not(.print-button),
+  input,
+  select,
+  textarea {
+    display: none !important;
   }
 }

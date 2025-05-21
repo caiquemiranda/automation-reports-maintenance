@@ -1,0 +1,148 @@
+@media print {
+  @page {
+    size: A4;
+    margin: 0.5cm;
+  }
+  
+  /* Configurações gerais */
+  html, body {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+  }
+  
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Esconder tudo por padrão */
+  body * {
+    visibility: hidden;
+  }
+  
+  /* Mostrar apenas o que é relevante */
+  #root,
+  .app-container,
+  .main-content,
+  .report-container,
+  .document-container,
+  .document-paper,
+  .preview-container {
+    visibility: visible !important;
+    display: block !important;
+    position: relative !important;
+  }
+  
+  .preview-container * {
+    visibility: visible !important;
+  }
+  
+  /* Esconder elementos de UI */
+  .sidebar,
+  .print-button,
+  button,
+  input,
+  select,
+  textarea {
+    display: none !important;
+  }
+  
+  /* Configurações de layout */
+  .app-container {
+    display: block !important;
+    height: auto !important;
+    width: 100% !important;
+    background-color: white !important;
+  }
+  
+  .main-content {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
+  
+  .report-container,
+  .document-container {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+  
+  .document-paper {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .document-paper::after {
+    display: none !important;
+  }
+  
+  /* Detalhes da OS - Estilos específicos */
+  .preview-section {
+    border-bottom: 2px solid #0056b3 !important;
+    padding-bottom: 15px !important;
+    margin-bottom: 15px !important;
+    page-break-inside: avoid !important;
+  }
+  
+  .preview-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 15px !important;
+  }
+  
+  .preview-item {
+    display: flex !important;
+    align-items: baseline !important;
+    margin-bottom: 5px !important;
+  }
+  
+  .preview-item .label {
+    min-width: 150px !important;
+    font-weight: bold !important;
+    color: #000 !important;
+  }
+  
+  .preview-item .value {
+    flex: 1 !important;
+    padding-left: 8px !important;
+    border-bottom: 1px dotted #000 !important;
+    color: #000 !important;
+  }
+  
+  /* Materiais utilizados */
+  .materials-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+  
+  .materials-table th,
+  .materials-table td {
+    border: 1px solid #000 !important;
+    padding: 6px 10px !important;
+    color: #000 !important;
+  }
+  
+  .materials-table th {
+    background-color: transparent !important;
+    font-weight: bold !important;
+  }
+  
+  /* Status */
+  .status-box {
+    border: 1px solid #000 !important;
+    background-color: transparent !important;
+    color: #000 !important;
+  }
+} 
