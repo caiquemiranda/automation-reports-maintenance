@@ -52,6 +52,7 @@
     margin-bottom: 25px;
     padding: 0 20px;
     border-bottom: 2px solid #0056b3;
+    padding-bottom: 15px;
 }
 
 .preview-section:last-child {
@@ -72,8 +73,14 @@
     gap: 15px;
 }
 
+.preview-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .preview-item {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .preview-item .label {
@@ -86,7 +93,8 @@
 .preview-item .value {
     color: #333;
     display: block;
-    padding: 5px 0;
+    padding: 2px 0;
+    border-bottom: 1px dotted #ddd;
 }
 
 .preview-rich-text {
@@ -166,7 +174,7 @@
     .preview-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .preview-footer {
         flex-direction: column;
         gap: 30px;
@@ -181,34 +189,52 @@
         margin: 0;
         width: 100%;
     }
-    
+
     .preview-section {
         page-break-inside: avoid;
         border-bottom: 2px solid #0056b3;
         padding-bottom: 15px;
         margin-bottom: 15px;
     }
-    
+
     .preview-section:last-child {
         border-bottom: none;
     }
-    
+
     .preview-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
+        page-break-inside: avoid;
     }
-    
+
+    .preview-column {
+        gap: 5px;
+    }
+
+    .preview-item {
+        margin-bottom: 3px;
+    }
+
+    .preview-item .label {
+        margin-bottom: 2px;
+        font-size: 0.9rem;
+    }
+
+    .preview-item .value {
+        padding: 0;
+    }
+
     .preview-header {
         page-break-inside: avoid;
         border-bottom: 2px solid #0056b3;
     }
-    
+
     .rich-content {
         background-color: transparent;
         border: none;
     }
-    
+
     .status-box {
         background-color: transparent;
         border: 1px solid #0056b3;

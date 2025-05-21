@@ -55,37 +55,45 @@ const ServiceOrderPreview = ({
             <div className="preview-section">
                 <h2>Detalhes da OS</h2>
                 <div className="preview-grid">
-                    <div className="preview-item">
-                        <span className="label">TAG do Equipamento:</span>
-                        <span className="value">{tagEquipamento}</span>
+                    <div className="preview-column">
+                        <div className="preview-item">
+                            <span className="label">TAG do Equipamento:</span>
+                            <span className="value">{tagEquipamento}</span>
+                        </div>
+                        <div className="preview-item">
+                            <span className="label">Tipo de Equipamento:</span>
+                            <span className="value">{tipoEquipamento || 'Não informado'}</span>
+                        </div>
+                        <div className="preview-item">
+                            <span className="label">Localização:</span>
+                            <span className="value">{localizacao || 'Não informado'}</span>
+                        </div>
+                        <div className="preview-item">
+                            <span className="label">Número da OS:</span>
+                            <span className="value">{numeroOS}</span>
+                        </div>
                     </div>
-                    <div className="preview-item">
-                        <span className="label">Data de Solicitação:</span>
-                        <span className="value">{formatDate(dataSolicitacao)}</span>
-                    </div>
-                    <div className="preview-item">
-                        <span className="label">Tipo de Equipamento:</span>
-                        <span className="value">{tipoEquipamento}</span>
-                    </div>
-                    <div className="preview-item">
-                        <span className="label">Data de Execução:</span>
-                        <span className="value">{formatDate(dataExecucao)}</span>
-                    </div>
-                    <div className="preview-item">
-                        <span className="label">Localização:</span>
-                        <span className="value">{localizacao}</span>
-                    </div>
-                    <div className="preview-item">
-                        <span className="label">Prioridade:</span>
-                        <span className="value">{prioridade}</span>
-                    </div>
-                    <div className="preview-item">
-                        <span className="label">Requisitante:</span>
-                        <span className="value">{requisitante}</span>
-                    </div>
-                    <div className="preview-item">
-                        <span className="label">Centro de custo:</span>
-                        <span className="value">{centroCusto}</span>
+                    <div className="preview-column">
+                        <div className="preview-item">
+                            <span className="label">Data de Solicitação:</span>
+                            <span className="value">{formatDate(dataSolicitacao)}</span>
+                        </div>
+                        <div className="preview-item">
+                            <span className="label">Data de Execução:</span>
+                            <span className="value">{formatDate(dataExecucao)}</span>
+                        </div>
+                        <div className="preview-item">
+                            <span className="label">Prioridade:</span>
+                            <span className="value">{prioridade || 'Não informado'}</span>
+                        </div>
+                        <div className="preview-item">
+                            <span className="label">Requisitante:</span>
+                            <span className="value">{requisitante || 'Não informado'}</span>
+                        </div>
+                        <div className="preview-item">
+                            <span className="label">Centro de custo:</span>
+                            <span className="value">{centroCusto}</span>
+                        </div>
                     </div>
                 </div>
             </div>
