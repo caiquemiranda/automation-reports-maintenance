@@ -5,6 +5,7 @@ import ServiceDetails from './components/ServiceDetails';
 import ActivityDetails from './components/ActivityDetails';
 import EquipmentStatus from './components/EquipmentStatus';
 import TechnicianInfo from './components/TechnicianInfo';
+import MaterialsUsed from './components/MaterialsUsed';
 import ServiceOrderPreview from './components/ServiceOrderPreview';
 import DocumentContainer from './components/DocumentContainer';
 import './App.css';
@@ -32,6 +33,7 @@ function App() {
   const [status, setStatus] = useState('normal');
   const [tecnicoResponsavel, setTecnicoResponsavel] = useState('');
   const [equipe, setEquipe] = useState([]);
+  const [materials, setMaterials] = useState([]);
 
   // Estado para erros de validação
   const [errors, setErrors] = useState({});
@@ -93,7 +95,7 @@ function App() {
       manutencao, dataSolicitacao, dataExecucao, tipoEquipamento,
       localizacao, prioridade, numeroOS, requisitante, centroCusto,
       servico, observacao, acaoCorretiva, tagEquipamento, status,
-      tecnicoResponsavel, equipe
+      tecnicoResponsavel, equipe, materials
     });
 
     alert('Documento salvo com sucesso!');
@@ -130,6 +132,7 @@ function App() {
             status={status}
             tecnicoResponsavel={tecnicoResponsavel}
             equipe={equipe}
+            materials={materials}
           />
           <div className="print-button">
             <button onClick={handlePrint}>Imprimir</button>
@@ -173,6 +176,11 @@ function App() {
             setObservacao={setObservacao}
             acaoCorretiva={acaoCorretiva}
             setAcaoCorretiva={setAcaoCorretiva}
+          />
+
+          <MaterialsUsed
+            materials={materials}
+            setMaterials={setMaterials}
           />
 
           <EquipmentStatus

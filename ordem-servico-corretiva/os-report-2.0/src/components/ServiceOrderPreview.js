@@ -17,7 +17,8 @@ const ServiceOrderPreview = ({
     tagEquipamento,
     status,
     tecnicoResponsavel,
-    equipe
+    equipe,
+    materials
 }) => {
 
     // Formatar datas para exibição
@@ -116,6 +117,24 @@ const ServiceOrderPreview = ({
                     <h3>Ação Corretiva (Como foi desenvolvido a atividade):</h3>
                     <div className="rich-content" dangerouslySetInnerHTML={{ __html: acaoCorretiva || 'Não informado' }} />
                 </div>
+            </div>
+
+            {/* Materiais Utilizados */}
+            <div className="preview-section">
+                <h2>Materiais Utilizados</h2>
+                {materials && materials.length > 0 ? (
+                    <div className="materials-preview">
+                        {materials.map((material, index) => (
+                            <div key={index} className="material-preview-item">
+                                {material}
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="empty-materials-preview">
+                        Nenhum material utilizado
+                    </div>
+                )}
             </div>
 
             {/* Situação do Equipamento */}
