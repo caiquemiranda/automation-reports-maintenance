@@ -126,13 +126,67 @@ function App() {
     // Adiciona classe para impressão
     document.body.classList.add('printing');
 
+    // Cria uma folha de estilo temporária para a impressão
+    const style = document.createElement('style');
+    style.id = 'print-style-override';
+    style.innerHTML = `
+      @media print {
+        .preview-item {
+          display: flex !important;
+          flex-direction: row !important;
+          align-items: baseline !important;
+          width: 100% !important;
+        }
+        
+        .preview-item .label {
+          min-width: 150px !important;
+          font-weight: bold !important;
+          display: inline-block !important;
+          text-align: left !important;
+        }
+        
+        .preview-item .value {
+          flex: 1 !important;
+          padding-left: 8px !important;
+          border-bottom: 1px dotted #000 !important;
+          display: inline-block !important;
+          text-align: left !important;
+        }
+        
+        .materials-table {
+          width: 100% !important;
+          border-collapse: collapse !important;
+          border: 1px solid #000 !important;
+        }
+        
+        .materials-table th,
+        .materials-table td {
+          border: 1px solid #000 !important;
+          padding: 8px 10px !important;
+        }
+        
+        .status-box {
+          border: 1px solid #000 !important;
+          background-color: #e6f7ff !important;
+          padding: 10px 15px !important;
+          border-radius: 4px !important;
+          display: inline-block !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
     // Pequeno atraso para garantir que os estilos sejam aplicados
     setTimeout(() => {
       window.print();
 
-      // Remove a classe após a impressão
+      // Remove a classe e o estilo temporário após a impressão
       setTimeout(() => {
         document.body.classList.remove('printing');
+        const tempStyle = document.getElementById('print-style-override');
+        if (tempStyle) {
+          document.head.removeChild(tempStyle);
+        }
       }, 500);
     }, 100);
   };
