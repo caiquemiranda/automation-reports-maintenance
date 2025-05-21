@@ -1,0 +1,60 @@
+.activity-details {
+    margin-bottom: 25px;
+    padding: 0 15px;
+}
+
+.activity-details h3 {
+    font-size: 1.3rem;
+    color: #0056b3;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+}
+
+.activity-edit-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.edit-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.edit-block strong {
+    font-weight: 600;
+    color: #555;
+}
+
+.summernote-preview {
+    min-height: 100px;
+    border: 1px dashed #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #fcfcfc;
+}
+
+.summernote-preview:hover {
+    border-color: #0056b3;
+    background-color: #f8f9fa;
+}
+
+.summernote-preview:empty:before {
+    content: "Clique para adicionar conteúdo";
+    color: #999;
+    font-style: italic;
+}
+
+@media print {
+    .activity-details {
+        page-break-inside: avoid;
+    }
+
+    .summernote-preview {
+        border: none;
+        background: none;
+    }
+}
