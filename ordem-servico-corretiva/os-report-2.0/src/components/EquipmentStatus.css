@@ -1,0 +1,70 @@
+.equipment-status {
+    margin-bottom: 25px;
+    padding: 0 15px;
+}
+
+.equipment-status h3 {
+    font-size: 1.3rem;
+    color: #0056b3;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+}
+
+.status-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.status-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+    min-width: 200px;
+}
+
+.status-options label:hover {
+    background-color: #f5f5f5;
+}
+
+.status-options label.selected {
+    background-color: #e6f7ff;
+    border-color: #1890ff;
+}
+
+.status-options input {
+    margin: 0;
+}
+
+.status-options span {
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .status-options {
+        flex-direction: column;
+    }
+}
+
+@media print {
+    .equipment-status {
+        page-break-inside: avoid;
+    }
+
+    .status-options label {
+        border: none;
+        padding: 5px 0;
+    }
+
+    .status-options label:not(.selected) {
+        display: none;
+    }
+}
