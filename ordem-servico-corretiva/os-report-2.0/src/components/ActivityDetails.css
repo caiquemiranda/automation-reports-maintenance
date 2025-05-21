@@ -1,12 +1,14 @@
 .activity-details {
     margin-bottom: 25px;
     padding: 0 15px;
+    border-bottom: 2px solid #0056b3;
+    padding-bottom: 15px;
 }
 
 .activity-details h3 {
     font-size: 1.3rem;
     color: #0056b3;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #ccd9e6;
     padding-bottom: 8px;
     margin-bottom: 15px;
 }
@@ -29,7 +31,7 @@
 }
 
 .summernote-preview {
-    min-height: 100px;
+    min-height: 80px;
     border: 1px dashed #ccc;
     padding: 10px;
     border-radius: 4px;
@@ -51,10 +53,21 @@
 @media print {
     .activity-details {
         page-break-inside: avoid;
+        border-bottom: 2px solid #0056b3;
+        padding-bottom: 15px;
     }
 
     .summernote-preview {
         border: none;
         background: none;
+        min-height: 60px;
+    }
+    
+    .activity-edit-blocks {
+        gap: 10px;
+    }
+    
+    .edit-block {
+        gap: 5px;
     }
 }

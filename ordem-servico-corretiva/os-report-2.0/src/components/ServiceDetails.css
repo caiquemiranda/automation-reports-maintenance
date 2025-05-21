@@ -1,9 +1,10 @@
 .service-details {
-    background: #f9f9f9;
+    background: #ffffff;
     border-radius: 6px;
     padding: 18px 24px;
     margin-bottom: 18px;
     box-shadow: 0 1px 4px #0001;
+    border-bottom: 2px solid #0056b3;
 }
 
 .service-row {
@@ -30,7 +31,7 @@
 .service-details h3 {
     font-size: 1.3rem;
     color: #0056b3;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #ccd9e6;
     padding-bottom: 8px;
     margin-bottom: 15px;
 }
@@ -88,5 +89,22 @@
 @media print {
     .service-details {
         page-break-inside: avoid;
+        border-bottom: 2px solid #0056b3;
+        padding-bottom: 15px;
+    }
+    
+    .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        page-break-inside: avoid;
+    }
+    
+    .column {
+        gap: 8px;
+    }
+    
+    .form-group {
+        gap: 2px;
     }
 }
