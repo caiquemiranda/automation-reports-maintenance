@@ -577,18 +577,14 @@ body {
     break-after: always;
   }
 
-  #numero-os,
-  #numero-os *,
-  .os-number-editable,
-  .os-number-editable *,
-  td[style*="dashed"],
-  span[style*="dashed"],
-  div[style*="dashed"],
-  [style*="dashed"],
-  [style*="border-bottom: 1px dashed"],
-  [style*="border-bottom:1px dashed"],
-  [style*="border: 1px dashed"],
-  [style*="border:1px dashed"] {
+  *[style*="dashed"],
+  *[style*="border-bottom"],
+  *[style*="border-bottom: 1px dashed"],
+  *[style*="border-bottom:1px dashed"],
+  *[style*="border: 1px dashed"],
+  *[style*="border:1px dashed"],
+  input,
+  span[contenteditable="true"] {
     border: none !important;
     border-bottom: none !important;
     border-style: none !important;

@@ -191,6 +191,18 @@ function App() {
     }, 100);
   };
 
+  useEffect(() => {
+    const handleBeforePrint = () => {
+      document.querySelectorAll('[style*="dashed"], [style*="border-bottom"]').forEach(el => {
+        el.style.border = 'none';
+        el.style.borderBottom = 'none';
+        el.style.borderStyle = 'none';
+      });
+    };
+    window.addEventListener('beforeprint', handleBeforePrint);
+    return () => window.removeEventListener('beforeprint', handleBeforePrint);
+  }, []);
+
   // Renderizar o conteúdo do documento (compartilhado entre modo edição e preview)
   const renderDocumentContent = () => {
     if (isPreview) {
