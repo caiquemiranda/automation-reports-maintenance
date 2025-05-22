@@ -186,6 +186,9 @@ const DocumentContainer = ({ children, isPreview }) => {
       <div className="document-paper">
         {children}
       </div>
+      <footer className="print-footer">
+        <span className="page-number"></span>
+      </footer>
     </div>
   );
 };

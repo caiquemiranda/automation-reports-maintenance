@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import SummernoteEditor from './SummernoteEditor';
+import React from 'react';
 import './ActivityDetails.css';
 import ServiceReasonEditor from './ServiceReasonEditor';
 import ObservationEditor from './ObservationEditor';
@@ -13,8 +12,6 @@ const ActivityDetails = ({
   acaoCorretiva,
   setAcaoCorretiva
 }) => {
-  const [editField, setEditField] = useState(null);
-
   return (
     <section className="activity-details">
       <h3>Detalhes da Atividade</h3>
