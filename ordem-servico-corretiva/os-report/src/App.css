@@ -1307,32 +1307,59 @@ input:disabled {
   gap: 15px;
   width: 100%;
 }
+
 .preview-column {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .preview-item {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
+  display: block;
   margin-bottom: 8px;
   width: 100%;
 }
+
 .preview-item .label {
-  min-width: 150px;
+  display: inline;
   font-weight: bold;
   color: #000;
-  display: inline-block;
-  text-align: left;
+  margin: 0;
+  padding: 0;
 }
+
 .preview-item .value {
-  flex: 1;
-  padding-left: 8px;
+  display: inline;
   color: #000;
-  display: inline-block;
-  text-align: left;
+  margin-left: 4px;
+  padding: 0;
+  min-width: 0;
+  word-break: break-word;
 }
+
+@media print {
+  .preview-item {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+  .preview-item .label {
+    display: inline !important;
+    font-weight: bold !important;
+    color: #000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .preview-item .value {
+    display: inline !important;
+    color: #000 !important;
+    margin-left: 4px !important;
+    padding: 0 !important;
+    min-width: 0 !important;
+    word-break: break-word !important;
+  }
+}
+
 .print-footer {
   position: fixed;
   bottom: 0;
@@ -1345,6 +1372,7 @@ input:disabled {
   background: none;
   pointer-events: none;
 }
+
 @media print {
   .print-footer {
     position: fixed;
@@ -1359,6 +1387,7 @@ input:disabled {
     pointer-events: none;
     display: block;
   }
+
   .print-footer .page-number:after {
     content: "Página " counter(page) " de " counter(pages);
   }
