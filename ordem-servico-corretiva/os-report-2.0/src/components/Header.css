@@ -16,7 +16,7 @@
 }
 
 .logo-img {
-    height: 38px;
+    height: 70px;
     width: auto;
 }
 
@@ -47,6 +47,29 @@
     cursor: pointer;
     font-weight: bold;
     font-size: 0.95rem;
+    margin: 0;
+}
+
+.maintenance-type input[type="radio"] {
+    display: none;
+}
+
+.maintenance-type label {
+    background: #398cdf;
+    color: #111;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px 18px;
+    box-shadow: 0 1px 4px rgba(25, 118, 210, 0.10);
+    border: 2px solid #1976d2;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+    user-select: none;
+}
+
+.maintenance-type input[type="radio"]:checked+label {
+    background: #398cdf;
+    color: #111;
+    border: 2px solid #1565c0;
 }
 
 @media (max-width: 600px) {
@@ -68,7 +91,16 @@
 
 @media print {
     .os-header {
-        padding: 5px 2px;
+        padding: 4px 2px;
         gap: 1px;
+    }
+
+    .logo-img {
+        height: 40px !important;
+    }
+
+    .maintenance-type label {
+        padding: 6px 12px !important;
+        font-size: 0.85rem !important;
     }
 }

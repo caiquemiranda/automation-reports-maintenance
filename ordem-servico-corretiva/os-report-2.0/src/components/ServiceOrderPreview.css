@@ -369,7 +369,6 @@
 
     .preview-team .label {
         color: #000;
-        font-weight: bold;
     }
 
     .team-list-preview li {
@@ -405,12 +404,12 @@
 }
 
 .preview-logo-img {
-    height: 48px;
+    height: 70px;
     width: auto;
 }
 
 .preview-logo-img.large {
-    height: 60px;
+    height: 90px;
     width: auto;
 }
 
@@ -430,10 +429,19 @@
     display: flex;
     align-items: center;
     font-weight: bold;
-    font-size: 0.95rem;
-    background: none;
-    padding: 0;
-    border-radius: 0;
+    font-size: 1.05rem;
+    background: #1976d2;
+    color: #111;
+    border-radius: 8px;
+    padding: 8px 18px;
+    box-shadow: 0 1px 4px rgba(25, 118, 210, 0.10);
+    border: 2px solid #1976d2;
+    margin-left: 10px;
+    margin-right: 0;
+    min-width: 180px;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+    user-select: none;
 }
 
 @media (max-width: 600px) {
@@ -443,35 +451,29 @@
         gap: 6px;
         padding: 4px 2px;
     }
-
     .preview-title {
         text-align: left;
     }
-
     .preview-maintenance-type {
         justify-content: flex-end;
+        min-width: unset;
+        width: 100%;
+        margin-left: 0;
+        margin-top: 6px;
     }
 }
 
 @media print {
-    .preview-header.compact-header {
-        padding: 4px 2px 4px 2px !important;
-        margin-bottom: 10px !important;
-        min-height: 40px !important;
-        border-bottom: 2px solid #0056b3 !important;
-        background: none !important;
-    }
-
     .preview-logo-img,
     .preview-logo-img.large {
         height: 40px !important;
     }
-
     .preview-title h1 {
         font-size: 1.1rem !important;
     }
-
     .preview-maintenance-type {
         font-size: 0.85rem !important;
+        padding: 6px 12px !important;
+        min-width: 120px !important;
     }
 }
