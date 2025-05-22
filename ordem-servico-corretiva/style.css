@@ -324,12 +324,21 @@ body {
         outline: none !important;
     }
 
-    .info-value {
+    .info-value,
+    .info-value *,
+    .info-item,
+    .info-item *,
+    .info-row,
+    .info-row *,
+    .info-section,
+    .info-section *,
+    #numero-os {
         border: none !important;
         border-bottom: none !important;
         box-shadow: none !important;
         outline: none !important;
         background: none !important;
+        text-decoration: none !important;
     }
 
     .attachment-container {
