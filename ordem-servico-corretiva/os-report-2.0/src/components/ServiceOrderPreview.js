@@ -72,42 +72,33 @@ const ServiceOrderPreview = ({
                 <div className="preview-grid">
                     <div className="preview-column">
                         <div className="preview-item">
-                            <span className="label">TAG do Equipamento:</span>
-                            <span className="value">{tagEquipamento}</span>
+                            <span><strong>TAG do Equipamento:</strong> {tagEquipamento}</span>
                         </div>
                         <div className="preview-item">
-                            <span className="label">Tipo de Equipamento:</span>
-                            <span className="value">{tipoEquipamento || 'Não informado'}</span>
+                            <span><strong>Tipo de Equipamento:</strong> {tipoEquipamento || 'Não informado'}</span>
                         </div>
                         <div className="preview-item">
-                            <span className="label">Localização:</span>
-                            <span className="value">{localizacao || 'Não informado'}</span>
+                            <span><strong>Localização:</strong> {localizacao || 'Não informado'}</span>
                         </div>
                         <div className="preview-item">
-                            <span className="label">Número da OS:</span>
-                            <span className="value">{numeroOS}</span>
+                            <span><strong>Número da OS:</strong> {numeroOS}</span>
                         </div>
                     </div>
                     <div className="preview-column">
                         <div className="preview-item">
-                            <span className="label">Data de Solicitação:</span>
-                            <span className="value">{formatDate(dataSolicitacao)}</span>
+                            <span><strong>Data de Solicitação:</strong> {formatDate(dataSolicitacao)}</span>
                         </div>
                         <div className="preview-item">
-                            <span className="label">Data de Execução:</span>
-                            <span className="value">{formatDate(dataExecucao)}</span>
+                            <span><strong>Data de Execução:</strong> {formatDate(dataExecucao)}</span>
                         </div>
                         <div className="preview-item">
-                            <span className="label">Prioridade:</span>
-                            <span className="value">{prioridade || 'Não informado'}</span>
+                            <span><strong>Prioridade:</strong> {prioridade || 'Não informado'}</span>
                         </div>
                         <div className="preview-item">
-                            <span className="label">Requisitante:</span>
-                            <span className="value">{requisitante || 'Não informado'}</span>
+                            <span><strong>Requisitante:</strong> {requisitante || 'Não informado'}</span>
                         </div>
                         <div className="preview-item">
-                            <span className="label">Centro de custo:</span>
-                            <span className="value">{centroCusto}</span>
+                            <span><strong>Centro de custo:</strong> {centroCusto}</span>
                         </div>
                     </div>
                 </div>
