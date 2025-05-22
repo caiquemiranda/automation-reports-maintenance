@@ -389,3 +389,34 @@
         background: none !important;
     }
 }
+
+body,
+.preview-container {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+@media print {
+
+    body,
+    .preview-container {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .preview-section *,
+    .preview-item *,
+    .preview-item .value,
+    .preview-item .label,
+    .preview-item input,
+    .preview-item span,
+    .preview-item strong,
+    .preview-item div {
+        border-bottom: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        text-decoration: none !important;
+        background: none !important;
+    }
+}
