@@ -89,13 +89,20 @@
     font-weight: bold;
     color: #555;
     min-width: 150px;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: none !important;
 }
 
 .preview-item .value {
     color: #333;
     flex: 1;
     padding: 2px 0 2px 8px;
-    border-bottom: none;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: none !important;
 }
 
 .preview-rich-text {
@@ -267,165 +274,8 @@
         margin: 0;
     }
 
-    .preview-section,
-    .preview-section *,
-    .preview-item,
-    .preview-item *,
-    .preview-item .value,
-    .preview-item .label,
-    .preview-item input,
-    .preview-item span,
-    .preview-item strong,
-    .preview-item div {
-        border-bottom: none !important;
-        box-shadow: none !important;
-        outline: none !important;
-        text-decoration: none !important;
-        background: none !important;
-    }
-
-    .preview-section {
-        page-break-inside: avoid;
-        padding-bottom: 15px;
-        margin-bottom: 15px;
-    }
-
-    .preview-section:last-child {
-        border-bottom: none;
-    }
-
-    .preview-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        page-break-inside: avoid;
-    }
-
-    .preview-column {
-        gap: 5px;
-    }
-
-    .preview-item {
-        margin-bottom: 3px;
-        display: flex;
-        align-items: baseline;
-    }
-
-    .preview-item .label {
-        font-weight: bold;
-        color: #000;
-        min-width: 150px;
-        margin-bottom: 2px;
-        font-size: 0.9rem;
-    }
-
-    .preview-item .value {
-        color: #000;
-        flex: 1;
-        padding: 0 0 0 5px;
-        border-bottom: none;
-    }
-
-    .preview-header {
-        page-break-inside: avoid;
-        border-bottom: 2px solid #0056b3;
-    }
-
-    .preview-rich-text h3 {
-        color: #000;
-        font-weight: 600;
-    }
-
-    .rich-content {
-        background-color: transparent;
-        border: 1px solid #ccc;
-        padding: 8px;
-        color: #000;
-    }
-
-    .materials-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .materials-table th,
-    .materials-table td {
-        border: 1px solid #000;
-        padding: 6px 10px;
-        color: #000;
-    }
-
-    .materials-table th {
-        background-color: transparent;
-        font-weight: bold;
-        color: #000;
-    }
-
-    .material-preview-item td {
-        background-color: transparent;
-        color: #000;
-    }
-
-    .material-quantity {
-        text-align: center;
-    }
-
-    .empty-materials-preview {
-        background-color: transparent;
-        border: 1px solid #000;
-        color: #000;
-    }
-
-    .status-box {
-        background-color: transparent;
-        border: 1px solid #000;
-        color: #000;
-        padding: 8px 12px;
-    }
-
-    .preview-team .label {
-        color: #000;
-    }
-
-    .team-list-preview li {
-        color: #000;
-    }
-
-    .empty-team {
-        color: #000;
-    }
-
-    /* Ocultar botões de impressão e outros elementos desnecessários */
     .print-button {
         display: none !important;
-    }
-
-    .preview-logo-img,
-    .preview-logo-img.large {
-        height: 40px !important;
-    }
-
-    .preview-title h1 {
-        font-size: 1.1rem !important;
-    }
-
-    .preview-maintenance-type {
-        font-size: 0.85rem !important;
-        padding: 6px 12px !important;
-        min-width: 120px !important;
-        background: #e3f0fb !important;
-        color: #111 !important;
-        border: 1.5px solid #b3d6f5 !important;
-    }
-
-    .preview-section {
-        border-bottom: none !important;
-    }
-
-    .preview-item .value {
-        border-bottom: none !important;
-        box-shadow: none !important;
-        background: none !important;
     }
 }
 
