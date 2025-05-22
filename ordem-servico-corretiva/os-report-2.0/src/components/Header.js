@@ -5,16 +5,11 @@ const Header = ({ numeroOS, manutencao, setManutencao }) => {
   return (
     <div className="os-header">
       <div className="logo-section">
-        <div className="company-info">
-          <strong>IBSistemas</strong>
-          <span>Facility Solutions</span>
-        </div>
+        <img src={process.env.PUBLIC_URL + '/logo_ibs.png'} alt="Logo IBSistemas" className="logo-img" />
       </div>
-
       <div className="os-title">
         <h2>OS {numeroOS}</h2>
       </div>
-
       <div className="maintenance-type">
         <label>
           <input
