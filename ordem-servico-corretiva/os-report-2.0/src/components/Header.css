@@ -43,33 +43,20 @@
 .maintenance-type label {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
     cursor: pointer;
     font-weight: bold;
     font-size: 0.95rem;
     margin: 0;
+    background: none;
+    color: #222;
+    border: none;
+    box-shadow: none;
+    padding: 0;
 }
 
 .maintenance-type input[type="radio"] {
-    display: none;
-}
-
-.maintenance-type label {
-    background: #398cdf;
-    color: #111;
-    font-weight: bold;
-    border-radius: 8px;
-    padding: 8px 18px;
-    box-shadow: 0 1px 4px rgba(25, 118, 210, 0.10);
-    border: 2px solid #1976d2;
-    transition: background 0.2s, color 0.2s, border 0.2s;
-    user-select: none;
-}
-
-.maintenance-type input[type="radio"]:checked+label {
-    background: #398cdf;
-    color: #111;
-    border: 2px solid #1565c0;
+    display: inline-block;
 }
 
 @media (max-width: 600px) {
@@ -100,7 +87,6 @@
     }
 
     .maintenance-type label {
-        padding: 6px 12px !important;
         font-size: 0.85rem !important;
     }
 }
