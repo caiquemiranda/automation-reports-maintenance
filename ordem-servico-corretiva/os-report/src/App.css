@@ -576,6 +576,23 @@ body {
     page-break-after: always;
     break-after: always;
   }
+
+  #numero-os,
+  .os-number-editable,
+  #numero-os *,
+  .os-number-editable *,
+  [style*="dashed"],
+  [style*="border-bottom: 1px dashed"],
+  [style*="border: 1px dashed"],
+  [style*="border-bottom:1px dashed"],
+  [style*="border:1px dashed"] {
+    border: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: none !important;
+    text-decoration: none !important;
+  }
 }
 
 /* Adicionar estilos para input-group */
