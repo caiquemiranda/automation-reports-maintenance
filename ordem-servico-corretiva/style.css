@@ -324,6 +324,14 @@ body {
         outline: none !important;
     }
 
+    .info-value {
+        border: none !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        background: none !important;
+    }
+
     .attachment-container {
         border: none;
     }
