@@ -100,8 +100,22 @@
     flex: 1;
     padding: 2px 0 2px 8px;
     border-bottom: none !important;
+    border: none !important;
     box-shadow: none !important;
     outline: none !important;
+    text-decoration: none !important;
+    background: none !important;
+}
+
+.preview-item .value,
+.preview-item .value *,
+.preview-item .label,
+.preview-item .label * {
+    border-bottom: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    text-decoration: none !important;
     background: none !important;
 }
 
