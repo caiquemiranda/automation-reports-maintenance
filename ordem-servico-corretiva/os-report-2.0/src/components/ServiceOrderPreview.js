@@ -57,10 +57,10 @@ const ServiceOrderPreview = ({
             {/* Cabeçalho */}
             <div className="preview-header compact-header">
                 <div className="preview-logo-section">
-                    <img src={process.env.PUBLIC_URL + '/logo_ibs.png'} alt="Logo IBSistemas" className="preview-logo-img" />
+                    <img src={process.env.PUBLIC_URL + '/logo_ibs.png'} alt="Logo IBSistemas" className="preview-logo-img large" />
                 </div>
                 <div className="preview-title">
-                    <h1>ORDEM DE SERVIÇO #{numeroOS}</h1>
+                    <h1>OS {numeroOS}</h1>
                 </div>
                 <div className="preview-maintenance-type">
                     <strong>{manutencao === 'corretiva' ? 'MANUTENÇÃO CORRETIVA' : 'MANUTENÇÃO PLANEJADA'}</strong>

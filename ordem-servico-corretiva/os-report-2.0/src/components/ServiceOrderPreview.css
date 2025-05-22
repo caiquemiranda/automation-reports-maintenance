@@ -405,7 +405,12 @@
 }
 
 .preview-logo-img {
-    height: 38px;
+    height: 48px;
+    width: auto;
+}
+
+.preview-logo-img.large {
+    height: 60px;
     width: auto;
 }
 
@@ -457,8 +462,9 @@
         background: none !important;
     }
 
-    .preview-logo-img {
-        height: 28px !important;
+    .preview-logo-img,
+    .preview-logo-img.large {
+        height: 40px !important;
     }
 
     .preview-title h1 {
