@@ -383,6 +383,34 @@
     .print-button {
         display: none !important;
     }
+
+    .preview-logo-img,
+    .preview-logo-img.large {
+        height: 40px !important;
+    }
+
+    .preview-title h1 {
+        font-size: 1.1rem !important;
+    }
+
+    .preview-maintenance-type {
+        font-size: 0.85rem !important;
+        padding: 6px 12px !important;
+        min-width: 120px !important;
+        background: #e3f0fb !important;
+        color: #111 !important;
+        border: 1.5px solid #b3d6f5 !important;
+    }
+
+    .preview-section {
+        border-bottom: none !important;
+    }
+
+    .preview-item .value {
+        border-bottom: none !important;
+        box-shadow: none !important;
+        background: none !important;
+    }
 }
 
 .preview-header.compact-header {
@@ -491,5 +519,7 @@
 
     .preview-item .value {
         border-bottom: none !important;
+        box-shadow: none !important;
+        background: none !important;
     }
 }
