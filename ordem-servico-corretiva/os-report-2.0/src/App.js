@@ -61,21 +61,38 @@ function App() {
     }
   }, []);
 
-  // Migração de formato de materiais caso necessário
+  // Correção do useEffect de migração de materiais
   useEffect(() => {
-    // Verificar se os materiais estão no formato antigo (strings) e converterlos para o novo formato (objetos)
     const updatedMaterials = materials.map(material => {
       if (typeof material === 'string') {
         return { name: material, quantity: 1 };
       }
       return material;
     });
-
-    // Atualizar apenas se houver diferenças
     if (JSON.stringify(materials) !== JSON.stringify(updatedMaterials)) {
       setMaterials(updatedMaterials);
     }
-  }, []);
+  }, [materials]);
+
+  // Correção do useEffect para remover bordas na impressão e preview
+  useEffect(() => {
+    const removeDashedBorders = () => {
+      document.querySelectorAll('.preview-section .value, .preview-section .value *').forEach(el => {
+        el.style.setProperty('border', 'none', 'important');
+        el.style.setProperty('border-bottom', 'none', 'important');
+        el.style.setProperty('border-top', 'none', 'important');
+        el.style.setProperty('border-right', 'none', 'important');
+        el.style.setProperty('border-left', 'none', 'important');
+        el.style.setProperty('border-style', 'none', 'important');
+        el.style.setProperty('border-image', 'none', 'important');
+      });
+    };
+    window.addEventListener('beforeprint', removeDashedBorders);
+    if (isPreview) {
+      removeDashedBorders();
+    }
+    return () => window.removeEventListener('beforeprint', removeDashedBorders);
+  }, [isPreview]);
 
   // Função para alternar entre modo de edição e preview
   const togglePreview = () => {
@@ -190,18 +207,6 @@ function App() {
       }, 500);
     }, 100);
   };
-
-  useEffect(() => {
-    const handleBeforePrint = () => {
-      document.querySelectorAll('[style*="dashed"], [style*="border-bottom"]').forEach(el => {
-        el.style.border = 'none';
-        el.style.borderBottom = 'none';
-        el.style.borderStyle = 'none';
-      });
-    };
-    window.addEventListener('beforeprint', handleBeforePrint);
-    return () => window.removeEventListener('beforeprint', handleBeforePrint);
-  }, []);
 
   // Renderizar o conteúdo do documento (compartilhado entre modo edição e preview)
   const renderDocumentContent = () => {

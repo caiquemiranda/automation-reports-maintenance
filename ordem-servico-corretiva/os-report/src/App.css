@@ -593,6 +593,21 @@ body {
     background: none !important;
     text-decoration: none !important;
   }
+
+  .preview-section .value,
+  .preview-section .value * {
+    border: none !important;
+    border-bottom: none !important;
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
+    border-style: none !important;
+    border-image: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    background: none !important;
+    text-decoration: none !important;
+  }
 }
 
 /* Adicionar estilos para input-group */
