@@ -291,6 +291,18 @@
     .print-button {
         display: none !important;
     }
+
+    .preview-item .value,
+    .preview-item .value *,
+    .preview-item .label,
+    .preview-item .label * {
+        border-bottom: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        text-decoration: none !important;
+        background: none !important;
+    }
 }
 
 .preview-header.compact-header {
