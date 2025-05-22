@@ -9,7 +9,7 @@ const DocumentContainer = ({ children, isPreview }) => {
     const beforePrintHandler = () => {
       setIsPrinting(true);
       document.body.classList.add('printing');
-      
+
       // Aplicar estilos diretamente aos elementos para impressão
       forceStylesForPrinting(true);
     };
@@ -17,7 +17,7 @@ const DocumentContainer = ({ children, isPreview }) => {
     const afterPrintHandler = () => {
       setIsPrinting(false);
       document.body.classList.remove('printing');
-      
+
       // Remover estilos adicionados
       forceStylesForPrinting(false);
     };
@@ -30,7 +30,7 @@ const DocumentContainer = ({ children, isPreview }) => {
       window.removeEventListener('afterprint', afterPrintHandler);
     };
   }, []);
-  
+
   // Função para aplicar estilos diretamente aos elementos
   const forceStylesForPrinting = (apply) => {
     // Detalhes da OS - Itens com layout flex
@@ -48,7 +48,7 @@ const DocumentContainer = ({ children, isPreview }) => {
         item.style.width = '';
       }
     });
-    
+
     // Labels dos itens
     const labels = document.querySelectorAll('.preview-item .label');
     labels.forEach(label => {
@@ -64,14 +64,14 @@ const DocumentContainer = ({ children, isPreview }) => {
         label.style.textAlign = '';
       }
     });
-    
+
     // Valores dos itens
     const values = document.querySelectorAll('.preview-item .value');
     values.forEach(value => {
       if (apply) {
         value.style.flex = '1';
         value.style.paddingLeft = '8px';
-        value.style.borderBottom = '1px dotted #000';
+        value.style.borderBottom = 'none';
         value.style.display = 'inline-block';
         value.style.textAlign = 'left';
       } else {
@@ -82,7 +82,7 @@ const DocumentContainer = ({ children, isPreview }) => {
         value.style.textAlign = '';
       }
     });
-    
+
     // Tabela de materiais
     const materialsTables = document.querySelectorAll('.materials-table');
     materialsTables.forEach(table => {
@@ -96,7 +96,7 @@ const DocumentContainer = ({ children, isPreview }) => {
         table.style.border = '';
       }
     });
-    
+
     // Células da tabela
     const cells = document.querySelectorAll('.materials-table th, .materials-table td');
     cells.forEach(cell => {
@@ -110,7 +110,7 @@ const DocumentContainer = ({ children, isPreview }) => {
         cell.style.textAlign = '';
       }
     });
-    
+
     // Status do equipamento
     const statusBoxes = document.querySelectorAll('.status-box');
     statusBoxes.forEach(box => {
@@ -135,7 +135,7 @@ const DocumentContainer = ({ children, isPreview }) => {
     const printStylesheet = document.createElement('style');
     printStylesheet.setAttribute('type', 'text/css');
     printStylesheet.setAttribute('media', 'print');
-    
+
     // Estilos específicos para impressão
     printStylesheet.innerHTML = `
       @page {
@@ -163,7 +163,7 @@ const DocumentContainer = ({ children, isPreview }) => {
       .preview-item .value {
         flex: 1 !important;
         padding-left: 8px !important;
-        border-bottom: 1px dotted #000 !important;
+        border-bottom: none !important;
         color: #000 !important;
       }
       
@@ -173,9 +173,9 @@ const DocumentContainer = ({ children, isPreview }) => {
         width: 100% !important;
       }
     `;
-    
+
     document.head.appendChild(printStylesheet);
-    
+
     return () => {
       document.head.removeChild(printStylesheet);
     };
