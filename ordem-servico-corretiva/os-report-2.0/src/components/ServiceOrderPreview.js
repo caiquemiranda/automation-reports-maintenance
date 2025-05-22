@@ -72,7 +72,7 @@ const ServiceOrderPreview = ({
                 <div className="preview-grid">
                     <div className="preview-column">
                         <div className="preview-item">
-                            <span><strong>TAG do Equipamento:</strong> {tagEquipamento}</span>
+                            <span><strong>TAG do Equipamento:</strong> {Array.isArray(tagEquipamento) ? tagEquipamento.join(', ') : tagEquipamento}</span>
                         </div>
                         <div className="preview-item">
                             <span><strong>Tipo de Equipamento:</strong> {tipoEquipamento || 'Não informado'}</span>
