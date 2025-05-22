@@ -129,4 +129,20 @@
         padding: 3px 6px;
         font-size: 0.85rem;
     }
+
+    .details-grid *,
+    .form-group *,
+    .form-group input,
+    .form-group select,
+    .static-value,
+    strong,
+    span,
+    label {
+        border-bottom: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        text-decoration: none !important;
+        background: none !important;
+    }
 }
