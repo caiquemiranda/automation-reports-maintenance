@@ -389,7 +389,10 @@
 
     .preview-logo-img,
     .preview-logo-img.large {
-        height: 40px !important;
+        height: 90px !important;
+        width: auto !important;
+        max-width: unset !important;
+        max-height: unset !important;
     }
 
     .preview-title h1 {
