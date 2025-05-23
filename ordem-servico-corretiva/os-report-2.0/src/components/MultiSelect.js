@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MultiSelect = ({ options, selected, onChange, placeholder }) => {
+const MultiSelect = ({ options, selected, onChange, placeholder, datalistId }) => {
     const handleAdd = (e) => {
         const value = e.target.value;
         if (value && !selected.includes(value)) {
@@ -24,13 +24,13 @@ const MultiSelect = ({ options, selected, onChange, placeholder }) => {
                 ))}
             </div>
             <input
-                list="multiselect-options"
+                list={datalistId}
                 placeholder={placeholder}
                 onBlur={handleAdd}
                 onKeyDown={e => { if (e.key === 'Enter') handleAdd(e); }}
                 style={{ padding: 4, borderRadius: 4, border: '1px solid #ccc' }}
             />
-            <datalist id="multiselect-options">
+            <datalist id={datalistId}>
                 {options.map(opt => (
                     <option key={opt} value={opt} />
                 ))}

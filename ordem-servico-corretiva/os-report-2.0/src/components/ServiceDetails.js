@@ -14,6 +14,8 @@ const TAG_OPTIONS = [
 
 const EQUIPMENT_TYPES = [
     'Ar Condicionado',
+    'Bomba',
+    'Compressor',
     'Elevador',
     'Gerador',
     'Bomba Hidráulica',
@@ -69,17 +71,18 @@ const ServiceDetails = ({
                             selected={Array.isArray(tagEquipamento) ? tagEquipamento : tagEquipamento ? [tagEquipamento] : []}
                             onChange={tags => setTagEquipamento(tags)}
                             placeholder="Digite ou selecione uma TAG"
+                            datalistId="tag-options"
                         />
                     </div>
 
                     <div className="form-group">
                         <strong>Tipo de Equipamento:</strong>
-                        <SelectAutocomplete
+                        <MultiSelect
                             options={EQUIPMENT_TYPES}
-                            value={tipoEquipamento || ''}
-                            onChange={setTipoEquipamento}
-                            placeholder="Digite ou selecione o tipo"
-                            datalistId="tipo-equipamento-list"
+                            selected={Array.isArray(tipoEquipamento) ? tipoEquipamento : tipoEquipamento ? [tipoEquipamento] : []}
+                            onChange={types => setTipoEquipamento(types)}
+                            placeholder="Digite ou selecione o(s) tipo(s)"
+                            datalistId="equipment-type-options"
                         />
                     </div>
 

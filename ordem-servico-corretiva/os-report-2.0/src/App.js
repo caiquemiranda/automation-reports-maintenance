@@ -20,7 +20,7 @@ function App() {
   const [manutencao, setManutencao] = useState('corretiva');
   const [dataSolicitacao, setDataSolicitacao] = useState('');
   const [dataExecucao, setDataExecucao] = useState('');
-  const [tipoEquipamento, setTipoEquipamento] = useState('');
+  const [tipoEquipamento, setTipoEquipamento] = useState([]);
   const [localizacao, setLocalizacao] = useState('');
   const [prioridade, setPrioridade] = useState('');
   const [numeroOS, setNumeroOS] = useState('2023001');
@@ -29,7 +29,7 @@ function App() {
   const [servico, setServico] = useState('');
   const [observacao, setObservacao] = useState('');
   const [acaoCorretiva, setAcaoCorretiva] = useState('');
-  const [tagEquipamento, setTagEquipamento] = useState('NL-IQ207-603');
+  const [tagEquipamento, setTagEquipamento] = useState([]);
   const [status, setStatus] = useState('normal');
   const [tecnicoResponsavel, setTecnicoResponsavel] = useState('');
   const [equipe, setEquipe] = useState([]);
