@@ -1,5 +1,7 @@
 import React from 'react';
 import './ServiceDetails.css';
+import MultiSelect from './MultiSelect';
+import SelectAutocomplete from './SelectAutocomplete';
 
 // Opções predefinidas para os selects
 const TAG_OPTIONS = [
@@ -36,6 +38,13 @@ const REQUESTER_OPTIONS = [
     'Luciana Costa'
 ];
 
+const LOCALIZACOES_EXEMPLO = [
+    'Sala de Controle',
+    'Laboratório',
+    'Almoxarifado',
+    'Produção'
+];
+
 const ServiceDetails = ({
     tagEquipamento, setTagEquipamento,
     tipoEquipamento, setTipoEquipamento,
@@ -55,41 +64,33 @@ const ServiceDetails = ({
                 <div className="column">
                     <div className="form-group">
                         <strong>TAG do Equipamento:</strong>
-                        <select
-                            value={tagEquipamento || ''}
-                            onChange={e => setTagEquipamento(e.target.value)}
-                            className={errors?.tagEquipamento ? 'input-error' : ''}
-                        >
-                            <option value="">Selecione a TAG</option>
-                            {TAG_OPTIONS.map(tag => (
-                                <option key={tag} value={tag}>{tag}</option>
-                            ))}
-                        </select>
+                        <MultiSelect
+                            options={TAG_OPTIONS}
+                            selected={Array.isArray(tagEquipamento) ? tagEquipamento : tagEquipamento ? [tagEquipamento] : []}
+                            onChange={tags => setTagEquipamento(tags)}
+                            placeholder="Digite ou selecione uma TAG"
+                        />
                     </div>
 
                     <div className="form-group">
                         <strong>Tipo de Equipamento:</strong>
-                        <select
-                            value={tipoEquipamento}
-                            onChange={e => setTipoEquipamento(e.target.value)}
-                            required
-                            className={errors?.tipoEquipamento ? 'input-error' : ''}
-                        >
-                            <option value="">Selecione o tipo</option>
-                            {EQUIPMENT_TYPES.map(type => (
-                                <option key={type} value={type}>{type}</option>
-                            ))}
-                        </select>
+                        <SelectAutocomplete
+                            options={EQUIPMENT_TYPES}
+                            value={tipoEquipamento || ''}
+                            onChange={setTipoEquipamento}
+                            placeholder="Digite ou selecione o tipo"
+                            datalistId="tipo-equipamento-list"
+                        />
                     </div>
 
                     <div className="form-group">
                         <strong>Localização:</strong>
-                        <input
-                            type="text"
-                            value={localizacao}
-                            onChange={e => setLocalizacao(e.target.value)}
-                            required
-                            className={errors?.localizacao ? 'input-error' : ''}
+                        <SelectAutocomplete
+                            options={LOCALIZACOES_EXEMPLO}
+                            value={localizacao || ''}
+                            onChange={setLocalizacao}
+                            placeholder="Digite ou selecione a localização"
+                            datalistId="localizacao-list"
                         />
                     </div>
 
