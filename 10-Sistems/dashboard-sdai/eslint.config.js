@@ -18,4 +18,9 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  {
+    // backend, scripts e testes rodam no Node
+    files: ['server/**/*.js', 'scripts/**/*.{js,mjs}', '**/*.test.js', '*.config.js'],
+    languageOptions: { globals: globals.node },
+  },
 ])

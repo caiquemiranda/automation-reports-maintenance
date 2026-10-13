@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Banco local e arquivos gerados pelo teste incremental
+db/
+data/partes/

@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+/* ── Tokens ─────────────────────────────────────────────────────────────
+   Categorias validadas com a skill dataviz (CVD ΔE ≥ 8, banda de luminosidade)
+   na ordem de empilhamento: incêndio → supervisão → dispositivo → falha.      */
+:root {
+  color-scheme: light;
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --surface-2: #f8f9fb;
+  --line: #e3e6eb;
+  --ink: #12151a;
+  --ink-2: #444b57;
+  --muted: #667085;
+  --accent: #0f766e;   /* verde-água IBSystems, 5,5:1 sobre branco */
+  --accent-ink: #ffffff;
+  --focus: #0f766e;
+  --brand-1: #28e2df;
+  --brand-2: #419080;
+
+  --c-fire: #e34948;
+  --c-supervisory: #4a3aa7;
+  --c-device: #eda100;
+  --c-trouble: #2a78d6;
+  --c-info: #8d939e;
+  /* texto sobre fundo tingido precisa de contraste próprio */
+  --t-fire: #b42323;
+  --t-supervisory: #4a3aa7;
+  --t-device: #8a5a00;
+  --t-trouble: #1c5cab;
+  --t-info: #4b5260;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --bg: #0f1013;
+    --surface: #1a1a19;
+    --surface-2: #212120;
+    --line: #313130;
+    --ink: #f4f4f2;
+    --ink-2: #c8c9c4;
+    --muted: #9b9d98;
+    --accent: #2dd4bf;
+    --accent-ink: #04201d;
+    --focus: #5eead4;
+    --c-fire: #e66767;
+    --c-supervisory: #9085e9;
+    --c-device: #c98500;
+    --c-trouble: #3987e5;
+    --c-info: #6d7380;
+    --t-fire: #ff9a98;
+    --t-supervisory: #b9b1f5;
+    --t-device: #f0b84a;
+    --t-trouble: #86b6ef;
+    --t-info: #b4b9c2;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0f1013;
+  --surface: #1a1a19;
+  --surface-2: #212120;
+  --line: #313130;
+  --ink: #f4f4f2;
+  --ink-2: #c8c9c4;
+  --muted: #9b9d98;
+  --accent: #2dd4bf;
+  --accent-ink: #04201d;
+  --focus: #5eead4;
+  --c-fire: #e66767;
+  --c-supervisory: #9085e9;
+  --c-device: #c98500;
+  --c-trouble: #3987e5;
+  --c-info: #6d7380;
+  --t-fire: #ff9a98;
+  --t-supervisory: #b9b1f5;
+  --t-device: #f0b84a;
+  --t-trouble: #86b6ef;
+  --t-info: #b4b9c2;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-fire: var(--c-fire);
+  --color-supervisory: var(--c-supervisory);
+  --color-device: var(--c-device);
+  --color-trouble: var(--c-trouble);
+  --color-info: var(--c-info);
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "Consolas", monospace;
+}
+
+html { background: var(--bg); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+.tnum { font-variant-numeric: tabular-nums; }
+
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+/* gráficos: foco por clique não desenha contorno (o de teclado continua) */
+.recharts-wrapper :focus:not(:focus-visible), .recharts-wrapper:focus:not(:focus-visible) { outline: none; }
+
+/* Fundos tingidos por categoria: cor da categoria misturada à superfície */
+.tint-fire { background: color-mix(in oklab, var(--c-fire) 13%, var(--surface)); color: var(--t-fire); }
+.tint-supervisory { background: color-mix(in oklab, var(--c-supervisory) 13%, var(--surface)); color: var(--t-supervisory); }
+.tint-device { background: color-mix(in oklab, var(--c-device) 16%, var(--surface)); color: var(--t-device); }
+.tint-trouble { background: color-mix(in oklab, var(--c-trouble) 13%, var(--surface)); color: var(--t-trouble); }
+.tint-info { background: color-mix(in oklab, var(--c-info) 16%, var(--surface)); color: var(--t-info); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* barra de rolagem discreta na sidebar */
+.thin-scroll { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+
+@keyframes fade-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.animate-fade-in { animation: fade-in .18s ease-out; }
+
+@media print {
+  @page { size: A4 landscape; margin: 10mm; }
+  body { background: #fff; }
+  .no-print { display: none !important; }
+  .print-break { break-inside: avoid; }
+}
